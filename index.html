@@ -6,515 +6,498 @@
 <title>Chinese Galaxy Blaster</title>
 
 <style>
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-    body {
-        background:
-            radial-gradient(circle at 20% 20%, #15275f 0%, transparent 25%),
-            radial-gradient(circle at 80% 30%, #32175c 0%, transparent 25%),
-            linear-gradient(#050817, #03040c);
-        color: white;
-        font-family: Arial, "Microsoft YaHei", "PingFang SC", sans-serif;
-        min-height: 100vh;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+body {
+    background:
+        radial-gradient(circle at 20% 20%, #15275f 0%, transparent 25%),
+        radial-gradient(circle at 80% 30%, #32175c 0%, transparent 25%),
+        linear-gradient(#050817, #03040c);
+    color: white;
+    font-family: Arial, "Microsoft YaHei", "PingFang SC", sans-serif;
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-    #gameWrapper {
-        width: min(100vw, 1000px);
-        height: 100vh;
-        max-height: 760px;
-        position: relative;
-        background: linear-gradient(#07122d, #020511);
-        overflow: hidden;
-        border-left: 1px solid rgba(255,255,255,.12);
-        border-right: 1px solid rgba(255,255,255,.12);
-        user-select: none;
-        touch-action: none;
-    }
+#gameWrapper {
+    width: min(100vw, 1000px);
+    height: 100vh;
+    max-height: 760px;
+    position: relative;
+    background: linear-gradient(#07122d, #020511);
+    overflow: hidden;
+    user-select: none;
+    touch-action: none;
+}
 
-    #stars {
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        overflow: hidden;
-    }
+#stars {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
 
-    .star {
-        position: absolute;
-        width: 2px;
-        height: 2px;
-        background: white;
-        border-radius: 50%;
-        opacity: .75;
-        animation: twinkle 2s infinite alternate;
-    }
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    opacity: .75;
+    animation: twinkle 2s infinite alternate;
+}
 
-    @keyframes twinkle {
-        from { opacity: .25; }
-        to { opacity: 1; }
-    }
+@keyframes twinkle {
+    from { opacity: .25; }
+    to { opacity: 1; }
+}
 
-    #hud {
-        height: 68px;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 30;
-        display: grid;
-        grid-template-columns: 1fr auto 1fr;
-        align-items: center;
-        padding: 10px 18px;
-        background: linear-gradient(
-            rgba(2,5,18,.95),
-            rgba(2,5,18,.45),
-            transparent
-        );
-        pointer-events: none;
-    }
+#hud {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 75px;
+    z-index: 30;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    align-items: center;
+    padding: 8px 16px;
+    background: linear-gradient(
+        rgba(2,5,18,.96),
+        rgba(2,5,18,.5),
+        transparent
+    );
+    pointer-events: none;
+}
 
-    #scoreBox {
-        justify-self: start;
-    }
+.hudItem {
+    text-align: center;
+}
 
-    #timeBox {
-        text-align: center;
-    }
+.smallLabel {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.3px;
+    color: #8da6df;
+}
 
-    #livesBox {
-        justify-self: end;
-        text-align: right;
-    }
+.bigNumber {
+    font-size: 21px;
+    font-weight: 900;
+    margin-top: 2px;
+}
 
-    .smallLabel {
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 1.5px;
-        color: #8da6df;
+#roundScore {
+    color: #ffffff;
+}
+
+#targetScore {
+    color: #ffd84a;
+}
+
+#time {
+    color: #7cf7ff;
+}
+
+#bonusPanel {
+    position: absolute;
+    top: 78px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 35;
+    width: min(88%, 560px);
+    padding: 11px 18px;
+    border-radius: 16px;
+    background: rgba(15,30,70,.9);
+    border: 2px solid rgba(255,219,74,.8);
+    box-shadow: 0 0 25px rgba(255,210,50,.22);
+    text-align: center;
+    display: none;
+    pointer-events: none;
+}
+
+#bonusTitle {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: #ffd84a;
+    font-weight: 900;
+}
+
+#bonusClue {
+    font-size: 24px;
+    font-weight: 900;
+    margin-top: 3px;
+}
+
+#bonusTimerBar {
+    width: 100%;
+    height: 5px;
+    margin-top: 8px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(255,255,255,.15);
+}
+
+#bonusTimerFill {
+    width: 100%;
+    height: 100%;
+    background: #ffd84a;
+}
+
+#progressBar {
+    position: absolute;
+    z-index: 32;
+    top: 68px;
+    left: 3%;
+    width: 94%;
+    height: 7px;
+    background: rgba(255,255,255,.12);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#progressFill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #47d9ff, #ffe34e);
+    transition: width .2s;
+}
+
+#gameArea {
+    position: absolute;
+    inset: 0;
+}
+
+.planet {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 900;
+    text-align: center;
+    box-shadow:
+        inset -10px -12px 18px rgba(0,0,0,.28),
+        inset 8px 8px 16px rgba(255,255,255,.18),
+        0 0 16px rgba(255,255,255,.09);
+    border: 2px solid rgba(255,255,255,.22);
+    z-index: 10;
+}
+
+.normalPlanet {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+}
+
+.wordPlanet {
+    min-width: 76px;
+    width: auto;
+    height: 60px;
+    padding: 0 12px;
+    border-radius: 30px;
+    font-size: 20px;
+    color: white;
+    white-space: nowrap;
+    background:
+        radial-gradient(circle at 30% 25%, #72e6ff, #374fc7 42%, #25145a);
+}
+
+/* Correct answer intentionally has NO visual clue */
+
+#ship {
+    position: absolute;
+    bottom: 74px;
+    width: 58px;
+    height: 70px;
+    z-index: 20;
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+.shipBody {
+    position: absolute;
+    left: 50%;
+    top: 9px;
+    transform: translateX(-50%);
+    width: 32px;
+    height: 48px;
+    background: linear-gradient(#d9f4ff, #5ec6ff 48%, #2672e8);
+    border-radius: 50% 50% 28% 28%;
+    box-shadow: 0 0 12px rgba(77,190,255,.8);
+}
+
+.shipWindow {
+    position: absolute;
+    left: 50%;
+    top: 16px;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 17px;
+    border-radius: 50%;
+    background: #0e2a60;
+    border: 2px solid #9beaff;
+}
+
+.shipWingLeft,
+.shipWingRight {
+    position: absolute;
+    bottom: 12px;
+    width: 21px;
+    height: 25px;
+    background: #436ce8;
+}
+
+.shipWingLeft {
+    left: 2px;
+    clip-path: polygon(100% 0,100% 100%,0 100%);
+}
+
+.shipWingRight {
+    right: 2px;
+    clip-path: polygon(0 0,100% 100%,0 100%);
+}
+
+.shipFlame {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 15px;
+    height: 22px;
+    border-radius: 0 0 50% 50%;
+    background: linear-gradient(#fff,#ffd447,#ff6b21,transparent);
+    animation: flame .13s alternate infinite;
+}
+
+@keyframes flame {
+    from { height: 15px; opacity: .7; }
+    to { height: 24px; opacity: 1; }
+}
+
+#shieldRing {
+    position: absolute;
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    border: 3px solid #62f5ff;
+    left: 50%;
+    top: 34px;
+    transform: translate(-50%,-50%);
+    box-shadow:
+        0 0 10px #62f5ff,
+        inset 0 0 18px rgba(98,245,255,.35);
+    display: none;
+}
+
+.bullet {
+    position: absolute;
+    z-index: 15;
+    width: 5px;
+    height: 18px;
+    border-radius: 4px;
+    background: #fff;
+    box-shadow:
+        0 0 6px #7cf7ff,
+        0 0 12px #42cbff;
+}
+
+.explosion {
+    position: absolute;
+    z-index: 50;
+    font-size: 32px;
+    pointer-events: none;
+    animation: explode .45s forwards;
+}
+
+@keyframes explode {
+    0% { transform: scale(.3); opacity: 1; }
+    70% { transform: scale(1.5); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+}
+
+.floatingText {
+    position: absolute;
+    z-index: 60;
+    font-weight: 900;
+    pointer-events: none;
+    text-shadow: 0 2px 4px #000;
+    animation: floatUp 1s forwards;
+    white-space: nowrap;
+}
+
+@keyframes floatUp {
+    from { opacity:1; transform:translateY(0); }
+    to { opacity:0; transform:translateY(-55px); }
+}
+
+#comboBox {
+    position: absolute;
+    right: 17px;
+    top: 105px;
+    z-index: 35;
+    text-align: right;
+    display: none;
+    pointer-events: none;
+}
+
+#comboNumber {
+    font-size: 27px;
+    font-weight: 900;
+    color: #ffd84a;
+}
+
+#powerBox {
+    position: absolute;
+    left: 17px;
+    top: 105px;
+    z-index: 35;
+    pointer-events: none;
+}
+
+.powerItem {
+    margin-bottom: 5px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 800;
+    background: rgba(2,8,25,.75);
+    border: 1px solid rgba(255,255,255,.18);
+    display: none;
+}
+
+#message {
+    position: absolute;
+    top: 43%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 100;
+    font-size: clamp(28px,6vw,52px);
+    font-weight: 900;
+    text-align: center;
+    text-shadow: 0 4px 10px #000;
+    pointer-events: none;
+    opacity: 0;
+}
+
+#startScreen,
+#endScreen,
+#roundScreen {
+    position: absolute;
+    inset: 0;
+    z-index: 200;
+    background:
+        radial-gradient(circle at center,rgba(24,58,130,.75),rgba(2,4,15,.96));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 24px;
+}
+
+#endScreen,
+#roundScreen {
+    display: none;
+}
+
+.panel {
+    width: min(92%,550px);
+    padding: 32px 24px;
+    border-radius: 24px;
+    background: rgba(4,10,30,.9);
+    border: 1px solid rgba(255,255,255,.16);
+    box-shadow: 0 20px 60px rgba(0,0,0,.4);
+}
+
+.panel h1 {
+    font-size: clamp(30px,6vw,48px);
+    margin-bottom: 8px;
+}
+
+.panel h2 {
+    color: #87e6ff;
+    margin-bottom: 20px;
+}
+
+.panel p {
+    line-height: 1.7;
+    color: #cbd7f1;
+    margin: 8px 0;
+}
+
+.startButton {
+    margin-top: 22px;
+    border: 0;
+    border-radius: 16px;
+    padding: 14px 32px;
+    font-size: 20px;
+    font-weight: 900;
+    cursor: pointer;
+    color: #081229;
+    background: linear-gradient(#fff67b,#ffc82e);
+}
+
+.resultBox {
+    margin-top: 18px;
+    padding: 14px;
+    border-radius: 16px;
+    background: rgba(255,255,255,.06);
+    line-height: 1.9;
+}
+
+#controls {
+    position: absolute;
+    bottom: 9px;
+    left: 0;
+    right: 0;
+    z-index: 110;
+    height: 57px;
+    display: none;
+    justify-content: center;
+    gap: 12px;
+}
+
+.controlButton {
+    min-width: 80px;
+    height: 53px;
+    border: 1px solid rgba(255,255,255,.22);
+    border-radius: 16px;
+    background: rgba(24,47,100,.72);
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#fireButton {
+    min-width: 112px;
+    font-size: 16px;
+    background: rgba(178,49,70,.78);
+}
+
+@media (max-width:700px), (pointer:coarse) {
+    #controls {
+        display:flex;
     }
 
     .bigNumber {
-        font-size: 21px;
-        font-weight: 800;
-        margin-top: 2px;
+        font-size:17px;
     }
 
-    #bonusPanel {
-        position: absolute;
-        top: 72px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 35;
-        width: min(88%, 560px);
-        padding: 12px 18px;
-        border-radius: 16px;
-        background: rgba(15, 30, 70, .88);
-        border: 2px solid rgba(255, 219, 74, .8);
-        box-shadow: 0 0 25px rgba(255, 210, 50, .25);
-        text-align: center;
-        backdrop-filter: blur(5px);
-        display: none;
-        pointer-events: none;
-    }
-
-    #bonusTitle {
-        font-size: 12px;
-        letter-spacing: 1.5px;
-        color: #ffd84a;
-        font-weight: 800;
+    #hud {
+        padding-left:5px;
+        padding-right:5px;
     }
 
     #bonusClue {
-        font-size: 24px;
-        font-weight: 900;
-        margin-top: 4px;
+        font-size:20px;
     }
-
-    #bonusTimerBar {
-        width: 100%;
-        height: 5px;
-        margin-top: 9px;
-        border-radius: 10px;
-        overflow: hidden;
-        background: rgba(255,255,255,.15);
-    }
-
-    #bonusTimerFill {
-        width: 100%;
-        height: 100%;
-        background: #ffd84a;
-    }
-
-    #gameArea {
-        position: absolute;
-        inset: 0;
-    }
-
-    .planet {
-        position: absolute;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-weight: 900;
-        text-align: center;
-        cursor: default;
-        box-shadow:
-            inset -10px -12px 18px rgba(0,0,0,.28),
-            inset 8px 8px 16px rgba(255,255,255,.18),
-            0 0 16px rgba(255,255,255,.09);
-        border: 2px solid rgba(255,255,255,.22);
-        z-index: 10;
-    }
-
-    .normalPlanet {
-        width: 54px;
-        height: 54px;
-    }
-
-    .wordPlanet {
-        min-width: 76px;
-        width: auto;
-        height: 62px;
-        padding: 0 12px;
-        border-radius: 31px;
-        font-size: 20px;
-        color: white;
-        white-space: nowrap;
-        background:
-            radial-gradient(circle at 30% 25%, #6de2ff, #364fc7 42%, #25145a);
-    }
-
-    .bonusTarget {
-        border-color: #ffe55a;
-        box-shadow:
-            0 0 10px #ffe55a,
-            0 0 25px rgba(255,229,90,.6),
-            inset -10px -12px 18px rgba(0,0,0,.28),
-            inset 8px 8px 16px rgba(255,255,255,.18);
-    }
-
-    #ship {
-        position: absolute;
-        bottom: 75px;
-        width: 58px;
-        height: 70px;
-        z-index: 20;
-        transform: translateX(-50%);
-        pointer-events: none;
-    }
-
-    .shipBody {
-        position: absolute;
-        left: 50%;
-        top: 9px;
-        transform: translateX(-50%);
-        width: 32px;
-        height: 48px;
-        background: linear-gradient(#d9f4ff, #5ec6ff 48%, #2672e8);
-        border-radius: 50% 50% 28% 28%;
-        box-shadow: 0 0 12px rgba(77,190,255,.8);
-    }
-
-    .shipWindow {
-        position: absolute;
-        left: 50%;
-        top: 16px;
-        transform: translateX(-50%);
-        width: 14px;
-        height: 17px;
-        border-radius: 50%;
-        background: #0e2a60;
-        border: 2px solid #9beaff;
-    }
-
-    .shipWingLeft,
-    .shipWingRight {
-        position: absolute;
-        bottom: 12px;
-        width: 21px;
-        height: 25px;
-        background: #436ce8;
-    }
-
-    .shipWingLeft {
-        left: 2px;
-        clip-path: polygon(100% 0, 100% 100%, 0 100%);
-    }
-
-    .shipWingRight {
-        right: 2px;
-        clip-path: polygon(0 0, 100% 100%, 0 100%);
-    }
-
-    .shipFlame {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 15px;
-        height: 22px;
-        border-radius: 0 0 50% 50%;
-        background: linear-gradient(#fff, #ffd447, #ff6b21, transparent);
-        animation: flame .13s alternate infinite;
-    }
-
-    @keyframes flame {
-        from {
-            height: 15px;
-            opacity: .7;
-        }
-        to {
-            height: 24px;
-            opacity: 1;
-        }
-    }
-
-    #shieldRing {
-        position: absolute;
-        width: 76px;
-        height: 76px;
-        border-radius: 50%;
-        border: 3px solid #62f5ff;
-        left: 50%;
-        top: 34px;
-        transform: translate(-50%, -50%);
-        box-shadow:
-            0 0 10px #62f5ff,
-            inset 0 0 18px rgba(98,245,255,.35);
-        display: none;
-    }
-
-    .bullet {
-        position: absolute;
-        z-index: 15;
-        width: 5px;
-        height: 18px;
-        border-radius: 4px;
-        background: #fff;
-        box-shadow:
-            0 0 6px #7cf7ff,
-            0 0 12px #42cbff;
-    }
-
-    .explosion {
-        position: absolute;
-        z-index: 50;
-        font-size: 32px;
-        pointer-events: none;
-        animation: explode .45s forwards;
-    }
-
-    @keyframes explode {
-        0% {
-            transform: scale(.3);
-            opacity: 1;
-        }
-        70% {
-            transform: scale(1.5);
-            opacity: 1;
-        }
-        100% {
-            transform: scale(2);
-            opacity: 0;
-        }
-    }
-
-    .floatingText {
-        position: absolute;
-        z-index: 60;
-        font-weight: 900;
-        pointer-events: none;
-        text-shadow: 0 2px 4px #000;
-        animation: floatUp 1s forwards;
-        white-space: nowrap;
-    }
-
-    @keyframes floatUp {
-        from {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        to {
-            opacity: 0;
-            transform: translateY(-55px);
-        }
-    }
-
-    #comboBox {
-        position: absolute;
-        right: 17px;
-        top: 94px;
-        z-index: 35;
-        text-align: right;
-        display: none;
-        pointer-events: none;
-    }
-
-    #comboNumber {
-        font-size: 27px;
-        font-weight: 900;
-        color: #ffd84a;
-        text-shadow: 0 0 10px rgba(255,216,74,.4);
-    }
-
-    #powerBox {
-        position: absolute;
-        left: 17px;
-        top: 94px;
-        z-index: 35;
-        pointer-events: none;
-    }
-
-    .powerItem {
-        margin-bottom: 5px;
-        padding: 6px 10px;
-        border-radius: 10px;
-        font-size: 12px;
-        font-weight: 800;
-        background: rgba(2,8,25,.75);
-        border: 1px solid rgba(255,255,255,.18);
-        display: none;
-    }
-
-    #message {
-        position: absolute;
-        top: 43%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 100;
-        font-size: clamp(28px, 6vw, 52px);
-        font-weight: 900;
-        text-align: center;
-        text-shadow: 0 4px 10px #000;
-        pointer-events: none;
-        opacity: 0;
-    }
-
-    #startScreen,
-    #endScreen {
-        position: absolute;
-        inset: 0;
-        z-index: 200;
-        background:
-            radial-gradient(circle at center, rgba(24,58,130,.75), rgba(2,4,15,.96));
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        padding: 24px;
-    }
-
-    #endScreen {
-        display: none;
-    }
-
-    .panel {
-        width: min(92%, 550px);
-        padding: 32px 24px;
-        border-radius: 24px;
-        background: rgba(4, 10, 30, .88);
-        border: 1px solid rgba(255,255,255,.16);
-        box-shadow: 0 20px 60px rgba(0,0,0,.4);
-    }
-
-    .panel h1 {
-        font-size: clamp(30px, 6vw, 48px);
-        margin-bottom: 8px;
-    }
-
-    .panel h2 {
-        color: #87e6ff;
-        margin-bottom: 22px;
-    }
-
-    .panel p {
-        line-height: 1.7;
-        color: #cbd7f1;
-        margin: 8px 0;
-    }
-
-    .startButton {
-        margin-top: 22px;
-        border: 0;
-        border-radius: 16px;
-        padding: 14px 32px;
-        font-size: 20px;
-        font-weight: 900;
-        cursor: pointer;
-        color: #081229;
-        background: linear-gradient(#fff67b, #ffc82e);
-        box-shadow: 0 6px 20px rgba(255,201,35,.28);
-    }
-
-    #results {
-        margin-top: 18px;
-        padding: 14px;
-        border-radius: 16px;
-        background: rgba(255,255,255,.06);
-        line-height: 1.8;
-    }
-
-    #controls {
-        position: absolute;
-        bottom: 9px;
-        left: 0;
-        right: 0;
-        z-index: 110;
-        height: 57px;
-        display: none;
-        justify-content: center;
-        gap: 12px;
-        pointer-events: auto;
-    }
-
-    .controlButton {
-        min-width: 80px;
-        height: 53px;
-        border: 1px solid rgba(255,255,255,.22);
-        border-radius: 16px;
-        background: rgba(24,47,100,.72);
-        color: white;
-        font-size: 24px;
-        font-weight: bold;
-        backdrop-filter: blur(4px);
-    }
-
-    #fireButton {
-        min-width: 112px;
-        font-size: 16px;
-        background: rgba(178,49,70,.78);
-    }
-
-    @media (max-width: 700px), (pointer: coarse) {
-        #controls {
-            display: flex;
-        }
-
-        #ship {
-            bottom: 76px;
-        }
-
-        #hud {
-            padding-left: 10px;
-            padding-right: 10px;
-        }
-
-        .bigNumber {
-            font-size: 18px;
-        }
-
-        #bonusClue {
-            font-size: 20px;
-        }
-    }
+}
 </style>
 </head>
 
@@ -522,170 +505,162 @@
 
 <div id="gameWrapper">
 
-    <div id="stars"></div>
+<div id="stars"></div>
 
-    <div id="hud">
-        <div id="scoreBox">
-            <div class="smallLabel">Score</div>
-            <div class="bigNumber" id="score">0</div>
-        </div>
+<div id="hud">
 
-        <div id="timeBox">
-            <div class="smallLabel">Time</div>
-            <div class="bigNumber"><span id="time">90</span>s</div>
-        </div>
-
-        <div id="livesBox">
-            <div class="smallLabel">Lives</div>
-            <div class="bigNumber" id="lives">❤️❤️❤️</div>
-        </div>
+    <div class="hudItem">
+        <div class="smallLabel">Round</div>
+        <div class="bigNumber" id="roundNumber">1</div>
     </div>
 
-    <div id="bonusPanel">
-        <div id="bonusTitle">⭐ CHINESE BONUS ⭐</div>
-        <div id="bonusClue">naughty</div>
-        <div id="bonusTimerBar">
-            <div id="bonusTimerFill"></div>
-        </div>
+    <div class="hudItem">
+        <div class="smallLabel">Score</div>
+        <div class="bigNumber" id="roundScore">0</div>
     </div>
 
-    <div id="comboBox">
-        <div class="smallLabel">Combo</div>
-        <div id="comboNumber">×2</div>
+    <div class="hudItem">
+        <div class="smallLabel">Target</div>
+        <div class="bigNumber" id="targetScore">600</div>
     </div>
 
-    <div id="powerBox">
-        <div id="rapidPower" class="powerItem">⚡ RAPID FIRE</div>
-        <div id="doublePower" class="powerItem">🔥 DOUBLE SHOT</div>
-        <div id="shieldPower" class="powerItem">🛡 SHIELD</div>
-    </div>
-
-    <div id="gameArea"></div>
-
-    <div id="ship">
-        <div id="shieldRing"></div>
-        <div class="shipWingLeft"></div>
-        <div class="shipWingRight"></div>
-        <div class="shipBody"></div>
-        <div class="shipWindow"></div>
-        <div class="shipFlame"></div>
-    </div>
-
-    <div id="message"></div>
-
-    <div id="controls">
-        <button class="controlButton" id="leftButton">◀</button>
-        <button class="controlButton" id="fireButton">FIRE</button>
-        <button class="controlButton" id="rightButton">▶</button>
-    </div>
-
-    <div id="startScreen">
-        <div class="panel">
-            <h1>🚀 Chinese Galaxy</h1>
-            <h2>Planet Blaster</h2>
-
-            <p>Shoot planets and score points.</p>
-            <p>
-                When a <b>Chinese Bonus</b> appears,
-                find the matching Chinese word for extra points and power-ups.
-            </p>
-
-            <p>
-                <b>Move:</b> ← → or A / D<br>
-                <b>Shoot:</b> SPACE
-            </p>
-
-            <button class="startButton" id="startButton">
-                START MISSION
-            </button>
-        </div>
-    </div>
-
-    <div id="endScreen">
-        <div class="panel">
-            <h1>MISSION COMPLETE</h1>
-
-            <div id="results"></div>
-
-            <button class="startButton" id="restartButton">
-                PLAY AGAIN
-            </button>
-        </div>
+    <div class="hudItem">
+        <div class="smallLabel">Time</div>
+        <div class="bigNumber"><span id="time">60</span>s</div>
     </div>
 
 </div>
 
+<div id="progressBar">
+    <div id="progressFill"></div>
+</div>
+
+<div id="bonusPanel">
+    <div id="bonusTitle">⭐ CHINESE BONUS ⭐</div>
+    <div id="bonusClue"></div>
+
+    <div id="bonusTimerBar">
+        <div id="bonusTimerFill"></div>
+    </div>
+</div>
+
+<div id="comboBox">
+    <div class="smallLabel">Chinese Combo</div>
+    <div id="comboNumber">×2</div>
+</div>
+
+<div id="powerBox">
+    <div id="rapidPower" class="powerItem">⚡ RAPID FIRE</div>
+    <div id="doublePower" class="powerItem">🔥 DOUBLE SHOT</div>
+    <div id="shieldPower" class="powerItem">🛡 SCORE BOOST</div>
+</div>
+
+<div id="gameArea"></div>
+
+<div id="ship">
+    <div id="shieldRing"></div>
+    <div class="shipWingLeft"></div>
+    <div class="shipWingRight"></div>
+    <div class="shipBody"></div>
+    <div class="shipWindow"></div>
+    <div class="shipFlame"></div>
+</div>
+
+<div id="message"></div>
+
+<div id="controls">
+    <button class="controlButton" id="leftButton">◀</button>
+    <button class="controlButton" id="fireButton">FIRE</button>
+    <button class="controlButton" id="rightButton">▶</button>
+</div>
+
+<div id="startScreen">
+    <div class="panel">
+        <h1>🚀 Chinese Galaxy</h1>
+        <h2>Planet Blaster</h2>
+
+        <p>
+            You have <b>60 seconds</b> to reach the target score.
+        </p>
+
+        <p>
+            Shoot planets for points.<br>
+            Match the Chinese Bonus for BIG points and power-ups.
+        </p>
+
+        <p>
+            <b>Move:</b> ← → or A / D<br>
+            <b>Shoot:</b> SPACE
+        </p>
+
+        <button class="startButton" id="startButton">
+            START MISSION
+        </button>
+    </div>
+</div>
+
+<div id="roundScreen">
+    <div class="panel">
+        <h1>ROUND CLEARED!</h1>
+        <h2 id="roundClearTitle"></h2>
+        <div class="resultBox" id="roundResults"></div>
+        <button class="startButton" id="nextRoundButton">
+            NEXT ROUND
+        </button>
+    </div>
+</div>
+
+<div id="endScreen">
+    <div class="panel">
+        <h1>MISSION OVER</h1>
+        <h2 id="finalTitle">Target not reached</h2>
+        <div class="resultBox" id="finalResults"></div>
+
+        <button class="startButton" id="restartButton">
+            PLAY AGAIN
+        </button>
+    </div>
+</div>
+
+</div>
+
 <script>
+
 const vocab = [
-    {
-        word: "淘气",
-        pinyin: "táo qì",
-        meaning: "naughty"
-    },
-    {
-        word: "科技",
-        pinyin: "kē jì",
-        meaning: "technology"
-    },
-    {
-        word: "推荐",
-        pinyin: "tuī jiàn",
-        meaning: "recommend"
-    },
-    {
-        word: "捣乱",
-        pinyin: "dǎo luàn",
-        meaning: "cause trouble"
-    },
-    {
-        word: "争辩",
-        pinyin: "zhēng biàn",
-        meaning: "argue"
-    },
-    {
-        word: "荧光笔",
-        pinyin: "yíng guāng bǐ",
-        meaning: "highlighter"
-    },
-    {
-        word: "律师",
-        pinyin: "lǜ shī",
-        meaning: "lawyer"
-    },
-    {
-        word: "狼狈",
-        pinyin: "láng bèi",
-        meaning: "in an embarrassing situation"
-    },
-    {
-        word: "冤枉",
-        pinyin: "yuān wang",
-        meaning: "accuse wrongly"
-    },
-    {
-        word: "嚷",
-        pinyin: "rǎng",
-        meaning: "shout"
-    },
-    {
-        word: "小心翼翼",
-        pinyin: "xiǎo xīn yì yì",
-        meaning: "very carefully"
-    },
-    {
-        word: "手足无措",
-        pinyin: "shǒu zú wú cuò",
-        meaning: "not know what to do"
-    }
+    { word:"淘气", pinyin:"táo qì", meaning:"naughty" },
+    { word:"科技", pinyin:"kē jì", meaning:"technology" },
+    { word:"推荐", pinyin:"tuī jiàn", meaning:"recommend" },
+    { word:"捣乱", pinyin:"dǎo luàn", meaning:"cause trouble" },
+    { word:"争辩", pinyin:"zhēng biàn", meaning:"argue" },
+    { word:"荧光笔", pinyin:"yíng guāng bǐ", meaning:"highlighter" },
+    { word:"律师", pinyin:"lǜ shī", meaning:"lawyer" },
+    { word:"狼狈", pinyin:"láng bèi", meaning:"in an embarrassing situation" },
+    { word:"冤枉", pinyin:"yuān wang", meaning:"accuse wrongly" },
+    { word:"嚷", pinyin:"rǎng", meaning:"shout" },
+    { word:"小心翼翼", pinyin:"xiǎo xīn yì yì", meaning:"very carefully" },
+    { word:"手足无措", pinyin:"shǒu zú wú cuò", meaning:"not know what to do" }
+];
+
+const ROUND_LENGTH = 60000;
+
+const roundTargets = [
+    600,
+    850,
+    1100,
+    1400,
+    1750
 ];
 
 const gameWrapper = document.getElementById("gameWrapper");
 const gameArea = document.getElementById("gameArea");
 const ship = document.getElementById("ship");
 
-const scoreDisplay = document.getElementById("score");
+const roundNumberDisplay = document.getElementById("roundNumber");
+const roundScoreDisplay = document.getElementById("roundScore");
+const targetScoreDisplay = document.getElementById("targetScore");
 const timeDisplay = document.getElementById("time");
-const livesDisplay = document.getElementById("lives");
+
+const progressFill = document.getElementById("progressFill");
 
 const bonusPanel = document.getElementById("bonusPanel");
 const bonusClue = document.getElementById("bonusClue");
@@ -697,8 +672,12 @@ const comboNumber = document.getElementById("comboNumber");
 const message = document.getElementById("message");
 
 const startScreen = document.getElementById("startScreen");
+const roundScreen = document.getElementById("roundScreen");
 const endScreen = document.getElementById("endScreen");
-const results = document.getElementById("results");
+
+const roundClearTitle = document.getElementById("roundClearTitle");
+const roundResults = document.getElementById("roundResults");
+const finalResults = document.getElementById("finalResults");
 
 const rapidPower = document.getElementById("rapidPower");
 const doublePower = document.getElementById("doublePower");
@@ -707,13 +686,21 @@ const shieldRing = document.getElementById("shieldRing");
 
 let gameRunning = false;
 
-let score = 0;
-let chineseBonusScore = 0;
-let correctBonus = 0;
-let missedBonus = 0;
+let currentRound = 1;
+let currentTarget = 600;
 
-let lives = 3;
-let gameTime = 90;
+let roundScore = 0;
+let totalScore = 0;
+
+let chineseBonusScore = 0;
+let totalChineseBonusScore = 0;
+
+let correctBonus = 0;
+let totalCorrectBonus = 0;
+
+let bestCombo = 0;
+
+let roundRemaining = ROUND_LENGTH;
 
 let shipX = 50;
 let shipSpeed = 0.55;
@@ -730,35 +717,41 @@ let spawnInterval = 900;
 let currentBonus = null;
 let bonusActive = false;
 let bonusRemaining = 0;
-let bonusDuration = 9000;
-
-let nextBonusCountdown = 5000;
+let bonusDuration = 8500;
+let nextBonusCountdown = 4500;
 
 let combo = 0;
 
 let rapidFire = false;
 let doubleShot = false;
-let shield = false;
+let scoreBoost = false;
 
 let rapidUntil = 0;
 let doubleUntil = 0;
-let shieldUntil = 0;
+let scoreBoostUntil = 0;
 
 let lastShot = 0;
-
 let lastFrame = performance.now();
 
 const planetColours = [
-    ["#ffa95e", "#c64054", "#642d82"],
-    ["#64e9dd", "#267ccc", "#272568"],
-    ["#f3e86c", "#e48b31", "#7c3154"],
-    ["#d48eff", "#6a49d7", "#27205f"],
-    ["#76f099", "#319675", "#174b58"],
-    ["#ff8da1", "#d84b87", "#622c82"]
+    ["#ffa95e","#c64054","#642d82"],
+    ["#64e9dd","#267ccc","#272568"],
+    ["#f3e86c","#e48b31","#7c3154"],
+    ["#d48eff","#6a49d7","#27205f"],
+    ["#76f099","#319675","#174b58"],
+    ["#ff8da1","#d84b87","#622c82"]
 ];
 
+function getTarget(round) {
+    if (round <= roundTargets.length) {
+        return roundTargets[round - 1];
+    }
+
+    return 1750 + ((round - 5) * 400);
+}
+
 function createStars() {
-    const starsContainer = document.getElementById("stars");
+    const container = document.getElementById("stars");
 
     for (let i = 0; i < 90; i++) {
         const star = document.createElement("div");
@@ -771,98 +764,120 @@ function createStars() {
 
         star.style.width = size + "px";
         star.style.height = size + "px";
-
         star.style.animationDelay = Math.random() * 2 + "s";
 
-        starsContainer.appendChild(star);
+        container.appendChild(star);
     }
 }
 
-function resetGame() {
+function newGame() {
+    currentRound = 1;
+
+    totalScore = 0;
+    totalChineseBonusScore = 0;
+    totalCorrectBonus = 0;
+    bestCombo = 0;
+
+    startRound();
+}
+
+function startRound() {
+
     gameArea.innerHTML = "";
 
     planets = [];
     bullets = [];
 
-    score = 0;
+    roundScore = 0;
     chineseBonusScore = 0;
     correctBonus = 0;
-    missedBonus = 0;
 
-    lives = 3;
-    gameTime = 90;
+    roundRemaining = ROUND_LENGTH;
 
-    shipX = 50;
+    currentTarget = getTarget(currentRound);
+
+    combo = 0;
 
     currentBonus = null;
     bonusActive = false;
     bonusRemaining = 0;
-
-    nextBonusCountdown = 4500;
-
-    combo = 0;
+    nextBonusCountdown = 4000;
 
     rapidFire = false;
     doubleShot = false;
-    shield = false;
-
-    rapidUntil = 0;
-    doubleUntil = 0;
-    shieldUntil = 0;
-
-    scoreDisplay.textContent = "0";
-    timeDisplay.textContent = gameTime;
-
-    bonusPanel.style.display = "none";
-    comboBox.style.display = "none";
+    scoreBoost = false;
 
     rapidPower.style.display = "none";
     doublePower.style.display = "none";
     shieldPower.style.display = "none";
     shieldRing.style.display = "none";
 
-    updateLives();
+    comboBox.style.display = "none";
+    bonusPanel.style.display = "none";
 
-    ship.style.left = shipX + "%";
-}
+    shipX = 50;
+    ship.style.left = "50%";
 
-function startGame() {
-    resetGame();
+    /*
+       Difficulty gradually rises each round.
+       Round 1 = 900 ms
+       Round 2 = 840 ms
+       ...
+       Minimum = 560 ms
+    */
+
+    spawnInterval = Math.max(
+        560,
+        900 - ((currentRound - 1) * 60)
+    );
+
+    roundNumberDisplay.textContent = currentRound;
+    roundScoreDisplay.textContent = 0;
+    targetScoreDisplay.textContent = currentTarget;
+    timeDisplay.textContent = 60;
+
+    progressFill.style.width = "0%";
 
     startScreen.style.display = "none";
+    roundScreen.style.display = "none";
     endScreen.style.display = "none";
 
     gameRunning = true;
 
     lastFrame = performance.now();
 
-    showMessage("GO!", "#ffffff");
+    showMessage(
+        "ROUND " + currentRound,
+        "#ffffff"
+    );
 
     requestAnimationFrame(gameLoop);
 }
 
-function endGame() {
-    gameRunning = false;
-
-    bonusPanel.style.display = "none";
-
-    results.innerHTML = `
-        <b>Total Score:</b> ${score}<br>
-        <b>Chinese Bonus Score:</b> ${chineseBonusScore}<br>
-        <b>Correct Bonus Matches:</b> ${correctBonus}<br>
-        <b>Best Combo:</b> ${bestCombo}
-    `;
-
-    endScreen.style.display = "flex";
-}
-
-let bestCombo = 0;
-
 function gameLoop(timestamp) {
+
     if (!gameRunning) return;
 
-    const delta = Math.min(timestamp - lastFrame, 40);
+    const delta = Math.min(
+        timestamp - lastFrame,
+        40
+    );
+
     lastFrame = timestamp;
+
+    roundRemaining -= delta;
+
+    const seconds = Math.max(
+        0,
+        Math.ceil(roundRemaining / 1000)
+    );
+
+    timeDisplay.textContent = seconds;
+
+    if (roundRemaining <= 0) {
+        finishRound();
+        return;
+    }
 
     updateShip(delta);
     updateBullets(delta);
@@ -879,14 +894,65 @@ function gameLoop(timestamp) {
 
     nextBonusCountdown -= delta;
 
-    if (!bonusActive && nextBonusCountdown <= 0) {
+    if (
+        !bonusActive &&
+        nextBonusCountdown <= 0
+    ) {
         startBonus();
     }
 
     requestAnimationFrame(gameLoop);
 }
 
+function finishRound() {
+
+    gameRunning = false;
+
+    bonusPanel.style.display = "none";
+
+    totalScore += roundScore;
+    totalChineseBonusScore += chineseBonusScore;
+    totalCorrectBonus += correctBonus;
+
+    if (roundScore >= currentTarget) {
+
+        roundClearTitle.textContent =
+            "Target " + currentTarget + " reached";
+
+        roundResults.innerHTML = `
+            <b>Round Score:</b> ${roundScore}<br>
+            <b>Target:</b> ${currentTarget}<br>
+            <b>Chinese Bonus:</b> ${chineseBonusScore}<br>
+            <b>Correct Matches:</b> ${correctBonus}<br>
+            <b>Total Score:</b> ${totalScore}
+        `;
+
+        roundScreen.style.display = "flex";
+
+    } else {
+
+        finalResults.innerHTML = `
+            <b>Round:</b> ${currentRound}<br>
+            <b>Your Score:</b> ${roundScore}<br>
+            <b>Target:</b> ${currentTarget}<br><br>
+
+            <b>Total Score:</b> ${totalScore}<br>
+            <b>Chinese Bonus:</b> ${totalChineseBonusScore}<br>
+            <b>Correct Matches:</b> ${totalCorrectBonus}<br>
+            <b>Best Combo:</b> ×${bestCombo}
+        `;
+
+        endScreen.style.display = "flex";
+    }
+}
+
+function nextRound() {
+    currentRound++;
+    startRound();
+}
+
 function updateShip(delta) {
+
     if (leftPressed) {
         shipX -= shipSpeed * delta / 10;
     }
@@ -895,40 +961,54 @@ function updateShip(delta) {
         shipX += shipSpeed * delta / 10;
     }
 
-    shipX = Math.max(5, Math.min(95, shipX));
+    shipX = Math.max(
+        5,
+        Math.min(95, shipX)
+    );
 
     ship.style.left = shipX + "%";
 }
 
 function shoot() {
+
     if (!gameRunning) return;
 
     const now = performance.now();
 
-    const delay = rapidFire ? 125 : 300;
+    const delay =
+        rapidFire ? 125 : 300;
 
     if (now - lastShot < delay) return;
 
     lastShot = now;
 
-    const wrapperRect = gameWrapper.getBoundingClientRect();
-    const x = wrapperRect.width * shipX / 100;
+    const x =
+        gameWrapper.clientWidth *
+        shipX / 100;
 
     if (doubleShot) {
+
         createBullet(x - 13);
         createBullet(x + 13);
+
     } else {
+
         createBullet(x);
     }
 }
 
 function createBullet(x) {
-    const bullet = document.createElement("div");
+
+    const bullet =
+        document.createElement("div");
 
     bullet.className = "bullet";
 
-    bullet.style.left = (x - 2.5) + "px";
-    bullet.style.top = (gameWrapper.clientHeight - 140) + "px";
+    bullet.style.left =
+        (x - 2.5) + "px";
+
+    bullet.style.top =
+        (gameWrapper.clientHeight - 140) + "px";
 
     gameArea.appendChild(bullet);
 
@@ -941,41 +1021,58 @@ function createBullet(x) {
 }
 
 function updateBullets(delta) {
-    for (let i = bullets.length - 1; i >= 0; i--) {
+
+    for (
+        let i = bullets.length - 1;
+        i >= 0;
+        i--
+    ) {
+
         const bullet = bullets[i];
 
         bullet.y -= bullet.speed * delta;
-
         bullet.el.style.top = bullet.y + "px";
 
-        if (bullet.y < 50) {
+        if (bullet.y < 70) {
+
             bullet.el.remove();
-            bullets.splice(i, 1);
+            bullets.splice(i,1);
             continue;
         }
 
-        let hit = false;
+        for (
+            let p = planets.length - 1;
+            p >= 0;
+            p--
+        ) {
 
-        for (let p = planets.length - 1; p >= 0; p--) {
-            if (checkCollision(bullet, planets[p])) {
+            if (
+                checkCollision(
+                    bullet,
+                    planets[p]
+                )
+            ) {
+
                 handlePlanetHit(planets[p]);
 
                 bullet.el.remove();
-                bullets.splice(i, 1);
+                bullets.splice(i,1);
 
-                hit = true;
                 break;
             }
         }
-
-        if (hit) continue;
     }
 }
 
 function spawnPlanet() {
-    const isWordPlanet = Math.random() < 0.34;
 
-    if (isWordPlanet) {
+    const wordChance =
+        Math.min(
+            .46,
+            .32 + ((currentRound - 1) * .025)
+        );
+
+    if (Math.random() < wordChance) {
         spawnWordPlanet();
     } else {
         spawnNormalPlanet();
@@ -983,13 +1080,19 @@ function spawnPlanet() {
 }
 
 function spawnNormalPlanet() {
-    const el = document.createElement("div");
 
-    el.className = "planet normalPlanet";
+    const el =
+        document.createElement("div");
+
+    el.className =
+        "planet normalPlanet";
 
     const colours =
         planetColours[
-            Math.floor(Math.random() * planetColours.length)
+            Math.floor(
+                Math.random() *
+                planetColours.length
+            )
         ];
 
     el.style.background = `
@@ -1001,61 +1104,70 @@ function spawnNormalPlanet() {
         )
     `;
 
-    const maxX =
-        gameWrapper.clientWidth - 70;
-
     const x =
-        10 + Math.random() * maxX;
+        10 +
+        Math.random() *
+        Math.max(
+            50,
+            gameWrapper.clientWidth - 70
+        );
 
     const speed =
-        0.045 + Math.random() * 0.035;
+        0.043 +
+        Math.random() * 0.025 +
+        ((currentRound - 1) * 0.003);
 
     el.style.left = x + "px";
-    el.style.top = "125px";
+    el.style.top = "130px";
 
     gameArea.appendChild(el);
 
     planets.push({
-        el: el,
-        x: x,
-        y: 125,
-        width: 54,
-        height: 54,
-        speed: speed,
-        word: null,
-        isWord: false
+        el,
+        x,
+        y:130,
+        width:54,
+        height:54,
+        speed,
+        word:null,
+        isWord:false
     });
 }
 
 function spawnWordPlanet() {
+
     let chosen;
 
     if (
         bonusActive &&
         currentBonus &&
-        Math.random() < 0.42 &&
+        Math.random() < .38 &&
         !targetAlreadyOnScreen()
     ) {
         chosen = currentBonus;
     } else {
         chosen =
             vocab[
-                Math.floor(Math.random() * vocab.length)
+                Math.floor(
+                    Math.random() *
+                    vocab.length
+                )
             ];
     }
 
-    const el = document.createElement("div");
+    createWordPlanet(chosen);
+}
 
-    el.className = "planet wordPlanet";
-    el.textContent = chosen.word;
+function createWordPlanet(chosen) {
 
-    if (
-        bonusActive &&
-        currentBonus &&
-        chosen.word === currentBonus.word
-    ) {
-        el.classList.add("bonusTarget");
-    }
+    const el =
+        document.createElement("div");
+
+    el.className =
+        "planet wordPlanet";
+
+    el.textContent =
+        chosen.word;
 
     const x =
         12 +
@@ -1066,30 +1178,33 @@ function spawnWordPlanet() {
         );
 
     const speed =
-        0.04 + Math.random() * 0.03;
+        0.038 +
+        Math.random() * .022 +
+        ((currentRound - 1) * .0025);
 
     el.style.left = x + "px";
-    el.style.top = "125px";
+    el.style.top = "130px";
 
     gameArea.appendChild(el);
 
-    const width =
-        Math.max(76, el.offsetWidth);
-
     planets.push({
-        el: el,
-        x: x,
-        y: 125,
-        width: width,
-        height: 62,
-        speed: speed,
-        word: chosen.word,
-        vocab: chosen,
-        isWord: true
+        el,
+        x,
+        y:130,
+        width:Math.max(
+            76,
+            el.offsetWidth
+        ),
+        height:60,
+        speed,
+        word:chosen.word,
+        vocab:chosen,
+        isWord:true
     });
 }
 
 function targetAlreadyOnScreen() {
+
     if (!currentBonus) return false;
 
     return planets.some(
@@ -1100,48 +1215,69 @@ function targetAlreadyOnScreen() {
 }
 
 function updatePlanets(delta) {
-    for (let i = planets.length - 1; i >= 0; i--) {
+
+    for (
+        let i = planets.length - 1;
+        i >= 0;
+        i--
+    ) {
+
         const planet = planets[i];
 
-        planet.y += planet.speed * delta;
+        planet.y +=
+            planet.speed * delta;
 
         planet.el.style.top =
             planet.y + "px";
 
-        const dangerY =
-            gameWrapper.clientHeight - 135;
+        const bottom =
+            gameWrapper.clientHeight - 125;
 
-        if (planet.y > dangerY) {
+        /*
+           No lives.
+           No Game Over for escaped planets.
+           They simply disappear.
+        */
+
+        if (planet.y > bottom) {
+
             planet.el.remove();
-            planets.splice(i, 1);
-
-            loseLife();
+            planets.splice(i,1);
         }
     }
 }
 
-function checkCollision(bullet, planet) {
-    const bx = bullet.x;
-    const by = bullet.y;
+function checkCollision(
+    bullet,
+    planet
+) {
 
     return (
-        bx >= planet.x &&
-        bx <= planet.x + planet.width &&
-        by >= planet.y &&
-        by <= planet.y + planet.height
+        bullet.x >= planet.x &&
+        bullet.x <=
+            planet.x + planet.width &&
+
+        bullet.y >= planet.y &&
+        bullet.y <=
+            planet.y + planet.height
     );
 }
 
 function handlePlanetHit(planet) {
-    const index = planets.indexOf(planet);
+
+    const index =
+        planets.indexOf(planet);
 
     if (index !== -1) {
-        planets.splice(index, 1);
+        planets.splice(index,1);
     }
 
     createExplosion(
-        planet.x + planet.width / 2,
-        planet.y + planet.height / 2
+        planet.x +
+            planet.width / 2,
+
+        planet.y +
+            planet.height / 2
     );
 
     if (
@@ -1149,19 +1285,28 @@ function handlePlanetHit(planet) {
         planet.isWord &&
         currentBonus
     ) {
-        if (planet.word === currentBonus.word) {
+
+        if (
+            planet.word ===
+            currentBonus.word
+        ) {
+
             correctBonusHit(planet);
+
         } else {
+
             normalHit(planet);
 
             floatingText(
-                "MISS",
+                "+10",
                 planet.x,
                 planet.y,
-                "#b7c6eb"
+                "#ffffff"
             );
         }
+
     } else {
+
         normalHit(planet);
     }
 
@@ -1169,12 +1314,17 @@ function handlePlanetHit(planet) {
 }
 
 function normalHit(planet) {
-    score += 10;
 
-    scoreDisplay.textContent = score;
+    let points = 10;
+
+    if (scoreBoost) {
+        points = 20;
+    }
+
+    addScore(points);
 
     floatingText(
-        "+10",
+        "+" + points,
         planet.x,
         planet.y,
         "#ffffff"
@@ -1182,6 +1332,7 @@ function normalHit(planet) {
 }
 
 function correctBonusHit(planet) {
+
     combo++;
 
     if (combo > bestCombo) {
@@ -1190,25 +1341,35 @@ function correctBonusHit(planet) {
 
     correctBonus++;
 
-    const multiplier =
-        Math.min(combo, 5);
+    /*
+        Chinese bonuses:
+        Match 1 = 100
+        Match 2 = 150
+        Match 3 = 200
+        Match 4 = 250
+        Match 5+ = 300
+    */
 
     const bonusPoints =
-        100 * multiplier;
+        Math.min(
+            300,
+            100 + ((combo - 1) * 50)
+        );
 
-    score += bonusPoints;
-    chineseBonusScore += bonusPoints;
+    addScore(bonusPoints);
 
-    scoreDisplay.textContent = score;
+    chineseBonusScore +=
+        bonusPoints;
 
     floatingText(
-        `PERFECT +${bonusPoints}`,
-        planet.x - 15,
+        "BONUS +" + bonusPoints,
+        planet.x - 20,
         planet.y,
         "#ffe45b"
     );
 
-    comboBox.style.display = "block";
+    comboBox.style.display =
+        "block";
 
     comboNumber.textContent =
         "×" + combo;
@@ -1223,104 +1384,95 @@ function correctBonusHit(planet) {
     endBonus(true);
 }
 
+function addScore(points) {
+
+    roundScore += points;
+
+    roundScoreDisplay.textContent =
+        roundScore;
+
+    const percentage =
+        Math.min(
+            100,
+            roundScore /
+            currentTarget *
+            100
+        );
+
+    progressFill.style.width =
+        percentage + "%";
+
+    if (
+        roundScore >= currentTarget
+    ) {
+
+        targetScoreDisplay.textContent =
+            "✓ " + currentTarget;
+    }
+}
+
 function startBonus() {
+
     bonusActive = true;
 
     let newBonus;
 
     do {
+
         newBonus =
             vocab[
-                Math.floor(Math.random() * vocab.length)
+                Math.floor(
+                    Math.random() *
+                    vocab.length
+                )
             ];
-    }
-    while (
+
+    } while (
         currentBonus &&
-        newBonus.word === currentBonus.word
+        newBonus.word ===
+        currentBonus.word
     );
 
     currentBonus = newBonus;
 
-    bonusRemaining = bonusDuration;
+    bonusRemaining =
+        bonusDuration;
+
+    /*
+        Early rounds mainly use English.
+        Later this can be expanded to Pinyin,
+        matching words, sentences, etc.
+    */
 
     bonusClue.textContent =
         currentBonus.meaning;
 
-    bonusTimerFill.style.width = "100%";
+    bonusTimerFill.style.width =
+        "100%";
 
-    bonusPanel.style.display = "block";
-
-    refreshBonusTargetGlow();
+    bonusPanel.style.display =
+        "block";
 
     if (!targetAlreadyOnScreen()) {
+
         setTimeout(() => {
+
             if (
                 gameRunning &&
-                bonusActive
+                bonusActive &&
+                !targetAlreadyOnScreen()
             ) {
-                spawnForcedBonusTarget();
+                createWordPlanet(
+                    currentBonus
+                );
             }
-        }, 1000);
+
+        },700);
     }
 }
 
-function spawnForcedBonusTarget() {
-    if (!currentBonus) return;
-
-    const el =
-        document.createElement("div");
-
-    el.className =
-        "planet wordPlanet bonusTarget";
-
-    el.textContent =
-        currentBonus.word;
-
-    const x =
-        20 +
-        Math.random() *
-        Math.max(
-            50,
-            gameWrapper.clientWidth - 170
-        );
-
-    el.style.left = x + "px";
-    el.style.top = "145px";
-
-    gameArea.appendChild(el);
-
-    planets.push({
-        el: el,
-        x: x,
-        y: 145,
-        width:
-            Math.max(
-                76,
-                el.offsetWidth
-            ),
-        height: 62,
-        speed: 0.04,
-        word: currentBonus.word,
-        vocab: currentBonus,
-        isWord: true
-    });
-}
-
-function refreshBonusTargetGlow() {
-    planets.forEach(planet => {
-        if (
-            planet.isWord &&
-            currentBonus &&
-            planet.word === currentBonus.word
-        ) {
-            planet.el.classList.add(
-                "bonusTarget"
-            );
-        }
-    });
-}
-
 function updateBonus(delta) {
+
     if (!bonusActive) return;
 
     bonusRemaining -= delta;
@@ -1328,40 +1480,35 @@ function updateBonus(delta) {
     const percentage =
         Math.max(
             0,
-            bonusRemaining / bonusDuration * 100
+            bonusRemaining /
+            bonusDuration *
+            100
         );
 
     bonusTimerFill.style.width =
         percentage + "%";
 
     if (bonusRemaining <= 0) {
-        missedBonus++;
+
         combo = 0;
 
-        comboBox.style.display = "none";
-
-        showMessage(
-            "BONUS MISSED",
-            "#aebbd8"
-        );
+        comboBox.style.display =
+            "none";
 
         endBonus(false);
     }
 }
 
 function endBonus(success) {
+
     bonusActive = false;
 
-    bonusPanel.style.display = "none";
-
-    planets.forEach(planet => {
-        planet.el.classList.remove(
-            "bonusTarget"
-        );
-    });
+    bonusPanel.style.display =
+        "none";
 
     nextBonusCountdown =
-        4500 + Math.random() * 3000;
+        4000 +
+        Math.random() * 2500;
 
     if (!success) {
         combo = 0;
@@ -1369,17 +1516,18 @@ function endBonus(success) {
 }
 
 function grantPowerUp() {
-    const options = [
+
+    const choices = [
         "rapid",
         "double",
-        "shield"
+        "boost"
     ];
 
     const power =
-        options[
+        choices[
             Math.floor(
                 Math.random() *
-                options.length
+                choices.length
             )
         ];
 
@@ -1387,7 +1535,9 @@ function grantPowerUp() {
         performance.now();
 
     if (power === "rapid") {
+
         rapidFire = true;
+
         rapidUntil =
             now + 6500;
 
@@ -1401,7 +1551,9 @@ function grantPowerUp() {
     }
 
     if (power === "double") {
+
         doubleShot = true;
+
         doubleUntil =
             now + 6500;
 
@@ -1414,10 +1566,12 @@ function grantPowerUp() {
         );
     }
 
-    if (power === "shield") {
-        shield = true;
-        shieldUntil =
-            now + 8000;
+    if (power === "boost") {
+
+        scoreBoost = true;
+
+        scoreBoostUntil =
+            now + 6500;
 
         shieldPower.style.display =
             "block";
@@ -1426,18 +1580,21 @@ function grantPowerUp() {
             "block";
 
         showMessage(
-            "🛡 SHIELD!",
+            "🛡 ×2 SCORE!",
             "#63f1ff"
         );
     }
 }
 
 function updatePowerUps(now) {
+
     if (
         rapidFire &&
         now > rapidUntil
     ) {
+
         rapidFire = false;
+
         rapidPower.style.display =
             "none";
     }
@@ -1446,55 +1603,30 @@ function updatePowerUps(now) {
         doubleShot &&
         now > doubleUntil
     ) {
+
         doubleShot = false;
+
         doublePower.style.display =
             "none";
     }
 
     if (
-        shield &&
-        now > shieldUntil
+        scoreBoost &&
+        now > scoreBoostUntil
     ) {
-        shield = false;
+
+        scoreBoost = false;
+
         shieldPower.style.display =
             "none";
+
         shieldRing.style.display =
             "none";
     }
 }
 
-function loseLife() {
-    if (shield) {
-        floatingText(
-            "SHIELD!",
-            gameWrapper.clientWidth / 2 - 30,
-            gameWrapper.clientHeight - 160,
-            "#6df5ff"
-        );
+function createExplosion(x,y) {
 
-        return;
-    }
-
-    lives--;
-
-    updateLives();
-
-    showMessage(
-        "PLANET ESCAPED!",
-        "#ff8e9e"
-    );
-
-    if (lives <= 0) {
-        endGame();
-    }
-}
-
-function updateLives() {
-    livesDisplay.textContent =
-        "❤️".repeat(Math.max(0, lives));
-}
-
-function createExplosion(x, y) {
     const el =
         document.createElement("div");
 
@@ -1509,9 +1641,10 @@ function createExplosion(x, y) {
 
     gameArea.appendChild(el);
 
-    setTimeout(() => {
-        el.remove();
-    }, 450);
+    setTimeout(
+        () => el.remove(),
+        450
+    );
 }
 
 function floatingText(
@@ -1520,10 +1653,13 @@ function floatingText(
     y,
     color
 ) {
+
     const el =
         document.createElement("div");
 
-    el.className = "floatingText";
+    el.className =
+        "floatingText";
+
     el.textContent = text;
 
     el.style.left = x + "px";
@@ -1532,58 +1668,57 @@ function floatingText(
 
     gameArea.appendChild(el);
 
-    setTimeout(() => {
-        el.remove();
-    }, 1000);
+    setTimeout(
+        () => el.remove(),
+        1000
+    );
 }
 
 let messageTimer = null;
 
-function showMessage(text, color) {
+function showMessage(
+    text,
+    color
+) {
+
     message.textContent = text;
     message.style.color = color;
     message.style.opacity = "1";
 
-    clearTimeout(messageTimer);
+    clearTimeout(
+        messageTimer
+    );
 
     messageTimer =
-        setTimeout(() => {
-            message.style.opacity = "0";
-        }, 800);
+        setTimeout(
+            () => {
+                message.style.opacity =
+                    "0";
+            },
+            800
+        );
 }
-
-setInterval(() => {
-    if (!gameRunning) return;
-
-    gameTime--;
-
-    timeDisplay.textContent =
-        Math.max(0, gameTime);
-
-    if (gameTime <= 0) {
-        endGame();
-    }
-}, 1000);
 
 document.addEventListener(
     "keydown",
-    event => {
+    e => {
+
         if (
-            event.code === "ArrowLeft" ||
-            event.code === "KeyA"
+            e.code === "ArrowLeft" ||
+            e.code === "KeyA"
         ) {
             leftPressed = true;
         }
 
         if (
-            event.code === "ArrowRight" ||
-            event.code === "KeyD"
+            e.code === "ArrowRight" ||
+            e.code === "KeyD"
         ) {
             rightPressed = true;
         }
 
-        if (event.code === "Space") {
-            event.preventDefault();
+        if (e.code === "Space") {
+            e.preventDefault();
             shoot();
         }
     }
@@ -1591,17 +1726,18 @@ document.addEventListener(
 
 document.addEventListener(
     "keyup",
-    event => {
+    e => {
+
         if (
-            event.code === "ArrowLeft" ||
-            event.code === "KeyA"
+            e.code === "ArrowLeft" ||
+            e.code === "KeyA"
         ) {
             leftPressed = false;
         }
 
         if (
-            event.code === "ArrowRight" ||
-            event.code === "KeyD"
+            e.code === "ArrowRight" ||
+            e.code === "KeyD"
         ) {
             rightPressed = false;
         }
@@ -1610,65 +1746,68 @@ document.addEventListener(
 
 function bindHoldButton(
     element,
-    onPress,
-    onRelease
+    press,
+    release
 ) {
-    const start = event => {
-        event.preventDefault();
-        onPress();
-    };
-
-    const end = event => {
-        event.preventDefault();
-        onRelease();
-    };
 
     element.addEventListener(
         "pointerdown",
-        start
+        e => {
+            e.preventDefault();
+            press();
+        }
     );
 
-    element.addEventListener(
+    [
         "pointerup",
-        end
-    );
-
-    element.addEventListener(
         "pointercancel",
-        end
-    );
+        "pointerleave"
+    ].forEach(
+        eventName => {
 
-    element.addEventListener(
-        "pointerleave",
-        end
+            element.addEventListener(
+                eventName,
+                e => {
+                    e.preventDefault();
+                    release();
+                }
+            );
+        }
     );
 }
 
 bindHoldButton(
-    document.getElementById("leftButton"),
+    document.getElementById(
+        "leftButton"
+    ),
     () => leftPressed = true,
     () => leftPressed = false
 );
 
 bindHoldButton(
-    document.getElementById("rightButton"),
+    document.getElementById(
+        "rightButton"
+    ),
     () => rightPressed = true,
     () => rightPressed = false
 );
 
 const fireButton =
-    document.getElementById("fireButton");
+    document.getElementById(
+        "fireButton"
+    );
 
-let fireTouchInterval = null;
+let fireInterval = null;
 
 fireButton.addEventListener(
     "pointerdown",
-    event => {
-        event.preventDefault();
+    e => {
+
+        e.preventDefault();
 
         shoot();
 
-        fireTouchInterval =
+        fireInterval =
             setInterval(
                 shoot,
                 130
@@ -1676,52 +1815,55 @@ fireButton.addEventListener(
     }
 );
 
-function stopTouchFire() {
+function stopFire() {
+
     clearInterval(
-        fireTouchInterval
+        fireInterval
     );
 
-    fireTouchInterval = null;
+    fireInterval = null;
 }
 
 fireButton.addEventListener(
     "pointerup",
-    stopTouchFire
+    stopFire
 );
 
 fireButton.addEventListener(
     "pointercancel",
-    stopTouchFire
+    stopFire
 );
 
 fireButton.addEventListener(
     "pointerleave",
-    stopTouchFire
+    stopFire
 );
 
-document
-    .getElementById("startButton")
-    .addEventListener(
-        "click",
-        () => {
-            bestCombo = 0;
-            startGame();
-        }
-    );
+document.getElementById(
+    "startButton"
+).addEventListener(
+    "click",
+    newGame
+);
 
-document
-    .getElementById("restartButton")
-    .addEventListener(
-        "click",
-        () => {
-            bestCombo = 0;
-            startGame();
-        }
-    );
+document.getElementById(
+    "restartButton"
+).addEventListener(
+    "click",
+    newGame
+);
+
+document.getElementById(
+    "nextRoundButton"
+).addEventListener(
+    "click",
+    nextRound
+);
 
 createStars();
 
 ship.style.left = "50%";
+
 </script>
 
 </body>
