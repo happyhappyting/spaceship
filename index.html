@@ -2,815 +2,1341 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width,
-               initial-scale=1,
-               maximum-scale=1,
-               user-scalable=no,
-               viewport-fit=cover">
 
-<title>Chinese Galaxy Blaster</title>
+<meta
+    name="viewport"
+    content="
+        width=device-width,
+        initial-scale=1,
+        maximum-scale=1,
+        user-scalable=no,
+        viewport-fit=cover
+    "
+>
+
+<title>Chinese Galaxy</title>
 
 <style>
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        -webkit-user-select: none;
-        user-select: none;
-        -webkit-touch-callout: none;
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+
+    -webkit-user-select: none;
+    user-select: none;
+
+    -webkit-touch-callout: none;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    background: #02040d;
+
+    font-family:
+        Arial,
+        "PingFang SC",
+        "Microsoft YaHei",
+        sans-serif;
+
+    touch-action: none;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: white;
+}
+
+
+/* =========================================================
+   GAME
+========================================================= */
+
+#game {
+    position: relative;
+
+    width: min(100vw, 1180px);
+    height: 100dvh;
+
+    max-height: 820px;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 20% 25%,
+            #17376f 0%,
+            transparent 23%
+        ),
+        radial-gradient(
+            circle at 80% 34%,
+            #351866 0%,
+            transparent 25%
+        ),
+        linear-gradient(
+            #07142e,
+            #02040d
+        );
+}
+
+
+/* =========================================================
+   STARS
+========================================================= */
+
+#stars {
+    position: absolute;
+    inset: 0;
+
+    overflow: hidden;
+
+    pointer-events: none;
+}
+
+.star {
+    position: absolute;
+
+    border-radius: 50%;
+
+    background: white;
+
+    opacity: .7;
+
+    animation:
+        twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle {
+
+    from {
+        opacity: .2;
     }
 
-    html,
-    body {
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        background: #02040d;
-        font-family:
-            Arial,
-            "Microsoft YaHei",
-            "PingFang SC",
-            sans-serif;
-        touch-action: none;
+    to {
+        opacity: 1;
     }
 
-    body {
+}
+
+
+/* =========================================================
+   HUD
+========================================================= */
+
+#hud {
+    position: absolute;
+
+    top: env(safe-area-inset-top, 0px);
+    left: 0;
+    right: 0;
+
+    height: 75px;
+
+    z-index: 100;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        1fr
+        1fr
+        1fr;
+
+    align-items: center;
+
+    padding:
+
+        8px
+        max(
+            15px,
+            env(safe-area-inset-right)
+        )
+        10px
+        max(
+            15px,
+            env(safe-area-inset-left)
+        );
+
+    background:
+
+        linear-gradient(
+            rgba(2,5,18,.98),
+            rgba(2,5,18,.7),
+            transparent
+        );
+
+    pointer-events: none;
+}
+
+.hudItem {
+    text-align: center;
+}
+
+.hudLabel {
+    font-size: 10px;
+
+    letter-spacing: 1.4px;
+
+    text-transform: uppercase;
+
+    color: #8fa9df;
+}
+
+.hudValue {
+    margin-top: 2px;
+
+    font-size:
+        clamp(
+            18px,
+            2.3vw,
+            24px
+        );
+
+    font-weight: 900;
+}
+
+#scoreValue {
+    color: white;
+}
+
+#targetValue {
+    color: #ffe25d;
+}
+
+#speedValue {
+    color: #ffad60;
+}
+
+#timeValue {
+    color: #70e8ff;
+}
+
+
+/* =========================================================
+   TARGET PROGRESS
+========================================================= */
+
+#progressBar {
+    position: absolute;
+
+    top:
+        calc(
+            68px +
+            env(
+                safe-area-inset-top,
+                0px
+            )
+        );
+
+    left: 4%;
+
+    width: 92%;
+    height: 7px;
+
+    z-index: 101;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    background:
+        rgba(255,255,255,.13);
+
+    pointer-events: none;
+}
+
+#progressFill {
+    width: 0%;
+    height: 100%;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            #45d9ff,
+            #ffe14e
+        );
+
+    transition:
+        width .18s linear;
+}
+
+
+/* =========================================================
+   BONUS PANEL
+========================================================= */
+
+#bonusPanel {
+    position: absolute;
+
+    top:
+        calc(
+            88px +
+            env(
+                safe-area-inset-top,
+                0px
+            )
+        );
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    width:
+        min(
+            88%,
+            560px
+        );
+
+    padding:
+        10px 18px;
+
+    z-index: 120;
+
+    display: none;
+
+    border-radius: 17px;
+
+    text-align: center;
+
+    background:
+        rgba(10,24,61,.95);
+
+    border:
+        2px solid #f3d64a;
+
+    box-shadow:
+        0 0 24px
+        rgba(255,220,68,.25);
+
+    pointer-events: none;
+}
+
+#bonusLabel {
+    font-size: 11px;
+
+    font-weight: 900;
+
+    letter-spacing: 1.5px;
+
+    color: #ffd941;
+}
+
+#bonusClue {
+    margin-top: 3px;
+
+    font-size:
+        clamp(
+            20px,
+            3vw,
+            28px
+        );
+
+    font-weight: 900;
+}
+
+#bonusTimer {
+    margin-top: 8px;
+
+    width: 100%;
+    height: 5px;
+
+    overflow: hidden;
+
+    border-radius: 6px;
+
+    background:
+        rgba(255,255,255,.15);
+}
+
+#bonusTimerFill {
+    width: 100%;
+    height: 100%;
+
+    background:
+        #ffd941;
+}
+
+
+/* =========================================================
+   GAME AREA
+========================================================= */
+
+#gameArea {
+    position: absolute;
+
+    inset: 0;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   PLANETS
+========================================================= */
+
+.planet {
+    position: absolute;
+
+    z-index: 20;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    font-weight: 900;
+
+    border:
+        2px solid
+        rgba(255,255,255,.23);
+
+    box-shadow:
+
+        inset
+        -10px
+        -12px
+        18px
+        rgba(0,0,0,.28),
+
+        inset
+        8px
+        8px
+        16px
+        rgba(255,255,255,.18),
+
+        0
+        0
+        15px
+        rgba(255,255,255,.08);
+}
+
+.normalPlanet {
+    width: 54px;
+    height: 54px;
+
+    border-radius: 50%;
+}
+
+.wordPlanet {
+    min-width: 78px;
+
+    height: 58px;
+
+    padding:
+        0 13px;
+
+    border-radius: 29px;
+
+    white-space: nowrap;
+
+    font-size:
+        clamp(
+            17px,
+            2.2vw,
+            22px
+        );
+
+    background:
+
+        radial-gradient(
+            circle at 30% 25%,
+            #77e8ff,
+            #3d54ce 43%,
+            #27145c
+        );
+}
+
+
+/*
+    Bonus choices use a gold outline,
+    BUT all three choices look identical.
+
+    Correct answer is NOT highlighted.
+*/
+
+.bonusChoice {
+    border-color:
+        rgba(
+            255,
+            218,
+            70,
+            .88
+        );
+
+    box-shadow:
+
+        0
+        0
+        14px
+        rgba(
+            255,
+            220,
+            73,
+            .22
+        ),
+
+        inset
+        -10px
+        -12px
+        18px
+        rgba(0,0,0,.28),
+
+        inset
+        8px
+        8px
+        16px
+        rgba(255,255,255,.18);
+}
+
+
+/* =========================================================
+   SPACESHIP
+========================================================= */
+
+#ship {
+    position: absolute;
+
+    left: 50%;
+
+    bottom:
+
+        max(
+            18px,
+            calc(
+                env(
+                    safe-area-inset-bottom,
+                    0px
+                )
+                +
+                14px
+            )
+        );
+
+    width: 68px;
+    height: 78px;
+
+    z-index: 60;
+
+    transform:
+        translateX(-50%);
+
+    pointer-events: none;
+}
+
+.shipBody {
+    position: absolute;
+
+    left: 50%;
+    top: 7px;
+
+    width: 34px;
+    height: 52px;
+
+    transform:
+        translateX(-50%);
+
+    border-radius:
+        50%
+        50%
+        28%
+        28%;
+
+    background:
+
+        linear-gradient(
+            #e8f9ff,
+            #6fd5ff 48%,
+            #276ee2
+        );
+
+    box-shadow:
+        0 0 15px
+        rgba(80,192,255,.85);
+}
+
+.shipWindow {
+    position: absolute;
+
+    left: 50%;
+    top: 16px;
+
+    width: 15px;
+    height: 18px;
+
+    transform:
+        translateX(-50%);
+
+    border-radius: 50%;
+
+    background: #102c64;
+
+    border:
+        2px solid #a5edff;
+}
+
+.shipWingLeft,
+.shipWingRight {
+    position: absolute;
+
+    bottom: 15px;
+
+    width: 24px;
+    height: 27px;
+
+    background: #466fe3;
+}
+
+.shipWingLeft {
+    left: 1px;
+
+    clip-path:
+        polygon(
+            100% 0,
+            100% 100%,
+            0 100%
+        );
+}
+
+.shipWingRight {
+    right: 1px;
+
+    clip-path:
+        polygon(
+            0 0,
+            100% 100%,
+            0 100%
+        );
+}
+
+.shipFlame {
+    position: absolute;
+
+    left: 50%;
+
+    bottom: 0;
+
+    width: 15px;
+    height: 24px;
+
+    transform:
+        translateX(-50%);
+
+    border-radius:
+        0 0 50% 50%;
+
+    background:
+
+        linear-gradient(
+            white,
+            #ffe04e,
+            #ff6b24,
+            transparent
+        );
+
+    animation:
+        flame .12s
+        alternate
+        infinite;
+}
+
+@keyframes flame {
+
+    from {
+        height: 15px;
+        opacity: .7;
+    }
+
+    to {
+        height: 26px;
+        opacity: 1;
+    }
+
+}
+
+
+/* =========================================================
+   BULLET
+========================================================= */
+
+.bullet {
+    position: absolute;
+
+    z-index: 40;
+
+    width: 5px;
+    height: 20px;
+
+    border-radius: 4px;
+
+    background: white;
+
+    box-shadow:
+
+        0 0 6px #78f1ff,
+
+        0 0 13px #39c2ff;
+}
+
+
+/* =========================================================
+   EFFECTS
+========================================================= */
+
+.explosion {
+    position: absolute;
+
+    z-index: 150;
+
+    font-size: 30px;
+
+    pointer-events: none;
+
+    animation:
+        explode .4s forwards;
+}
+
+@keyframes explode {
+
+    0% {
+        transform: scale(.3);
+        opacity: 1;
+    }
+
+    70% {
+        transform: scale(1.4);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1.9);
+        opacity: 0;
+    }
+
+}
+
+.floatText {
+    position: absolute;
+
+    z-index: 160;
+
+    font-weight: 900;
+
+    white-space: nowrap;
+
+    pointer-events: none;
+
+    text-shadow:
+        0 2px 5px black;
+
+    animation:
+        floatUp .9s forwards;
+}
+
+@keyframes floatUp {
+
+    from {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+
+    to {
+        opacity: 0;
+
+        transform:
+            translateY(-50px);
+    }
+
+}
+
+
+/* =========================================================
+   SPEED MESSAGE
+========================================================= */
+
+#message {
+    position: absolute;
+
+    left: 50%;
+    top: 44%;
+
+    transform:
+        translate(-50%, -50%);
+
+    z-index: 180;
+
+    opacity: 0;
+
+    text-align: center;
+
+    font-size:
+        clamp(
+            28px,
+            5vw,
+            52px
+        );
+
+    font-weight: 900;
+
+    text-shadow:
+        0 4px 12px black;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   TOUCH CONTROL AREA
+========================================================= */
+
+#touchZone {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    bottom: 0;
+
+    height: 28%;
+
+    z-index: 90;
+
+    display: none;
+
+    touch-action: none;
+}
+
+
+/*
+    Small control hint.
+
+    It does not block gameplay.
+*/
+
+#touchHint {
+    position: absolute;
+
+    left: 50%;
+
+    bottom:
+
+        max(
+            5px,
+            env(
+                safe-area-inset-bottom,
+                0px
+            )
+        );
+
+    transform:
+        translateX(-50%);
+
+    z-index: 91;
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            .42
+        );
+
+    font-size: 11px;
+
+    pointer-events: none;
+}
+
+#desktopHint {
+    position: absolute;
+
+    left: 50%;
+
+    bottom: 7px;
+
+    transform:
+        translateX(-50%);
+
+    z-index: 91;
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            .42
+        );
+
+    font-size: 11px;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   SCREENS
+========================================================= */
+
+.screen {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 500;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding:
+
+        max(
+            24px,
+            env(
+                safe-area-inset-top
+            )
+        )
+
+        max(
+            24px,
+            env(
+                safe-area-inset-right
+            )
+        )
+
+        max(
+            24px,
+            env(
+                safe-area-inset-bottom
+            )
+        )
+
+        max(
+            24px,
+            env(
+                safe-area-inset-left
+            )
+        );
+
+    text-align: center;
+
+    background:
+
+        radial-gradient(
+            circle at center,
+            rgba(28,66,150,.78),
+            rgba(2,4,15,.97)
+        );
+}
+
+#startScreen {
+    display: flex;
+}
+
+.panel {
+    width:
+        min(
+            92%,
+            570px
+        );
+
+    padding:
+        30px 25px;
+
+    border-radius: 24px;
+
+    background:
+        rgba(
+            4,
+            10,
+            30,
+            .91
+        );
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            .16
+        );
+
+    box-shadow:
+        0 20px 60px
+        rgba(
+            0,
+            0,
+            0,
+            .45
+        );
+}
+
+.panel h1 {
+    font-size:
+        clamp(
+            30px,
+            5vw,
+            48px
+        );
+
+    margin-bottom: 5px;
+}
+
+.panel h2 {
+    margin-bottom: 18px;
+
+    color: #83e5ff;
+
+    font-size:
+        clamp(
+            18px,
+            3vw,
+            26px
+        );
+}
+
+.panel p {
+    margin:
+        8px 0;
+
+    line-height: 1.6;
+
+    color: #cbd7ef;
+
+    font-size:
+        clamp(
+            14px,
+            2vw,
+            17px
+        );
+}
+
+.bigScore {
+    margin:
+        14px 0;
+
+    font-size:
+        clamp(
+            40px,
+            8vw,
+            66px
+        );
+
+    font-weight: 900;
+
+    color: #ffe357;
+}
+
+.resultBox {
+    margin-top: 15px;
+
+    padding: 14px;
+
+    border-radius: 15px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .06
+        );
+
+    line-height: 1.8;
+}
+
+button {
+    margin-top: 20px;
+
+    padding:
+        14px 30px;
+
+    border: 0;
+
+    border-radius: 16px;
+
+    background:
+
+        linear-gradient(
+            #fff67c,
+            #ffc52e
+        );
+
+    color: #071126;
+
+    font-size: 19px;
+
+    font-weight: 900;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   ROTATE IPAD
+========================================================= */
+
+#rotateScreen {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 2000;
+
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 30px;
+
+    text-align: center;
+
+    color: white;
+
+    background:
+
+        linear-gradient(
+            #07152f,
+            #02040d
+        );
+}
+
+#rotateIcon {
+    font-size: 64px;
+
+    margin-bottom: 15px;
+}
+
+#rotateScreen p {
+    margin-top: 8px;
+
+    color: #cbd7ef;
+}
+
+
+@media
+(pointer: coarse) {
+
+    #touchZone {
+        display: block;
+    }
+
+    #touchHint {
+        display: block;
+    }
+
+    #desktopHint {
+        display: none;
+    }
+
+}
+
+
+@media
+(pointer: fine) {
+
+    #touchHint {
+        display: none;
+    }
+
+}
+
+
+@media
+(orientation: portrait)
+and
+(pointer: coarse) {
+
+    #rotateScreen {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        color: white;
     }
 
-    #game {
-        position: relative;
-        width: min(100vw, 1180px);
-        height: 100dvh;
-        max-height: 820px;
-        overflow: hidden;
+}
 
-        background:
-            radial-gradient(circle at 20% 25%, #15336c 0, transparent 22%),
-            radial-gradient(circle at 80% 35%, #33185f 0, transparent 24%),
-            linear-gradient(#071328, #02040d);
-    }
 
-    /* ================================
-       STARS
-    ================================= */
+/*
+    Smaller iPad / landscape screens
+*/
 
-    #stars {
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        overflow: hidden;
-    }
-
-    .star {
-        position: absolute;
-        border-radius: 50%;
-        background: white;
-        opacity: .65;
-        animation: twinkle 1.8s infinite alternate;
-    }
-
-    @keyframes twinkle {
-        from { opacity: .2; }
-        to { opacity: 1; }
-    }
-
-    /* ================================
-       HUD
-    ================================= */
+@media
+(max-height: 600px) {
 
     #hud {
-        position: absolute;
-        top: env(safe-area-inset-top, 0);
-        left: 0;
-        right: 0;
-        height: 76px;
-        z-index: 50;
+        height: 63px;
+    }
 
-        display: grid;
-        grid-template-columns:
-            .8fr
-            1fr
-            1fr
-            1fr
-            1fr;
-
-        align-items: center;
-
-        padding:
-            8px
-            max(14px, env(safe-area-inset-right))
-            10px
-            max(14px, env(safe-area-inset-left));
-
-        background:
-            linear-gradient(
-                rgba(2, 5, 18, .98),
-                rgba(2, 5, 18, .72),
-                transparent
+    #progressBar {
+        top:
+            calc(
+                57px +
+                env(
+                    safe-area-inset-top,
+                    0px
+                )
             );
-
-        pointer-events: none;
     }
 
-    .hudItem {
-        text-align: center;
-    }
-
-    .hudLabel {
-        font-size: 10px;
-        letter-spacing: 1.2px;
-        color: #8fa9df;
-        text-transform: uppercase;
+    #bonusPanel {
+        top:
+            calc(
+                70px +
+                env(
+                    safe-area-inset-top,
+                    0px
+                )
+            );
     }
 
     .hudValue {
-        margin-top: 2px;
-        font-size: clamp(17px, 2.2vw, 23px);
-        font-weight: 900;
+        font-size: 17px;
     }
-
-    #scoreValue {
-        color: white;
-    }
-
-    #targetValue {
-        color: #ffe261;
-    }
-
-    #timeValue {
-        color: #6fe8ff;
-    }
-
-    #speedValue {
-        color: #ff9f55;
-    }
-
-    /* ================================
-       TARGET PROGRESS
-    ================================= */
-
-    #targetBar {
-        position: absolute;
-        top: calc(68px + env(safe-area-inset-top, 0px));
-        left: 4%;
-        width: 92%;
-        height: 7px;
-        z-index: 51;
-
-        background: rgba(255,255,255,.12);
-        border-radius: 10px;
-        overflow: hidden;
-        pointer-events: none;
-    }
-
-    #targetFill {
-        width: 0%;
-        height: 100%;
-        background:
-            linear-gradient(
-                90deg,
-                #4ed8ff,
-                #ffe34e
-            );
-
-        transition: width .2s linear;
-    }
-
-    /* ================================
-       BONUS
-    ================================= */
-
-    #bonusPanel {
-        position: absolute;
-        top: calc(88px + env(safe-area-inset-top, 0px));
-        left: 50%;
-        transform: translateX(-50%);
-
-        width: min(88%, 560px);
-        z-index: 60;
-
-        display: none;
-        padding: 10px 18px;
-
-        border-radius: 16px;
-        text-align: center;
-
-        background: rgba(9, 23, 58, .94);
-        border: 2px solid #f5d747;
-
-        box-shadow:
-            0 0 22px rgba(255, 220, 65, .24);
-
-        pointer-events: none;
-    }
-
-    #bonusLabel {
-        font-size: 11px;
-        letter-spacing: 1.4px;
-        color: #ffd943;
-        font-weight: 900;
-    }
-
-    #bonusClue {
-        margin-top: 3px;
-        font-size: clamp(20px, 3vw, 28px);
-        font-weight: 900;
-    }
-
-    #bonusBar {
-        margin-top: 8px;
-        width: 100%;
-        height: 5px;
-
-        border-radius: 8px;
-        overflow: hidden;
-
-        background: rgba(255,255,255,.14);
-    }
-
-    #bonusFill {
-        width: 100%;
-        height: 100%;
-        background: #ffd943;
-    }
-
-    /* ================================
-       GAME AREA
-    ================================= */
-
-    #gameArea {
-        position: absolute;
-        inset: 0;
-        overflow: hidden;
-    }
-
-    .planet {
-        position: absolute;
-        z-index: 10;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        text-align: center;
-        font-weight: 900;
-
-        border: 2px solid rgba(255,255,255,.22);
-
-        box-shadow:
-            inset -10px -12px 18px rgba(0,0,0,.28),
-            inset 8px 8px 16px rgba(255,255,255,.18),
-            0 0 16px rgba(255,255,255,.08);
-    }
-
-    .normalPlanet {
-        width: 54px;
-        height: 54px;
-        border-radius: 50%;
-    }
-
-    .wordPlanet {
-        min-width: 76px;
-        height: 58px;
-
-        padding: 0 12px;
-
-        border-radius: 29px;
-
-        font-size: clamp(17px, 2.4vw, 22px);
-        white-space: nowrap;
-
-        background:
-            radial-gradient(
-                circle at 30% 25%,
-                #79e9ff,
-                #3d53d2 45%,
-                #28155f
-            );
-    }
-
-    /* Correct bonus answer deliberately
-       has NO different colour or glow. */
-
-    /* ================================
-       SHIP
-    ================================= */
 
     #ship {
-        position: absolute;
-        z-index: 30;
+        transform:
+            translateX(-50%)
+            scale(.87);
 
-        left: 50%;
-        bottom: max(
-            24px,
-            calc(env(safe-area-inset-bottom, 0px) + 18px)
-        );
-
-        width: 68px;
-        height: 78px;
-
-        transform: translateX(-50%);
-
-        pointer-events: none;
+        transform-origin:
+            center bottom;
     }
 
-    .shipBody {
-        position: absolute;
+}
 
-        left: 50%;
-        top: 7px;
-
-        width: 34px;
-        height: 52px;
-
-        transform: translateX(-50%);
-
-        border-radius: 50% 50% 28% 28%;
-
-        background:
-            linear-gradient(
-                #e8f9ff,
-                #6ed4ff 48%,
-                #266ce0
-            );
-
-        box-shadow:
-            0 0 15px rgba(81, 193, 255, .85);
-    }
-
-    .shipWindow {
-        position: absolute;
-
-        left: 50%;
-        top: 16px;
-
-        width: 15px;
-        height: 18px;
-
-        transform: translateX(-50%);
-
-        border-radius: 50%;
-
-        background: #102b63;
-        border: 2px solid #a7eeff;
-    }
-
-    .shipWingLeft,
-    .shipWingRight {
-        position: absolute;
-
-        bottom: 15px;
-
-        width: 24px;
-        height: 27px;
-
-        background: #456fe2;
-    }
-
-    .shipWingLeft {
-        left: 1px;
-        clip-path:
-            polygon(
-                100% 0,
-                100% 100%,
-                0 100%
-            );
-    }
-
-    .shipWingRight {
-        right: 1px;
-        clip-path:
-            polygon(
-                0 0,
-                100% 100%,
-                0 100%
-            );
-    }
-
-    .shipFlame {
-        position: absolute;
-
-        left: 50%;
-        bottom: 0;
-
-        width: 15px;
-        height: 24px;
-
-        transform: translateX(-50%);
-
-        border-radius: 0 0 50% 50%;
-
-        background:
-            linear-gradient(
-                white,
-                #ffe14f,
-                #ff6922,
-                transparent
-            );
-
-        animation: flame .12s alternate infinite;
-    }
-
-    @keyframes flame {
-        from {
-            height: 16px;
-            opacity: .7;
-        }
-
-        to {
-            height: 26px;
-            opacity: 1;
-        }
-    }
-
-    /* ================================
-       BULLET
-    ================================= */
-
-    .bullet {
-        position: absolute;
-        z-index: 20;
-
-        width: 5px;
-        height: 20px;
-
-        border-radius: 4px;
-
-        background: white;
-
-        box-shadow:
-            0 0 6px #74efff,
-            0 0 13px #35bfff;
-    }
-
-    /* ================================
-       EFFECTS
-    ================================= */
-
-    .explosion {
-        position: absolute;
-        z-index: 70;
-
-        font-size: 32px;
-
-        pointer-events: none;
-
-        animation: explode .42s forwards;
-    }
-
-    @keyframes explode {
-        0% {
-            transform: scale(.3);
-            opacity: 1;
-        }
-
-        70% {
-            transform: scale(1.5);
-            opacity: 1;
-        }
-
-        100% {
-            transform: scale(2);
-            opacity: 0;
-        }
-    }
-
-    .floatingText {
-        position: absolute;
-        z-index: 75;
-
-        font-weight: 900;
-        white-space: nowrap;
-
-        text-shadow: 0 2px 5px black;
-
-        pointer-events: none;
-
-        animation: floatUp .9s forwards;
-    }
-
-    @keyframes floatUp {
-        from {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        to {
-            opacity: 0;
-            transform: translateY(-55px);
-        }
-    }
-
-    #message {
-        position: absolute;
-
-        left: 50%;
-        top: 43%;
-
-        transform: translate(-50%, -50%);
-
-        z-index: 100;
-
-        opacity: 0;
-
-        text-align: center;
-
-        font-size: clamp(30px, 6vw, 56px);
-        font-weight: 900;
-
-        text-shadow: 0 4px 12px black;
-
-        pointer-events: none;
-    }
-
-    /* ================================
-       DESKTOP CONTROLS HINT
-    ================================= */
-
-    #desktopHint {
-        position: absolute;
-
-        left: 50%;
-        bottom: 8px;
-
-        transform: translateX(-50%);
-
-        z-index: 25;
-
-        color: rgba(255,255,255,.52);
-
-        font-size: 12px;
-        letter-spacing: .5px;
-
-        pointer-events: none;
-    }
-
-    /* ================================
-       SCREENS
-    ================================= */
-
-    .screen {
-        position: absolute;
-        inset: 0;
-
-        z-index: 200;
-
-        display: none;
-        align-items: center;
-        justify-content: center;
-
-        padding:
-            max(24px, env(safe-area-inset-top))
-            max(24px, env(safe-area-inset-right))
-            max(24px, env(safe-area-inset-bottom))
-            max(24px, env(safe-area-inset-left));
-
-        text-align: center;
-
-        background:
-            radial-gradient(
-                circle at center,
-                rgba(25, 64, 145, .76),
-                rgba(2, 4, 15, .97)
-            );
-    }
-
-    #startScreen {
-        display: flex;
-    }
-
-    .panel {
-        width: min(92%, 580px);
-
-        padding: 30px 25px;
-
-        border-radius: 24px;
-
-        background: rgba(4,10,30,.9);
-
-        border:
-            1px solid rgba(255,255,255,.16);
-
-        box-shadow:
-            0 20px 60px rgba(0,0,0,.45);
-    }
-
-    .panel h1 {
-        font-size: clamp(30px, 5vw, 48px);
-        margin-bottom: 5px;
-    }
-
-    .panel h2 {
-        margin-bottom: 18px;
-
-        color: #80e2ff;
-
-        font-size: clamp(18px, 3vw, 26px);
-    }
-
-    .panel p {
-        margin: 8px 0;
-
-        color: #cbd7ef;
-
-        line-height: 1.65;
-
-        font-size: clamp(14px, 2vw, 17px);
-    }
-
-    .bigScore {
-        margin: 16px 0 7px;
-
-        font-size: clamp(35px, 7vw, 60px);
-        font-weight: 900;
-
-        color: #ffe45b;
-    }
-
-    .results {
-        margin-top: 16px;
-
-        padding: 14px;
-
-        border-radius: 16px;
-
-        background: rgba(255,255,255,.06);
-
-        line-height: 1.8;
-    }
-
-    button {
-        margin-top: 20px;
-
-        padding: 14px 30px;
-
-        border: 0;
-        border-radius: 16px;
-
-        font-size: 19px;
-        font-weight: 900;
-
-        cursor: pointer;
-
-        color: #071127;
-
-        background:
-            linear-gradient(
-                #fff57e,
-                #ffc52f
-            );
-
-        box-shadow:
-            0 7px 22px rgba(255, 202, 41, .24);
-    }
-
-    /* ================================
-       ROTATE SCREEN
-    ================================= */
-
-    #rotateScreen {
-        position: fixed;
-        inset: 0;
-
-        z-index: 1000;
-
-        display: none;
-
-        justify-content: center;
-        align-items: center;
-
-        padding: 30px;
-
-        text-align: center;
-
-        background:
-            linear-gradient(
-                #07142d,
-                #02040d
-            );
-
-        color: white;
-    }
-
-    #rotateScreen div {
-        max-width: 400px;
-    }
-
-    #rotateIcon {
-        font-size: 65px;
-        margin-bottom: 18px;
-    }
-
-    #rotateScreen h2 {
-        margin-bottom: 8px;
-    }
-
-    #rotateScreen p {
-        color: #c9d6ee;
-        line-height: 1.5;
-    }
-
-    @media
-    (orientation: portrait)
-    and (pointer: coarse) {
-
-        #rotateScreen {
-            display: flex;
-        }
-    }
-
-    @media (pointer: coarse) {
-        #desktopHint {
-            display: none;
-        }
-    }
-
-    @media (max-height: 580px) {
-        #hud {
-            height: 64px;
-        }
-
-        #targetBar {
-            top: 58px;
-        }
-
-        #bonusPanel {
-            top: 73px;
-        }
-
-        .hudValue {
-            font-size: 17px;
-        }
-
-        #ship {
-            transform:
-                translateX(-50%)
-                scale(.86);
-
-            transform-origin:
-                center bottom;
-        }
-    }
 </style>
 </head>
 
+
 <body>
 
+
 <div id="rotateScreen">
+
     <div>
-        <div id="rotateIcon">📱↻</div>
-        <h2>Rotate your iPad</h2>
+
+        <div id="rotateIcon">
+            📱↻
+        </div>
+
+        <h2>
+            Rotate your iPad
+        </h2>
+
         <p>
-            Please play Chinese Galaxy in landscape mode.
+            Please play in landscape mode.
         </p>
+
     </div>
+
 </div>
+
 
 <div id="game">
 
+
     <div id="stars"></div>
+
+
+    <!-- HUD -->
 
     <div id="hud">
 
         <div class="hudItem">
-            <div class="hudLabel">Round</div>
-            <div class="hudValue" id="roundValue">1</div>
-        </div>
 
-        <div class="hudItem">
-            <div class="hudLabel">Score</div>
-            <div class="hudValue" id="scoreValue">0</div>
-        </div>
-
-        <div class="hudItem">
-            <div class="hudLabel">Target</div>
-            <div class="hudValue" id="targetValue">500</div>
-        </div>
-
-        <div class="hudItem">
-            <div class="hudLabel">Speed</div>
-            <div class="hudValue" id="speedValue">1</div>
-        </div>
-
-        <div class="hudItem">
-            <div class="hudLabel">Time</div>
-            <div class="hudValue">
-                <span id="timeValue">60</span>s
+            <div class="hudLabel">
+                Score
             </div>
+
+            <div
+                class="hudValue"
+                id="scoreValue"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="hudItem">
+
+            <div class="hudLabel">
+                Target
+            </div>
+
+            <div
+                class="hudValue"
+                id="targetValue"
+            >
+                550
+            </div>
+
+        </div>
+
+
+        <div class="hudItem">
+
+            <div class="hudLabel">
+                Speed
+            </div>
+
+            <div
+                class="hudValue"
+                id="speedValue"
+            >
+                1
+            </div>
+
+        </div>
+
+
+        <div class="hudItem">
+
+            <div class="hudLabel">
+                Time
+            </div>
+
+            <div class="hudValue">
+
+                <span id="timeValue">
+                    60
+                </span>s
+
+            </div>
+
         </div>
 
     </div>
 
-    <div id="targetBar">
-        <div id="targetFill"></div>
+
+    <!-- TARGET PROGRESS -->
+
+    <div id="progressBar">
+
+        <div
+            id="progressFill"
+        ></div>
+
     </div>
+
+
+    <!-- BONUS -->
 
     <div id="bonusPanel">
+
         <div id="bonusLabel">
             ⭐ CHINESE BONUS ⭐
         </div>
@@ -819,63 +1345,115 @@
             naughty
         </div>
 
-        <div id="bonusBar">
-            <div id="bonusFill"></div>
+        <div id="bonusTimer">
+
+            <div
+                id="bonusTimerFill"
+            ></div>
+
         </div>
+
     </div>
+
+
+    <!-- GAME OBJECTS -->
 
     <div id="gameArea"></div>
 
+
+    <!-- SPACESHIP -->
+
     <div id="ship">
 
-        <div class="shipWingLeft"></div>
-        <div class="shipWingRight"></div>
+        <div
+            class="shipWingLeft"
+        ></div>
 
-        <div class="shipBody"></div>
-        <div class="shipWindow"></div>
+        <div
+            class="shipWingRight"
+        ></div>
 
-        <div class="shipFlame"></div>
+        <div
+            class="shipBody"
+        ></div>
+
+        <div
+            class="shipWindow"
+        ></div>
+
+        <div
+            class="shipFlame"
+        ></div>
 
     </div>
+
+
+    <!-- TOUCH ZONE -->
+
+    <div id="touchZone"></div>
+
+
+    <div id="touchHint">
+        DRAG LEFT / RIGHT
+    </div>
+
+
+    <div id="desktopHint">
+        ← → / A D MOVE · AUTO FIRE
+    </div>
+
 
     <div id="message"></div>
 
-    <div id="desktopHint">
-        ← → / A D MOVE · SPACE FIRE
-    </div>
 
-    <!-- START -->
+    <!-- START SCREEN -->
 
-    <div id="startScreen" class="screen">
+    <div
+        id="startScreen"
+        class="screen"
+    >
 
         <div class="panel">
 
-            <h1>🚀 Chinese Galaxy</h1>
-            <h2>Planet Blaster</h2>
+            <h1>
+                🚀 Chinese Galaxy
+            </h1>
+
+            <h2>
+                Planet Blaster
+            </h2>
 
             <p>
-                You have <b>60 seconds</b>.
+                Shoot as many planets as you can
+                in <b>60 seconds</b>.
             </p>
 
             <p>
-                Shoot planets to score.
-                Chinese Bonus words give you
-                extra points.
-            </p>
-
-            <p>
-                Score faster and the game speeds up.
-                Faster levels give more points.
-            </p>
-
-            <p id="controlHelp">
-                <b>Computer:</b>
-                ← → / A D to move,
-                SPACE to shoot.
+                Normal planet:
+                <b>+10</b>
                 <br>
-                <b>iPad:</b>
-                touch and drag.
-                Hold your finger down to keep firing.
+
+                Chinese planet:
+                <b>+15</b>
+            </p>
+
+            <p>
+                When a
+                <b>Chinese Bonus</b>
+                appears,
+                shoot the matching Chinese word
+                for an extra
+                <b>+50</b>.
+            </p>
+
+            <p>
+                Reach
+                <b>550 points</b>
+                before time runs out.
+            </p>
+
+            <p>
+                The spaceship fires automatically.
             </p>
 
             <button id="startButton">
@@ -886,86 +1464,31 @@
 
     </div>
 
-    <!-- ROUND CLEAR -->
 
-    <div id="roundScreen" class="screen">
+    <!-- SUCCESS -->
+
+    <div
+        id="successScreen"
+        class="screen"
+    >
 
         <div class="panel">
 
-            <h1>ROUND CLEARED!</h1>
+            <h1>
+                🌟 ROUND CLEARED!
+            </h1>
 
             <div
                 class="bigScore"
-                id="roundResultScore">
+                id="successScore"
+            >
                 0
             </div>
 
             <div
-                class="results"
-                id="roundResults">
-            </div>
-
-            <button id="nextRoundButton">
-                NEXT ROUND
-            </button>
-
-        </div>
-
-    </div>
-
-    <!-- GAME OVER -->
-
-    <div id="gameOverScreen" class="screen">
-
-        <div class="panel">
-
-            <h1>MISSION OVER</h1>
-
-            <p>
-                Target score not reached.
-            </p>
-
-            <div
-                class="bigScore"
-                id="gameOverScore">
-                0
-            </div>
-
-            <div
-                class="results"
-                id="gameOverResults">
-            </div>
-
-            <button id="restartButton">
-                TRY AGAIN
-            </button>
-
-        </div>
-
-    </div>
-
-    <!-- COMPLETE -->
-
-    <div id="completeScreen" class="screen">
-
-        <div class="panel">
-
-            <h1>🌟 MISSION COMPLETE!</h1>
-
-            <p>
-                You cleared all three rounds.
-            </p>
-
-            <div
-                class="bigScore"
-                id="completeScore">
-                0
-            </div>
-
-            <div
-                class="results"
-                id="completeResults">
-            </div>
+                class="resultBox"
+                id="successResults"
+            ></div>
 
             <button id="playAgainButton">
                 PLAY AGAIN
@@ -975,182 +1498,200 @@
 
     </div>
 
+
+    <!-- FAIL -->
+
+    <div
+        id="failScreen"
+        class="screen"
+    >
+
+        <div class="panel">
+
+            <h1>
+                MISSION OVER
+            </h1>
+
+            <p>
+                Target score not reached.
+            </p>
+
+            <div
+                class="bigScore"
+                id="failScore"
+            >
+                0
+            </div>
+
+            <div
+                class="resultBox"
+                id="failResults"
+            ></div>
+
+            <button id="retryButton">
+                TRY AGAIN
+            </button>
+
+        </div>
+
+    </div>
+
+
 </div>
+
 
 <script>
 
-/* ==================================================
+/* =========================================================
    VOCABULARY
-================================================== */
+========================================================= */
 
 const vocab = [
 
     {
         word: "淘气",
-        pinyin: "táo qì",
         meaning: "naughty"
     },
 
     {
         word: "科技",
-        pinyin: "kē jì",
         meaning: "technology"
     },
 
     {
         word: "推荐",
-        pinyin: "tuī jiàn",
         meaning: "recommend"
     },
 
     {
         word: "捣乱",
-        pinyin: "dǎo luàn",
         meaning: "cause trouble"
     },
 
     {
         word: "争辩",
-        pinyin: "zhēng biàn",
         meaning: "argue"
     },
 
     {
         word: "荧光笔",
-        pinyin: "yíng guāng bǐ",
         meaning: "highlighter"
     },
 
     {
         word: "律师",
-        pinyin: "lǜ shī",
         meaning: "lawyer"
     },
 
     {
         word: "狼狈",
-        pinyin: "láng bèi",
         meaning: "in an embarrassing situation"
     },
 
     {
         word: "冤枉",
-        pinyin: "yuān wang",
         meaning: "accuse wrongly"
     },
 
     {
         word: "嚷",
-        pinyin: "rǎng",
         meaning: "shout"
     },
 
     {
         word: "小心翼翼",
-        pinyin: "xiǎo xīn yì yì",
         meaning: "very carefully"
     },
 
     {
         word: "手足无措",
-        pinyin: "shǒu zú wú cuò",
         meaning: "not know what to do"
     }
 
 ];
 
 
-/* ==================================================
-   ROUND SETTINGS
-================================================== */
+/* =========================================================
+   GAME SETTINGS
+========================================================= */
 
-const ROUND_DURATION = 60000;
+const GAME_DURATION = 60000;
 
-const roundSettings = [
+const TARGET_SCORE = 550;
 
-    {
-        target: 500,
-        baseSpawn: 900,
-        speedMultiplier: 1.00
-    },
-
-    {
-        target: 650,
-        baseSpawn: 850,
-        speedMultiplier: 1.06
-    },
-
-    {
-        target: 800,
-        baseSpawn: 800,
-        speedMultiplier: 1.12
-    }
-
-];
-
-
-/* ==================================================
-   SPEED LEVEL SETTINGS
-================================================== */
 
 /*
-    Level 1
-    0 - 149
-    normal planet = 10
+    Speed does ONE thing only:
 
-    Level 2
-    150 - 299
-    normal planet = 12
+    it changes how frequently
+    normal planets appear.
 
-    Level 3
-    300 - 499
-    normal planet = 15
-
-    Level 4
-    500+
-    normal planet = 20
+    Planet falling speed stays the same.
 */
 
 const speedLevels = [
 
     {
-        minScore: 0,
-        scorePerHit: 10,
-        bonusExtra: 50,
-        spawnMultiplier: 1.00,
-        fallMultiplier: 1.00
+        percentage: 0,
+        spawnInterval: 1000
     },
 
     {
-        minScore: 150,
-        scorePerHit: 12,
-        bonusExtra: 60,
-        spawnMultiplier: 0.86,
-        fallMultiplier: 1.15
+        percentage: .25,
+        spawnInterval: 850
     },
 
     {
-        minScore: 300,
-        scorePerHit: 15,
-        bonusExtra: 75,
-        spawnMultiplier: 0.74,
-        fallMultiplier: 1.30
+        percentage: .50,
+        spawnInterval: 720
     },
 
     {
-        minScore: 500,
-        scorePerHit: 20,
-        bonusExtra: 100,
-        spawnMultiplier: 0.64,
-        fallMultiplier: 1.45
+        percentage: .75,
+        spawnInterval: 620
     }
 
 ];
 
 
-/* ==================================================
+/*
+    Bonus mode:
+
+    roughly every 9 seconds,
+    lasting 6 seconds.
+
+    During Bonus Mode,
+    normal spawning pauses.
+
+    Only the three bonus choices
+    are shown.
+*/
+
+const BONUS_DURATION = 6000;
+
+const BONUS_GAP_MIN = 8500;
+const BONUS_GAP_MAX = 10000;
+
+
+/*
+    Fixed falling speed.
+
+    Speed levels do not change it.
+*/
+
+const PLANET_FALL_SPEED = 0.041;
+
+
+/*
+    Auto fire speed.
+*/
+
+const AUTO_FIRE_INTERVAL = 290;
+
+
+/* =========================================================
    DOM
-================================================== */
+========================================================= */
 
 const game =
     document.getElementById("game");
@@ -1161,8 +1702,8 @@ const gameArea =
 const ship =
     document.getElementById("ship");
 
-const roundValue =
-    document.getElementById("roundValue");
+const touchZone =
+    document.getElementById("touchZone");
 
 const scoreValue =
     document.getElementById("scoreValue");
@@ -1176,8 +1717,8 @@ const speedValue =
 const timeValue =
     document.getElementById("timeValue");
 
-const targetFill =
-    document.getElementById("targetFill");
+const progressFill =
+    document.getElementById("progressFill");
 
 const bonusPanel =
     document.getElementById("bonusPanel");
@@ -1185,8 +1726,8 @@ const bonusPanel =
 const bonusClue =
     document.getElementById("bonusClue");
 
-const bonusFill =
-    document.getElementById("bonusFill");
+const bonusTimerFill =
+    document.getElementById("bonusTimerFill");
 
 const message =
     document.getElementById("message");
@@ -1194,35 +1735,27 @@ const message =
 const startScreen =
     document.getElementById("startScreen");
 
-const roundScreen =
-    document.getElementById("roundScreen");
+const successScreen =
+    document.getElementById("successScreen");
 
-const gameOverScreen =
-    document.getElementById("gameOverScreen");
-
-const completeScreen =
-    document.getElementById("completeScreen");
+const failScreen =
+    document.getElementById("failScreen");
 
 
-/* ==================================================
-   GAME STATE
-================================================== */
+/* =========================================================
+   STATE
+========================================================= */
 
 let running = false;
 
-let currentRound = 0;
+let score = 0;
 
-let roundScore = 0;
-let totalScore = 0;
-
-let chineseBonusScore = 0;
-let totalChineseBonusScore = 0;
+let chineseBonusPoints = 0;
 
 let correctChinese = 0;
-let totalCorrectChinese = 0;
 
-let roundRemaining =
-    ROUND_DURATION;
+let gameRemaining =
+    GAME_DURATION;
 
 let currentSpeedLevel = 0;
 
@@ -1234,66 +1767,104 @@ let shipX = 50;
 let leftPressed = false;
 let rightPressed = false;
 
-let touching = false;
-let touchX = null;
-
 let spawnTimer = 0;
 
+let fireTimer = 0;
+
 let bonusActive = false;
+
 let currentBonus = null;
 
 let bonusRemaining = 0;
-const BONUS_DURATION = 8500;
 
-let nextBonusCountdown = 4500;
+let nextBonusCountdown = 9000;
 
-let lastFrame = performance.now();
-
-let lastShot = 0;
-
-const DESKTOP_SHOT_DELAY = 255;
-const TOUCH_SHOT_DELAY = 180;
+let lastFrame =
+    performance.now();
 
 
-/* ==================================================
-   COLOURS
-================================================== */
+/* =========================================================
+   TOUCH DRAG STATE
+========================================================= */
+
+let dragging = false;
+
+let previousTouchX = 0;
+
+
+/* =========================================================
+   PLANET COLOURS
+========================================================= */
 
 const planetColours = [
 
-    ["#ffad62", "#c94d55", "#672c80"],
+    [
+        "#ffad62",
+        "#c94d55",
+        "#672c80"
+    ],
 
-    ["#67e7dd", "#2a83d5", "#29266c"],
+    [
+        "#67e7dd",
+        "#2a83d5",
+        "#29266c"
+    ],
 
-    ["#f3e86f", "#e18d32", "#7f3456"],
+    [
+        "#f3e86f",
+        "#e18d32",
+        "#7f3456"
+    ],
 
-    ["#d697ff", "#714bdd", "#292064"],
+    [
+        "#d697ff",
+        "#714bdd",
+        "#292064"
+    ],
 
-    ["#79ee9b", "#369c78", "#194e5a"],
+    [
+        "#79ee9b",
+        "#369c78",
+        "#194e5a"
+    ],
 
-    ["#ff91a6", "#d94f8d", "#662b86"]
+    [
+        "#ff91a6",
+        "#d94f8d",
+        "#662b86"
+    ]
 
 ];
 
 
-/* ==================================================
+/* =========================================================
    STARS
-================================================== */
+========================================================= */
 
 function createStars() {
 
     const stars =
-        document.getElementById("stars");
+        document.getElementById(
+            "stars"
+        );
 
-    for (let i = 0; i < 110; i++) {
+    for (
+        let i = 0;
+        i < 110;
+        i++
+    ) {
 
         const star =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
-        star.className = "star";
+        star.className =
+            "star";
 
         const size =
-            1 + Math.random() * 2;
+            1 +
+            Math.random() * 2;
 
         star.style.width =
             size + "px";
@@ -1302,57 +1873,53 @@ function createStars() {
             size + "px";
 
         star.style.left =
-            Math.random() * 100 + "%";
+            Math.random() *
+            100 +
+            "%";
 
         star.style.top =
-            Math.random() * 100 + "%";
+            Math.random() *
+            100 +
+            "%";
 
         star.style.animationDelay =
-            Math.random() * 2 + "s";
+            Math.random() *
+            2 +
+            "s";
 
-        stars.appendChild(star);
+        stars.appendChild(
+            star
+        );
     }
 }
 
 
-/* ==================================================
-   START NEW GAME
-================================================== */
+/* =========================================================
+   START
+========================================================= */
 
-function newGame() {
+function startGame() {
 
-    running = false;
+    clearObjects();
 
-    currentRound = 0;
+    score = 0;
 
-    totalScore = 0;
-
-    totalChineseBonusScore = 0;
-
-    totalCorrectChinese = 0;
-
-    startRound();
-}
-
-
-/* ==================================================
-   START ROUND
-================================================== */
-
-function startRound() {
-
-    clearGameObjects();
-
-    roundScore = 0;
-
-    chineseBonusScore = 0;
+    chineseBonusPoints = 0;
 
     correctChinese = 0;
 
-    roundRemaining =
-        ROUND_DURATION;
+    gameRemaining =
+        GAME_DURATION;
 
     currentSpeedLevel = 0;
+
+    shipX = 50;
+
+    ship.style.left =
+        "50%";
+
+    spawnTimer = 0;
+    fireTimer = 0;
 
     bonusActive = false;
 
@@ -1361,29 +1928,21 @@ function startRound() {
     bonusRemaining = 0;
 
     nextBonusCountdown =
-        4200;
+        randomBonusGap();
 
-    shipX = 50;
-
-    ship.style.left =
-        "50%";
-
-    updateHUD();
+    bonusPanel.style.display =
+        "none";
 
     startScreen.style.display =
         "none";
 
-    roundScreen.style.display =
+    successScreen.style.display =
         "none";
 
-    gameOverScreen.style.display =
+    failScreen.style.display =
         "none";
 
-    completeScreen.style.display =
-        "none";
-
-    bonusPanel.style.display =
-        "none";
+    updateHUD();
 
     running = true;
 
@@ -1391,146 +1950,146 @@ function startRound() {
         performance.now();
 
     showMessage(
-        "ROUND " + (currentRound + 1),
+        "GO!",
         "#ffffff"
     );
 
-    requestAnimationFrame(gameLoop);
+    requestAnimationFrame(
+        gameLoop
+    );
 }
 
 
-/* ==================================================
-   CLEAR OBJECTS
-================================================== */
-
-function clearGameObjects() {
-
-    planets.forEach(
-        item => item.el.remove()
-    );
-
-    bullets.forEach(
-        item => item.el.remove()
-    );
-
-    planets = [];
-    bullets = [];
-
-    gameArea.innerHTML = "";
-
-    spawnTimer = 0;
-}
-
-
-/* ==================================================
+/* =========================================================
    MAIN LOOP
-================================================== */
+========================================================= */
 
 function gameLoop(timestamp) {
 
-    if (!running) return;
+    if (!running) {
+        return;
+    }
 
     const delta =
         Math.min(
-            timestamp - lastFrame,
+            timestamp -
+            lastFrame,
             40
         );
 
-    lastFrame = timestamp;
+    lastFrame =
+        timestamp;
 
-    roundRemaining -= delta;
+    gameRemaining -=
+        delta;
 
-    if (roundRemaining <= 0) {
+    if (
+        gameRemaining <= 0
+    ) {
 
-        roundRemaining = 0;
+        gameRemaining = 0;
 
         updateHUD();
 
-        finishRound();
+        finishGame();
 
         return;
     }
 
+    updateKeyboardMovement(
+        delta
+    );
+
+    updateAutoFire(
+        delta
+    );
+
+    updateBullets(
+        delta
+    );
+
+    updatePlanets(
+        delta
+    );
+
+    updateBonus(
+        delta
+    );
+
+    updateSpawner(
+        delta
+    );
+
     updateHUD();
 
-    updateShip(delta);
-
-    updateBullets(delta);
-
-    updatePlanets(delta);
-
-    updateBonus(delta);
-
-    updateSpawner(delta);
-
-    if (touching) {
-
-        shoot(
-            TOUCH_SHOT_DELAY
-        );
-    }
-
-    requestAnimationFrame(gameLoop);
+    requestAnimationFrame(
+        gameLoop
+    );
 }
 
 
-/* ==================================================
+/* =========================================================
    HUD
-================================================== */
+========================================================= */
 
 function updateHUD() {
 
-    const settings =
-        roundSettings[currentRound];
-
-    roundValue.textContent =
-        currentRound + 1;
-
     scoreValue.textContent =
-        roundScore;
+        score;
 
     targetValue.textContent =
-        settings.target;
+        TARGET_SCORE;
 
     speedValue.textContent =
         currentSpeedLevel + 1;
 
     timeValue.textContent =
-        Math.ceil(
-            roundRemaining / 1000
+        Math.max(
+            0,
+            Math.ceil(
+                gameRemaining /
+                1000
+            )
         );
 
-    const percent =
+    const progress =
         Math.min(
             100,
-            roundScore /
-            settings.target *
+            score /
+            TARGET_SCORE *
             100
         );
 
-    targetFill.style.width =
-        percent + "%";
+    progressFill.style.width =
+        progress + "%";
 }
 
 
-/* ==================================================
+/* =========================================================
    SPEED LEVEL
-================================================== */
+========================================================= */
 
-function evaluateSpeedLevel() {
+function evaluateSpeed() {
+
+    const percentage =
+        score /
+        TARGET_SCORE;
 
     let newLevel = 0;
 
     for (
         let i = 0;
-        i < speedLevels.length;
+        i <
+        speedLevels.length;
         i++
     ) {
 
         if (
-            roundScore >=
-            speedLevels[i].minScore
+            percentage >=
+            speedLevels[i]
+                .percentage
         ) {
+
             newLevel = i;
         }
     }
@@ -1544,39 +2103,142 @@ function evaluateSpeedLevel() {
             newLevel;
 
         showMessage(
-            "⚡ SPEED UP! LEVEL " +
-            (currentSpeedLevel + 1),
-            "#ffd85a"
+            "⚡ SPEED UP!",
+            "#ffd95b"
         );
-
-        speedValue.textContent =
-            currentSpeedLevel + 1;
     }
 }
 
 
-/* ==================================================
-   SHIP
-================================================== */
+/* =========================================================
+   KEYBOARD MOVEMENT
+========================================================= */
 
-function updateShip(delta) {
+function updateKeyboardMovement(
+    delta
+) {
 
-    const moveSpeed =
-        0.065 * delta;
+    const speed =
+        0.065 *
+        delta;
 
-    if (
-        leftPressed &&
-        !touching
-    ) {
-        shipX -= moveSpeed;
+    if (leftPressed) {
+
+        shipX -= speed;
     }
 
-    if (
-        rightPressed &&
-        !touching
-    ) {
-        shipX += moveSpeed;
+    if (rightPressed) {
+
+        shipX += speed;
     }
+
+    constrainShip();
+
+    ship.style.left =
+        shipX + "%";
+}
+
+
+/* =========================================================
+   TOUCH DRAG
+========================================================= */
+
+/*
+    IMPORTANT:
+
+    The ship does NOT jump to
+    the finger location.
+
+    It moves by the SAME DISTANCE
+    the player's finger moves.
+*/
+
+touchZone.addEventListener(
+    "pointerdown",
+    event => {
+
+        if (!running) {
+            return;
+        }
+
+        dragging = true;
+
+        previousTouchX =
+            event.clientX;
+
+        try {
+
+            touchZone
+                .setPointerCapture(
+                    event.pointerId
+                );
+
+        } catch (error) {}
+
+    }
+);
+
+
+touchZone.addEventListener(
+    "pointermove",
+    event => {
+
+        if (
+            !running ||
+            !dragging
+        ) {
+
+            return;
+        }
+
+        event.preventDefault();
+
+        const movement =
+            event.clientX -
+            previousTouchX;
+
+        previousTouchX =
+            event.clientX;
+
+        const percentMovement =
+            movement /
+            game.clientWidth *
+            100;
+
+        shipX +=
+            percentMovement;
+
+        constrainShip();
+
+        ship.style.left =
+            shipX + "%";
+    }
+);
+
+
+touchZone.addEventListener(
+    "pointerup",
+    stopDrag
+);
+
+
+touchZone.addEventListener(
+    "pointercancel",
+    stopDrag
+);
+
+
+function stopDrag() {
+
+    dragging = false;
+}
+
+
+/* =========================================================
+   SHIP LIMITS
+========================================================= */
+
+function constrainShip() {
 
     shipX =
         Math.max(
@@ -1586,62 +2248,60 @@ function updateShip(delta) {
                 shipX
             )
         );
-
-    ship.style.left =
-        shipX + "%";
 }
 
 
-/* ==================================================
-   SHOOT
-================================================== */
+/* =========================================================
+   AUTOMATIC FIRE
+========================================================= */
 
-function shoot(delay) {
+function updateAutoFire(
+    delta
+) {
 
-    if (!running) return;
-
-    const now =
-        performance.now();
+    fireTimer += delta;
 
     if (
-        now - lastShot <
-        delay
+        fireTimer >=
+        AUTO_FIRE_INTERVAL
     ) {
+
+        fireTimer = 0;
+
+        shoot();
+    }
+}
+
+
+function shoot() {
+
+    if (!running) {
         return;
     }
 
-    lastShot = now;
-
     const x =
         game.clientWidth *
-        shipX / 100;
+        shipX /
+        100;
 
     const y =
         game.clientHeight -
-        Math.max(
-            95,
-            70 +
-            parseFloat(
-                getComputedStyle(
-                    document.documentElement
-                )
-                .getPropertyValue(
-                    "--safe-bottom"
-                ) || 0
-            )
-        );
+        108;
 
     const bullet =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     bullet.className =
         "bullet";
 
     bullet.style.left =
-        (x - 2.5) + "px";
+        (x - 2.5) +
+        "px";
 
     bullet.style.top =
-        (game.clientHeight - 118) +
+        y +
         "px";
 
     gameArea.appendChild(
@@ -1654,24 +2314,25 @@ function shoot(delay) {
 
         x: x,
 
-        y:
-            game.clientHeight -
-            118,
+        y: y,
 
-        speed: .85
+        speed: .86
 
     });
 }
 
 
-/* ==================================================
+/* =========================================================
    BULLETS
-================================================== */
+========================================================= */
 
-function updateBullets(delta) {
+function updateBullets(
+    delta
+) {
 
     for (
-        let i = bullets.length - 1;
+        let i =
+            bullets.length - 1;
         i >= 0;
         i--
     ) {
@@ -1680,13 +2341,15 @@ function updateBullets(delta) {
             bullets[i];
 
         bullet.y -=
-            bullet.speed * delta;
+            bullet.speed *
+            delta;
 
         bullet.el.style.top =
-            bullet.y + "px";
+            bullet.y +
+            "px";
 
         if (
-            bullet.y < 75
+            bullet.y < 76
         ) {
 
             bullet.el.remove();
@@ -1699,8 +2362,6 @@ function updateBullets(delta) {
             continue;
         }
 
-        let hit = false;
-
         for (
             let p =
                 planets.length - 1;
@@ -1708,15 +2369,18 @@ function updateBullets(delta) {
             p--
         ) {
 
+            const planet =
+                planets[p];
+
             if (
-                collision(
+                checkCollision(
                     bullet,
-                    planets[p]
+                    planet
                 )
             ) {
 
                 hitPlanet(
-                    planets[p]
+                    planet
                 );
 
                 bullet.el.remove();
@@ -1726,36 +2390,37 @@ function updateBullets(delta) {
                     1
                 );
 
-                hit = true;
-
                 break;
             }
         }
-
-        if (hit) continue;
     }
 }
 
 
-/* ==================================================
+/* =========================================================
    SPAWNER
-================================================== */
+========================================================= */
 
-function updateSpawner(delta) {
+function updateSpawner(
+    delta
+) {
 
-    const round =
-        roundSettings[currentRound];
+    /*
+        During Bonus Mode
+        normal spawning pauses.
+    */
 
-    const level =
-        speedLevels[
-            currentSpeedLevel
-        ];
+    if (bonusActive) {
+        return;
+    }
+
+    spawnTimer +=
+        delta;
 
     const interval =
-        round.baseSpawn *
-        level.spawnMultiplier;
-
-    spawnTimer += delta;
+        speedLevels[
+            currentSpeedLevel
+        ].spawnInterval;
 
     if (
         spawnTimer >=
@@ -1764,13 +2429,13 @@ function updateSpawner(delta) {
 
         spawnTimer = 0;
 
-        spawnPlanet();
+        spawnNormalGamePlanet();
     }
 
-    nextBonusCountdown -= delta;
+    nextBonusCountdown -=
+        delta;
 
     if (
-        !bonusActive &&
         nextBonusCountdown <= 0
     ) {
 
@@ -1779,33 +2444,47 @@ function updateSpawner(delta) {
 }
 
 
-/* ==================================================
-   SPAWN PLANET
-================================================== */
+/* =========================================================
+   NORMAL GAME PLANET
+========================================================= */
 
-function spawnPlanet() {
+function spawnNormalGamePlanet() {
 
-    const wordChance = .35;
+    /*
+        Around 1/3 of planets
+        display Chinese words.
+    */
 
     if (
         Math.random() <
-        wordChance
+        .34
     ) {
 
-        spawnWordPlanet();
+        const item =
+            vocab[
+                Math.floor(
+                    Math.random() *
+                    vocab.length
+                )
+            ];
+
+        createWordPlanet(
+            item,
+            false
+        );
 
     } else {
 
-        spawnNormalPlanet();
+        createNormalPlanet();
     }
 }
 
 
-/* ==================================================
+/* =========================================================
    NORMAL PLANET
-================================================== */
+========================================================= */
 
-function spawnNormalPlanet() {
+function createNormalPlanet() {
 
     const el =
         document.createElement(
@@ -1824,6 +2503,7 @@ function spawnNormalPlanet() {
         ];
 
     el.style.background =
+
         `radial-gradient(
             circle at 30% 25%,
             ${colours[0]},
@@ -1831,17 +2511,22 @@ function spawnNormalPlanet() {
             ${colours[2]}
         )`;
 
-    const x =
-        randomPlanetX(60);
+    const width = 54;
 
-    const speed =
-        getPlanetSpeed();
+    const x =
+        getSpawnX(
+            width
+        );
+
+    const drift =
+        randomDrift();
 
     el.style.left =
-        x + "px";
+        x +
+        "px";
 
     el.style.top =
-        "115px";
+        "105px";
 
     gameArea.appendChild(
         el
@@ -1853,68 +2538,33 @@ function spawnNormalPlanet() {
 
         x: x,
 
-        y: 115,
+        y: 105,
 
         width: 54,
 
         height: 54,
 
-        speed: speed,
+        drift: drift,
 
         isWord: false,
 
-        vocab: null
+        isBonusChoice: false,
+
+        item: null
 
     });
 }
 
 
-/* ==================================================
+/* =========================================================
    WORD PLANET
-================================================== */
+========================================================= */
 
-function spawnWordPlanet() {
-
-    let chosen;
-
-    /*
-        When a bonus is active,
-        sometimes force the correct
-        answer into the stream.
-    */
-
-    if (
-        bonusActive &&
-        currentBonus &&
-        !correctAnswerOnScreen() &&
-        Math.random() < .55
-    ) {
-
-        chosen =
-            currentBonus;
-
-    } else {
-
-        chosen =
-            vocab[
-                Math.floor(
-                    Math.random() *
-                    vocab.length
-                )
-            ];
-    }
-
-    createWordPlanet(
-        chosen
-    );
-}
-
-
-/* ==================================================
-   CREATE WORD PLANET
-================================================== */
-
-function createWordPlanet(item) {
+function createWordPlanet(
+    item,
+    isBonusChoice,
+    forcedX = null
+) {
 
     const el =
         document.createElement(
@@ -1924,32 +2574,17 @@ function createWordPlanet(item) {
     el.className =
         "planet wordPlanet";
 
+    if (
+        isBonusChoice
+    ) {
+
+        el.classList.add(
+            "bonusChoice"
+        );
+    }
+
     el.textContent =
         item.word;
-
-    /*
-        No bonus answer glow.
-        All Chinese planets look alike.
-    */
-
-    const estimatedWidth =
-        item.word.length >= 4
-        ? 118
-        : 88;
-
-    const x =
-        randomPlanetX(
-            estimatedWidth
-        );
-
-    const speed =
-        getPlanetSpeed() * .93;
-
-    el.style.left =
-        x + "px";
-
-    el.style.top =
-        "115px";
 
     gameArea.appendChild(
         el
@@ -1957,9 +2592,34 @@ function createWordPlanet(item) {
 
     const width =
         Math.max(
-            76,
+            78,
             el.offsetWidth
         );
+
+    let x;
+
+    if (
+        forcedX !== null
+    ) {
+
+        x =
+            forcedX -
+            width / 2;
+
+    } else {
+
+        x =
+            getSpawnX(
+                width
+            );
+    }
+
+    el.style.left =
+        x +
+        "px";
+
+    el.style.top =
+        "105px";
 
     planets.push({
 
@@ -1967,85 +2627,89 @@ function createWordPlanet(item) {
 
         x: x,
 
-        y: 115,
+        y: 105,
 
         width: width,
 
         height: 58,
 
-        speed: speed,
+        drift:
+            isBonusChoice
+            ? 0
+            : randomDrift(),
 
         isWord: true,
 
-        vocab: item
+        isBonusChoice:
+            isBonusChoice,
+
+        item: item
 
     });
 }
 
 
-/* ==================================================
-   X POSITION
-================================================== */
+/* =========================================================
+   SPAWN POSITION
+========================================================= */
 
-function randomPlanetX(width) {
+function getSpawnX(
+    width
+) {
 
-    const padding = 16;
+    const padding = 18;
 
-    const max =
+    const space =
         Math.max(
-            padding,
+            1,
             game.clientWidth -
             width -
-            padding
+            padding * 2
         );
 
     return (
         padding +
         Math.random() *
-        (max - padding)
+        space
     );
 }
 
 
-/* ==================================================
-   PLANET SPEED
-================================================== */
+/* =========================================================
+   SMALL HORIZONTAL DRIFT
+========================================================= */
 
-function getPlanetSpeed() {
+function randomDrift() {
 
-    const round =
-        roundSettings[
-            currentRound
-        ];
-
-    const level =
-        speedLevels[
-            currentSpeedLevel
-        ];
-
-    const randomBase =
-        .032 +
-        Math.random() * .012;
+    const magnitude =
+        .006 +
+        Math.random() *
+        .009;
 
     return (
-        randomBase *
-        round.speedMultiplier *
-        level.fallMultiplier
+        Math.random() <
+        .5
+        ? -magnitude
+        : magnitude
     );
 }
 
 
-/* ==================================================
+/* =========================================================
    UPDATE PLANETS
-================================================== */
+========================================================= */
 
-function updatePlanets(delta) {
+function updatePlanets(
+    delta
+) {
 
     const bottomLimit =
-        game.clientHeight - 90;
+        game.clientHeight -
+        88;
 
     for (
-        let i = planets.length - 1;
+        let i =
+            planets.length - 1;
         i >= 0;
         i--
     ) {
@@ -2053,20 +2717,78 @@ function updatePlanets(delta) {
         const planet =
             planets[i];
 
+        /*
+            Fixed vertical speed.
+
+            Speed Level does NOT
+            change this.
+        */
+
         planet.y +=
-            planet.speed *
+            PLANET_FALL_SPEED *
             delta;
 
+        /*
+            Slight horizontal movement.
+
+            Bonus choices stay aligned
+            and easy to read.
+        */
+
+        if (
+            !planet.isBonusChoice
+        ) {
+
+            planet.x +=
+                planet.drift *
+                delta;
+
+            /*
+                Bounce gently
+                from screen sides.
+            */
+
+            if (
+                planet.x < 10
+            ) {
+
+                planet.x = 10;
+
+                planet.drift =
+                    Math.abs(
+                        planet.drift
+                    );
+            }
+
+            if (
+                planet.x +
+                planet.width >
+                game.clientWidth -
+                10
+            ) {
+
+                planet.x =
+                    game.clientWidth -
+                    planet.width -
+                    10;
+
+                planet.drift =
+                    -Math.abs(
+                        planet.drift
+                    );
+            }
+        }
+
+        planet.el.style.left =
+            planet.x +
+            "px";
+
         planet.el.style.top =
-            planet.y + "px";
+            planet.y +
+            "px";
 
         /*
-            Escaped planet:
-            simply disappears.
-
-            No score penalty.
-            No lives lost.
-            No game over.
+            Escape = nothing happens.
         */
 
         if (
@@ -2085,11 +2807,11 @@ function updatePlanets(delta) {
 }
 
 
-/* ==================================================
+/* =========================================================
    COLLISION
-================================================== */
+========================================================= */
 
-function collision(
+function checkCollision(
     bullet,
     planet
 ) {
@@ -2097,28 +2819,30 @@ function collision(
     return (
 
         bullet.x >=
-            planet.x &&
+        planet.x &&
 
         bullet.x <=
-            planet.x +
-            planet.width &&
+        planet.x +
+        planet.width &&
 
         bullet.y <=
-            planet.y +
-            planet.height &&
+        planet.y +
+        planet.height &&
 
         bullet.y + 20 >=
-            planet.y
+        planet.y
 
     );
 }
 
 
-/* ==================================================
-   HIT PLANET
-================================================== */
+/* =========================================================
+   HIT
+========================================================= */
 
-function hitPlanet(planet) {
+function hitPlanet(
+    planet
+) {
 
     const index =
         planets.indexOf(
@@ -2136,6 +2860,7 @@ function hitPlanet(planet) {
     }
 
     createExplosion(
+
         planet.x +
         planet.width / 2,
 
@@ -2143,159 +2868,239 @@ function hitPlanet(planet) {
         planet.height / 2
     );
 
-    const level =
-        speedLevels[
-            currentSpeedLevel
-        ];
 
     /*
-        Every hit gets the normal
-        speed-level score.
+        Normal planet = 10
+        Chinese planet = 15
     */
 
     let points =
-        level.scorePerHit;
+        planet.isWord
+        ? 15
+        : 10;
+
 
     /*
-        Chinese bonus:
-        if current clue matches
-        the word on this planet,
-        add extra bonus points.
+        Correct Chinese Bonus:
+
+        Chinese planet base score
+        15
+
+        plus extra Bonus
+        50
+
+        total = 65
     */
 
     if (
         bonusActive &&
-        planet.isWord &&
+        planet.isBonusChoice &&
         currentBonus &&
-        planet.vocab.word ===
+        planet.item.word ===
             currentBonus.word
     ) {
 
-        points +=
-            level.bonusExtra;
+        points += 50;
 
-        chineseBonusScore +=
-            level.bonusExtra;
+        chineseBonusPoints +=
+            50;
 
         correctChinese++;
 
-        floatingText(
-            "CHINESE BONUS +" +
-            points,
+        score +=
+            points;
 
-            planet.x - 20,
+        floatingText(
+
+            "BONUS +65",
+
+            planet.x - 5,
 
             planet.y,
 
-            "#ffe45b"
+            "#ffe35b"
         );
 
         showMessage(
-            "PERFECT MATCH!",
-            "#ffe45b"
+
+            "⭐ PERFECT!",
+
+            "#ffe35b"
         );
 
-        endBonus();
+        planet.el.remove();
 
-    } else {
+        finishBonus();
 
-        floatingText(
-            "+" + points,
+        evaluateSpeed();
 
-            planet.x,
+        updateHUD();
 
-            planet.y,
-
-            "#ffffff"
-        );
+        return;
     }
 
-    roundScore +=
+
+    /*
+        Wrong Bonus Choice:
+
+        still gets normal Chinese
+        planet points.
+
+        NO penalty.
+    */
+
+    score +=
         points;
 
-    evaluateSpeedLevel();
+    floatingText(
+
+        "+" + points,
+
+        planet.x,
+
+        planet.y,
+
+        planet.isWord
+        ? "#8cecff"
+        : "#ffffff"
+    );
 
     planet.el.remove();
+
+    evaluateSpeed();
 
     updateHUD();
 }
 
 
-/* ==================================================
-   BONUS
-================================================== */
+/* =========================================================
+   BONUS MODE
+========================================================= */
 
 function startBonus() {
 
+    if (
+        bonusActive ||
+        !running
+    ) {
+
+        return;
+    }
+
     bonusActive = true;
-
-    let chosen;
-
-    do {
-
-        chosen =
-            vocab[
-                Math.floor(
-                    Math.random() *
-                    vocab.length
-                )
-            ];
-
-    } while (
-        currentBonus &&
-        chosen.word ===
-            currentBonus.word
-    );
-
-    currentBonus =
-        chosen;
 
     bonusRemaining =
         BONUS_DURATION;
 
-    bonusClue.textContent =
-        chosen.meaning;
+    /*
+        Remove normal planets.
 
-    bonusFill.style.width =
+        This gives students a clean
+        screen to read three choices.
+    */
+
+    removeAllPlanets();
+
+
+    /*
+        Pick correct word.
+    */
+
+    currentBonus =
+        vocab[
+            Math.floor(
+                Math.random() *
+                vocab.length
+            )
+        ];
+
+    bonusClue.textContent =
+        currentBonus.meaning;
+
+    bonusTimerFill.style.width =
         "100%";
 
     bonusPanel.style.display =
         "block";
 
+
     /*
-        Ensure correct answer appears
-        soon if it isn't already there.
+        Select two different
+        wrong answers.
     */
 
-    setTimeout(
-        () => {
+    const wrongChoices =
+        vocab
+        .filter(
+            item =>
+                item.word !==
+                currentBonus.word
+        );
 
-            if (
-                running &&
-                bonusActive &&
-                !correctAnswerOnScreen()
-            ) {
+    shuffle(
+        wrongChoices
+    );
 
-                createWordPlanet(
-                    currentBonus
-                );
-            }
+    const choices = [
 
-        },
-        650
+        currentBonus,
+
+        wrongChoices[0],
+
+        wrongChoices[1]
+
+    ];
+
+    shuffle(
+        choices
+    );
+
+
+    /*
+        Three evenly-spaced choices.
+    */
+
+    const positions = [
+
+        game.clientWidth *
+        .23,
+
+        game.clientWidth *
+        .50,
+
+        game.clientWidth *
+        .77
+
+    ];
+
+    choices.forEach(
+        (item, index) => {
+
+            createWordPlanet(
+
+                item,
+
+                true,
+
+                positions[index]
+            );
+        }
     );
 }
 
 
-/* ==================================================
-   UPDATE BONUS
-================================================== */
+/* =========================================================
+   BONUS TIMER
+========================================================= */
 
-function updateBonus(delta) {
+function updateBonus(
+    delta
+) {
 
     if (
         !bonusActive
     ) {
+
         return;
     }
 
@@ -2304,236 +3109,281 @@ function updateBonus(delta) {
 
     const percent =
         Math.max(
+
             0,
+
             bonusRemaining /
             BONUS_DURATION *
             100
         );
 
-    bonusFill.style.width =
-        percent + "%";
+    bonusTimerFill.style.width =
+        percent +
+        "%";
 
     if (
         bonusRemaining <= 0
     ) {
 
-        endBonus();
+        finishBonus();
     }
 }
 
 
-/* ==================================================
+/* =========================================================
    END BONUS
-================================================== */
+========================================================= */
 
-function endBonus() {
+function finishBonus() {
+
+    if (
+        !bonusActive
+    ) {
+
+        return;
+    }
 
     bonusActive = false;
 
     bonusPanel.style.display =
         "none";
 
+    /*
+        Remove remaining
+        Bonus choices.
+    */
+
+    for (
+        let i =
+            planets.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        if (
+            planets[i]
+                .isBonusChoice
+        ) {
+
+            planets[i]
+                .el
+                .remove();
+
+            planets.splice(
+                i,
+                1
+            );
+        }
+    }
+
+    currentBonus = null;
+
+    spawnTimer = 0;
+
     nextBonusCountdown =
-        3900 +
-        Math.random() *
-        2200;
+        randomBonusGap();
 }
 
 
-/* ==================================================
-   CORRECT ANSWER PRESENT?
-================================================== */
+/* =========================================================
+   RANDOM BONUS GAP
+========================================================= */
 
-function correctAnswerOnScreen() {
+function randomBonusGap() {
 
-    if (
-        !currentBonus
-    ) {
-        return false;
-    }
-
-    return planets.some(
-        planet =>
-            planet.isWord &&
-            planet.vocab &&
-            planet.vocab.word ===
-                currentBonus.word
+    return (
+        BONUS_GAP_MIN +
+        Math.random() *
+        (
+            BONUS_GAP_MAX -
+            BONUS_GAP_MIN
+        )
     );
 }
 
 
-/* ==================================================
-   ROUND END
-================================================== */
+/* =========================================================
+   REMOVE PLANETS
+========================================================= */
 
-function finishRound() {
+function removeAllPlanets() {
+
+    planets.forEach(
+        planet =>
+            planet.el.remove()
+    );
+
+    planets = [];
+}
+
+
+/* =========================================================
+   SPEED CHECK
+========================================================= */
+
+function evaluateSpeed() {
+
+    const percentage =
+        score /
+        TARGET_SCORE;
+
+    let newLevel = 0;
+
+    for (
+        let i = 0;
+        i <
+        speedLevels.length;
+        i++
+    ) {
+
+        if (
+            percentage >=
+            speedLevels[i]
+                .percentage
+        ) {
+
+            newLevel = i;
+        }
+    }
+
+    if (
+        newLevel >
+        currentSpeedLevel
+    ) {
+
+        currentSpeedLevel =
+            newLevel;
+
+        speedValue.textContent =
+            currentSpeedLevel + 1;
+
+        showMessage(
+
+            "⚡ SPEED " +
+            (
+                currentSpeedLevel +
+                1
+            ),
+
+            "#ffcf55"
+        );
+    }
+}
+
+
+/* =========================================================
+   END GAME
+========================================================= */
+
+function finishGame() {
 
     running = false;
 
     bonusPanel.style.display =
         "none";
 
-    totalScore +=
-        roundScore;
+    clearObjects();
 
-    totalChineseBonusScore +=
-        chineseBonusScore;
-
-    totalCorrectChinese +=
-        correctChinese;
-
-    const settings =
-        roundSettings[
-            currentRound
-        ];
 
     /*
-        IMPORTANT:
-        This is the ONLY place
-        where pass/fail is checked.
+        Pass / fail is checked
+        ONLY HERE.
 
-        Score NEVER ends the round
-        before 60 seconds.
+        Reaching 550 early
+        does NOT end the game.
     */
 
     if (
-        roundScore >=
-        settings.target
+        score >=
+        TARGET_SCORE
     ) {
 
-        /*
-            Final round completed
-        */
+        document.getElementById(
+            "successScore"
+        ).textContent =
+            score;
 
-        if (
-            currentRound ===
-            roundSettings.length - 1
-        ) {
+        document.getElementById(
+            "successResults"
+        ).innerHTML = `
 
-            showCompleteScreen();
+            Target:
+            <b>${TARGET_SCORE}</b>
 
-        } else {
+            <br>
 
-            showRoundClearScreen();
-        }
+            Chinese Bonus Points:
+            <b>${chineseBonusPoints}</b>
+
+            <br>
+
+            Correct Chinese Matches:
+            <b>${correctChinese}</b>
+
+        `;
+
+        successScreen.style.display =
+            "flex";
 
     } else {
 
-        showGameOverScreen();
+        document.getElementById(
+            "failScore"
+        ).textContent =
+            score;
+
+        document.getElementById(
+            "failResults"
+        ).innerHTML = `
+
+            Target:
+            <b>${TARGET_SCORE}</b>
+
+            <br>
+
+            Chinese Bonus Points:
+            <b>${chineseBonusPoints}</b>
+
+            <br>
+
+            Correct Chinese Matches:
+            <b>${correctChinese}</b>
+
+        `;
+
+        failScreen.style.display =
+            "flex";
     }
 }
 
 
-/* ==================================================
-   ROUND CLEAR
-================================================== */
+/* =========================================================
+   CLEAR ALL OBJECTS
+========================================================= */
 
-function showRoundClearScreen() {
+function clearObjects() {
 
-    document.getElementById(
-        "roundResultScore"
-    ).textContent =
-        roundScore;
+    planets.forEach(
+        object =>
+            object.el.remove()
+    );
 
-    document.getElementById(
-        "roundResults"
-    ).innerHTML = `
+    bullets.forEach(
+        object =>
+            object.el.remove()
+    );
 
-        Target:
-        <b>${roundSettings[currentRound].target}</b>
-        <br>
+    planets = [];
+    bullets = [];
 
-        Chinese Bonus:
-        <b>${chineseBonusScore}</b>
-        <br>
-
-        Correct Chinese Matches:
-        <b>${correctChinese}</b>
-        <br>
-
-        Total Score:
-        <b>${totalScore}</b>
-
-    `;
-
-    roundScreen.style.display =
-        "flex";
+    gameArea.innerHTML =
+        "";
 }
 
 
-/* ==================================================
-   GAME OVER
-================================================== */
-
-function showGameOverScreen() {
-
-    document.getElementById(
-        "gameOverScore"
-    ).textContent =
-        roundScore;
-
-    document.getElementById(
-        "gameOverResults"
-    ).innerHTML = `
-
-        Target:
-        <b>${roundSettings[currentRound].target}</b>
-        <br>
-
-        Chinese Bonus:
-        <b>${chineseBonusScore}</b>
-        <br>
-
-        Correct Chinese Matches:
-        <b>${correctChinese}</b>
-        <br>
-
-        Total Score:
-        <b>${totalScore}</b>
-
-    `;
-
-    gameOverScreen.style.display =
-        "flex";
-}
-
-
-/* ==================================================
-   COMPLETE
-================================================== */
-
-function showCompleteScreen() {
-
-    document.getElementById(
-        "completeScore"
-    ).textContent =
-        totalScore;
-
-    document.getElementById(
-        "completeResults"
-    ).innerHTML = `
-
-        Total Chinese Bonus:
-        <b>${totalChineseBonusScore}</b>
-        <br>
-
-        Correct Chinese Matches:
-        <b>${totalCorrectChinese}</b>
-        <br>
-
-        Rounds Cleared:
-        <b>3 / 3</b>
-
-    `;
-
-    completeScreen.style.display =
-        "flex";
-}
-
-
-/* ==================================================
-   EFFECTS
-================================================== */
+/* =========================================================
+   EXPLOSION
+========================================================= */
 
 function createExplosion(
     x,
@@ -2552,25 +3402,28 @@ function createExplosion(
         "💥";
 
     el.style.left =
-        (x - 16) + "px";
+        (x - 15) +
+        "px";
 
     el.style.top =
-        (y - 16) + "px";
+        (y - 15) +
+        "px";
 
     gameArea.appendChild(
         el
     );
 
     setTimeout(
-        () => el.remove(),
-        430
+        () =>
+            el.remove(),
+        420
     );
 }
 
 
-/* ==================================================
-   FLOATING SCORE
-================================================== */
+/* =========================================================
+   SCORE TEXT
+========================================================= */
 
 function floatingText(
     text,
@@ -2585,16 +3438,18 @@ function floatingText(
         );
 
     el.className =
-        "floatingText";
+        "floatText";
 
     el.textContent =
         text;
 
     el.style.left =
-        x + "px";
+        x +
+        "px";
 
     el.style.top =
-        y + "px";
+        y +
+        "px";
 
     el.style.color =
         colour;
@@ -2604,17 +3459,20 @@ function floatingText(
     );
 
     setTimeout(
-        () => el.remove(),
+        () =>
+            el.remove(),
         900
     );
 }
 
 
-/* ==================================================
-   BIG MESSAGE
-================================================== */
+/* =========================================================
+   MESSAGE
+========================================================= */
 
-let messageTimer = null;
+let messageTimeout =
+    null;
+
 
 function showMessage(
     text,
@@ -2631,10 +3489,10 @@ function showMessage(
         "1";
 
     clearTimeout(
-        messageTimer
+        messageTimeout
     );
 
-    messageTimer =
+    messageTimeout =
         setTimeout(
             () => {
 
@@ -2647,9 +3505,45 @@ function showMessage(
 }
 
 
-/* ==================================================
+/* =========================================================
+   SHUFFLE
+========================================================= */
+
+function shuffle(
+    array
+) {
+
+    for (
+        let i =
+            array.length - 1;
+        i > 0;
+        i--
+    ) {
+
+        const j =
+            Math.floor(
+                Math.random() *
+                (i + 1)
+            );
+
+        [
+            array[i],
+            array[j]
+        ]
+        =
+        [
+            array[j],
+            array[i]
+        ];
+    }
+
+    return array;
+}
+
+
+/* =========================================================
    KEYBOARD
-================================================== */
+========================================================= */
 
 document.addEventListener(
     "keydown",
@@ -2664,7 +3558,8 @@ document.addEventListener(
 
             event.preventDefault();
 
-            leftPressed = true;
+            leftPressed =
+                true;
         }
 
         if (
@@ -2676,22 +3571,12 @@ document.addEventListener(
 
             event.preventDefault();
 
-            rightPressed = true;
-        }
-
-        if (
-            event.code ===
-            "Space"
-        ) {
-
-            event.preventDefault();
-
-            shoot(
-                DESKTOP_SHOT_DELAY
-            );
+            rightPressed =
+                true;
         }
     }
 );
+
 
 document.addEventListener(
     "keyup",
@@ -2704,7 +3589,8 @@ document.addEventListener(
             "KeyA"
         ) {
 
-            leftPressed = false;
+            leftPressed =
+                false;
         }
 
         if (
@@ -2714,219 +3600,69 @@ document.addEventListener(
             "KeyD"
         ) {
 
-            rightPressed = false;
+            rightPressed =
+                false;
         }
     }
 );
 
 
-/* ==================================================
-   TOUCH / iPAD
-================================================== */
-
-/*
-    iPad flow:
-
-    Touch screen
-       ↓
-    Ship moves horizontally
-    to finger position
-       ↓
-    Holding finger =
-    automatic shooting
-*/
-
-function moveShipToTouch(
-    clientX
-) {
-
-    const rect =
-        game.getBoundingClientRect();
-
-    const localX =
-        clientX -
-        rect.left;
-
-    let percent =
-        localX /
-        rect.width *
-        100;
-
-    percent =
-        Math.max(
-            4,
-            Math.min(
-                96,
-                percent
-            )
-        );
-
-    shipX =
-        percent;
-
-    ship.style.left =
-        shipX + "%";
-}
-
-
-game.addEventListener(
-    "pointerdown",
-    event => {
-
-        /*
-            Do not steal touches
-            from menu buttons.
-        */
-
-        if (
-            event.target.closest(
-                "button"
-            )
-        ) {
-            return;
-        }
-
-        if (
-            !running
-        ) {
-            return;
-        }
-
-        touching = true;
-
-        touchX =
-            event.clientX;
-
-        moveShipToTouch(
-            event.clientX
-        );
-
-        shoot(
-            TOUCH_SHOT_DELAY
-        );
-
-        try {
-
-            game.setPointerCapture(
-                event.pointerId
-            );
-
-        } catch (e) {}
-    }
-);
-
-
-game.addEventListener(
-    "pointermove",
-    event => {
-
-        if (
-            !touching ||
-            !running
-        ) {
-            return;
-        }
-
-        event.preventDefault();
-
-        touchX =
-            event.clientX;
-
-        moveShipToTouch(
-            event.clientX
-        );
-    }
-);
-
-
-function stopTouch() {
-
-    touching = false;
-
-    touchX = null;
-}
-
-
-game.addEventListener(
-    "pointerup",
-    stopTouch
-);
-
-game.addEventListener(
-    "pointercancel",
-    stopTouch
-);
-
-
-/* ==================================================
+/* =========================================================
    BUTTONS
-================================================== */
+========================================================= */
 
 document.getElementById(
     "startButton"
-).addEventListener(
+)
+.addEventListener(
     "click",
-    newGame
+    startGame
 );
 
 
 document.getElementById(
-    "nextRoundButton"
-).addEventListener(
+    "retryButton"
+)
+.addEventListener(
     "click",
-    () => {
-
-        currentRound++;
-
-        startRound();
-    }
-);
-
-
-document.getElementById(
-    "restartButton"
-).addEventListener(
-    "click",
-    newGame
+    startGame
 );
 
 
 document.getElementById(
     "playAgainButton"
-).addEventListener(
+)
+.addEventListener(
     "click",
-    newGame
+    startGame
 );
 
 
-/* ==================================================
+/* =========================================================
    RESIZE
-================================================== */
+========================================================= */
 
 window.addEventListener(
     "resize",
     () => {
 
-        shipX =
-            Math.max(
-                4,
-                Math.min(
-                    96,
-                    shipX
-                )
-            );
+        constrainShip();
 
         ship.style.left =
-            shipX + "%";
+            shipX +
+            "%";
     }
 );
 
 
-/* ==================================================
-   INITIALISE
-================================================== */
+/* =========================================================
+   INIT
+========================================================= */
 
 createStars();
+
+targetValue.textContent =
+    TARGET_SCORE;
 
 updateHUD();
 
