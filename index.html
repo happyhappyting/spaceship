@@ -423,9 +423,6 @@ body {
 }
 
 .normalPlanet {
-    width: 54px;
-    height: 54px;
-
     border-radius: 50%;
 }
 
@@ -498,6 +495,58 @@ body {
         8px
         16px
         rgba(255,255,255,.18);
+}
+
+
+/* =========================================================
+   SPECIAL ITEMS
+========================================================= */
+
+.specialItem {
+    position: absolute;
+
+    z-index: 25;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+
+    font-weight: 900;
+
+    text-align: center;
+
+    border:
+        2px solid
+        rgba(255,255,255,.26);
+
+    box-shadow:
+        0 0 15px
+        rgba(255,255,255,.14);
+
+    background:
+        rgba(15,22,48,.9);
+}
+
+.bombItem {
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #636363,
+            #242424 55%,
+            #090909
+        );
+}
+
+.hourglassItem {
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #79e9ff,
+            #3659a9 55%,
+            #16204d
+        );
 }
 
 
@@ -1429,10 +1478,11 @@ and
             </p>
 
             <p>
-                Normal planet:
-                <b>+10</b>
-                <br>
+                Bigger planets are easier.
+                Smaller planets give more points.
+            </p>
 
+            <p>
                 Chinese planet:
                 <b>+15</b>
             </p>
@@ -1626,29 +1676,30 @@ const TARGET_SCORE = 550;
     it changes how frequently
     normal planets appear.
 
-    Planet falling speed stays the same.
+    Average spawning speed has been
+    increased by about 18%.
 */
 
 const speedLevels = [
 
     {
         percentage: 0,
-        spawnInterval: 1000
+        spawnInterval: 820
     },
 
     {
         percentage: .25,
-        spawnInterval: 850
+        spawnInterval: 700
     },
 
     {
         percentage: .50,
-        spawnInterval: 720
+        spawnInterval: 590
     },
 
     {
         percentage: .75,
-        spawnInterval: 620
+        spawnInterval: 510
     }
 
 ];
@@ -1687,6 +1738,35 @@ const PLANET_FALL_SPEED = 0.041;
 */
 
 const AUTO_FIRE_INTERVAL = 290;
+
+
+/*
+    Normal planet sizes.
+
+    Smaller = more points.
+*/
+
+const planetSizes = [
+
+    {
+        name: "large",
+        size: 62,
+        points: 10
+    },
+
+    {
+        name: "medium",
+        size: 50,
+        points: 15
+    },
+
+    {
+        name: "small",
+        size: 38,
+        points: 20
+    }
+
+];
 
 
 /* =========================================================
@@ -1781,6 +1861,42 @@ let nextBonusCountdown = 9000;
 
 let lastFrame =
     performance.now();
+
+
+/* =========================================================
+   SPECIAL ITEM STATE
+========================================================= */
+
+/*
+    Each speed level receives:
+
+    Speed 1:
+        1 bomb
+        1 hourglass
+
+    Speed 2:
+        2 bombs
+        2 hourglasses
+
+    Speed 3:
+        3 bombs
+        3 hourglasses
+
+    Speed 4:
+        4 bombs
+        4 hourglasses
+*/
+
+let specialQueue = [];
+
+let specialSpawnCountdown = 0;
+
+let specialLevelPrepared = [
+    false,
+    false,
+    false,
+    false
+];
 
 
 /* =========================================================
@@ -1930,6 +2046,19 @@ function startGame() {
     nextBonusCountdown =
         randomBonusGap();
 
+    specialQueue = [];
+
+    specialSpawnCountdown = 0;
+
+    specialLevelPrepared = [
+        false,
+        false,
+        false,
+        false
+    ];
+
+    prepareSpecialItemsForLevel(0);
+
     bonusPanel.style.display =
         "none";
 
@@ -2020,6 +2149,10 @@ function gameLoop(timestamp) {
         delta
     );
 
+    updateSpecialSpawner(
+        delta
+    );
+
     updateHUD();
 
     requestAnimationFrame(
@@ -2102,10 +2235,98 @@ function evaluateSpeed() {
         currentSpeedLevel =
             newLevel;
 
+        prepareSpecialItemsForLevel(
+            currentSpeedLevel
+        );
+
         showMessage(
             "⚡ SPEED UP!",
             "#ffd95b"
         );
+    }
+}
+
+
+/* =========================================================
+   SPEED DOWN
+========================================================= */
+
+function reduceSpeedLevel() {
+
+    if (
+        currentSpeedLevel > 0
+    ) {
+
+        currentSpeedLevel--;
+
+        showMessage(
+            "🐢 SPEED DOWN!",
+            "#9fd7ff"
+        );
+
+    } else {
+
+        showMessage(
+            "SPEED 1",
+            "#9fd7ff"
+        );
+    }
+
+    updateHUD();
+}
+
+
+/* =========================================================
+   SPECIAL ITEM LEVEL QUOTA
+========================================================= */
+
+function prepareSpecialItemsForLevel(
+    levelIndex
+) {
+
+    if (
+        specialLevelPrepared[
+            levelIndex
+        ]
+    ) {
+
+        return;
+    }
+
+    specialLevelPrepared[
+        levelIndex
+    ] = true;
+
+    const count =
+        levelIndex + 1;
+
+    const items = [];
+
+    for (
+        let i = 0;
+        i < count;
+        i++
+    ) {
+
+        items.push("bomb");
+
+        items.push("hourglass");
+    }
+
+    shuffle(items);
+
+    specialQueue.push(
+        ...items
+    );
+
+    if (
+        specialSpawnCountdown <= 0
+    ) {
+
+        specialSpawnCountdown =
+            1300 +
+            Math.random() *
+            1200;
     }
 }
 
@@ -2142,16 +2363,6 @@ function updateKeyboardMovement(
 /* =========================================================
    TOUCH DRAG
 ========================================================= */
-
-/*
-    IMPORTANT:
-
-    The ship does NOT jump to
-    the finger location.
-
-    It moves by the SAME DISTANCE
-    the player's finger moves.
-*/
 
 touchZone.addEventListener(
     "pointerdown",
@@ -2405,11 +2616,6 @@ function updateSpawner(
     delta
 ) {
 
-    /*
-        During Bonus Mode
-        normal spawning pauses.
-    */
-
     if (bonusActive) {
         return;
     }
@@ -2445,15 +2651,48 @@ function updateSpawner(
 
 
 /* =========================================================
+   SPECIAL ITEM SPAWNER
+========================================================= */
+
+function updateSpecialSpawner(
+    delta
+) {
+
+    if (
+        bonusActive ||
+        specialQueue.length === 0
+    ) {
+
+        return;
+    }
+
+    specialSpawnCountdown -=
+        delta;
+
+    if (
+        specialSpawnCountdown <= 0
+    ) {
+
+        const type =
+            specialQueue.shift();
+
+        spawnSpecialItem(
+            type
+        );
+
+        specialSpawnCountdown =
+            1700 +
+            Math.random() *
+            1800;
+    }
+}
+
+
+/* =========================================================
    NORMAL GAME PLANET
 ========================================================= */
 
 function spawnNormalGamePlanet() {
-
-    /*
-        Around 1/3 of planets
-        display Chinese words.
-    */
 
     if (
         Math.random() <
@@ -2486,6 +2725,14 @@ function spawnNormalGamePlanet() {
 
 function createNormalPlanet() {
 
+    const sizeInfo =
+        planetSizes[
+            Math.floor(
+                Math.random() *
+                planetSizes.length
+            )
+        ];
+
     const el =
         document.createElement(
             "div"
@@ -2493,6 +2740,14 @@ function createNormalPlanet() {
 
     el.className =
         "planet normalPlanet";
+
+    el.style.width =
+        sizeInfo.size +
+        "px";
+
+    el.style.height =
+        sizeInfo.size +
+        "px";
 
     const colours =
         planetColours[
@@ -2511,11 +2766,9 @@ function createNormalPlanet() {
             ${colours[2]}
         )`;
 
-    const width = 54;
-
     const x =
         getSpawnX(
-            width
+            sizeInfo.size
         );
 
     const drift =
@@ -2540,9 +2793,11 @@ function createNormalPlanet() {
 
         y: 105,
 
-        width: 54,
+        width:
+            sizeInfo.size,
 
-        height: 54,
+        height:
+            sizeInfo.size,
 
         drift: drift,
 
@@ -2550,7 +2805,16 @@ function createNormalPlanet() {
 
         isBonusChoice: false,
 
-        item: null
+        item: null,
+
+        objectType:
+            "planet",
+
+        points:
+            sizeInfo.points,
+
+        sizeName:
+            sizeInfo.name
 
     });
 }
@@ -2643,7 +2907,143 @@ function createWordPlanet(
         isBonusChoice:
             isBonusChoice,
 
-        item: item
+        item: item,
+
+        objectType:
+            "word",
+
+        points: 15
+
+    });
+}
+
+
+/* =========================================================
+   SPECIAL ITEMS
+========================================================= */
+
+function spawnSpecialItem(
+    type
+) {
+
+    if (bonusActive) {
+        return;
+    }
+
+    const sizeInfo =
+        planetSizes[
+            Math.floor(
+                Math.random() *
+                planetSizes.length
+            )
+        ];
+
+    const el =
+        document.createElement(
+            "div"
+        );
+
+    el.className =
+        "specialItem";
+
+    if (
+        type === "bomb"
+    ) {
+
+        el.classList.add(
+            "bombItem"
+        );
+
+        el.textContent =
+            "💣";
+
+    } else {
+
+        el.classList.add(
+            "hourglassItem"
+        );
+
+        el.textContent =
+            "⏳";
+    }
+
+    el.style.width =
+        sizeInfo.size +
+        "px";
+
+    el.style.height =
+        sizeInfo.size +
+        "px";
+
+    el.style.fontSize =
+        Math.max(
+            20,
+            sizeInfo.size *
+            .55
+        ) +
+        "px";
+
+    const x =
+        getSpawnX(
+            sizeInfo.size
+        );
+
+    el.style.left =
+        x +
+        "px";
+
+    el.style.top =
+        "105px";
+
+    gameArea.appendChild(
+        el
+    );
+
+    planets.push({
+
+        el: el,
+
+        x: x,
+
+        y: 105,
+
+        width:
+            sizeInfo.size,
+
+        height:
+            sizeInfo.size,
+
+        drift:
+            randomDrift(),
+
+        isWord: false,
+
+        isBonusChoice: false,
+
+        item: null,
+
+        objectType:
+            type,
+
+        points:
+            type ===
+            "hourglass"
+            ? sizeInfo.points
+            : 0,
+
+        timeBonus:
+            sizeInfo.name ===
+            "small"
+            ? 3000
+            :
+            sizeInfo.name ===
+            "medium"
+            ? 2000
+            :
+            1000,
+
+        sizeName:
+            sizeInfo.name
 
     });
 }
@@ -2717,23 +3117,9 @@ function updatePlanets(
         const planet =
             planets[i];
 
-        /*
-            Fixed vertical speed.
-
-            Speed Level does NOT
-            change this.
-        */
-
         planet.y +=
             PLANET_FALL_SPEED *
             delta;
-
-        /*
-            Slight horizontal movement.
-
-            Bonus choices stay aligned
-            and easy to read.
-        */
 
         if (
             !planet.isBonusChoice
@@ -2742,11 +3128,6 @@ function updatePlanets(
             planet.x +=
                 planet.drift *
                 delta;
-
-            /*
-                Bounce gently
-                from screen sides.
-            */
 
             if (
                 planet.x < 10
@@ -2786,10 +3167,6 @@ function updatePlanets(
         planet.el.style.top =
             planet.y +
             "px";
-
-        /*
-            Escape = nothing happens.
-        */
 
         if (
             planet.y >
@@ -2869,68 +3246,69 @@ function hitPlanet(
     );
 
 
-    /*
-        Normal planet = 10
-        Chinese planet = 15
-    */
-
-    let points =
-        planet.isWord
-        ? 15
-        : 10;
-
-
-    /*
-        Correct Chinese Bonus:
-
-        Chinese planet base score
-        15
-
-        plus extra Bonus
-        50
-
-        total = 65
-    */
+    /* =====================================================
+       BOMB
+    ===================================================== */
 
     if (
-        bonusActive &&
-        planet.isBonusChoice &&
-        currentBonus &&
-        planet.item.word ===
-            currentBonus.word
+        planet.objectType ===
+        "bomb"
     ) {
-
-        points += 50;
-
-        chineseBonusPoints +=
-            50;
-
-        correctChinese++;
-
-        score +=
-            points;
 
         floatingText(
 
-            "BONUS +65",
+            "💣 SPEED DOWN",
 
-            planet.x - 5,
+            planet.x - 20,
 
             planet.y,
 
-            "#ffe35b"
-        );
-
-        showMessage(
-
-            "⭐ PERFECT!",
-
-            "#ffe35b"
+            "#ff9b9b"
         );
 
         planet.el.remove();
 
-        finishBonus();
+        reduceSpeedLevel();
+
+        return;
+    }
+
+
+    /* =====================================================
+       HOURGLASS
+    ===================================================== */
+
+    if (
+        planet.objectType ===
+        "hourglass"
+    ) {
+
+        score +=
+            planet.points;
+
+        gameRemaining +=
+            planet.timeBonus;
+
+        const seconds =
+            planet.timeBonus /
+            1000;
+
+        floatingText(
+
+            "+" +
+            planet.points +
+            "  ⏳ +" +
+            seconds +
+            "s",
+
+            planet.x - 10,
+
+            planet.y,
+
+            "#86efff"
+        );
+
+        planet.el.remove();
 
         evaluateSpeed();
 
@@ -2940,29 +3318,144 @@ function hitPlanet(
     }
 
 
-    /*
-        Wrong Bonus Choice:
+    /* =====================================================
+       BONUS CHOICES
+    ===================================================== */
 
-        still gets normal Chinese
-        planet points.
+    if (
+        bonusActive &&
+        planet.isBonusChoice
+    ) {
 
-        NO penalty.
-    */
+        /*
+            CORRECT:
+            Chinese base 15
+            + extra Bonus 50
+            = 65
+        */
+
+        if (
+            currentBonus &&
+            planet.item.word ===
+                currentBonus.word
+        ) {
+
+            const points =
+                65;
+
+            score +=
+                points;
+
+            chineseBonusPoints +=
+                50;
+
+            correctChinese++;
+
+            floatingText(
+
+                "BONUS +65",
+
+                planet.x - 5,
+
+                planet.y,
+
+                "#ffe35b"
+            );
+
+            showMessage(
+
+                "⭐ PERFECT!",
+
+                "#ffe35b"
+            );
+
+            planet.el.remove();
+
+            finishBonus();
+
+            evaluateSpeed();
+
+            updateHUD();
+
+            return;
+        }
+
+
+        /*
+            WRONG BONUS CHOICE:
+
+            0 points
+            + Speed Level drops by 1.
+        */
+
+        floatingText(
+
+            "0  SPEED DOWN",
+
+            planet.x - 10,
+
+            planet.y,
+
+            "#ff9b9b"
+        );
+
+        planet.el.remove();
+
+        reduceSpeedLevel();
+
+        return;
+    }
+
+
+    /* =====================================================
+       NORMAL WORD PLANET
+    ===================================================== */
+
+    if (
+        planet.objectType ===
+        "word"
+    ) {
+
+        score += 15;
+
+        floatingText(
+
+            "+15",
+
+            planet.x,
+
+            planet.y,
+
+            "#8cecff"
+        );
+
+        planet.el.remove();
+
+        evaluateSpeed();
+
+        updateHUD();
+
+        return;
+    }
+
+
+    /* =====================================================
+       NORMAL PLANET
+    ===================================================== */
 
     score +=
-        points;
+        planet.points;
 
     floatingText(
 
-        "+" + points,
+        "+" +
+        planet.points,
 
         planet.x,
 
         planet.y,
 
-        planet.isWord
-        ? "#8cecff"
-        : "#ffffff"
+        "#ffffff"
     );
 
     planet.el.remove();
@@ -2992,19 +3485,7 @@ function startBonus() {
     bonusRemaining =
         BONUS_DURATION;
 
-    /*
-        Remove normal planets.
-
-        This gives students a clean
-        screen to read three choices.
-    */
-
     removeAllPlanets();
-
-
-    /*
-        Pick correct word.
-    */
 
     currentBonus =
         vocab[
@@ -3022,12 +3503,6 @@ function startBonus() {
 
     bonusPanel.style.display =
         "block";
-
-
-    /*
-        Select two different
-        wrong answers.
-    */
 
     const wrongChoices =
         vocab
@@ -3054,11 +3529,6 @@ function startBonus() {
     shuffle(
         choices
     );
-
-
-    /*
-        Three evenly-spaced choices.
-    */
 
     const positions = [
 
@@ -3148,11 +3618,6 @@ function finishBonus() {
     bonusPanel.style.display =
         "none";
 
-    /*
-        Remove remaining
-        Bonus choices.
-    */
-
     for (
         let i =
             planets.length - 1;
@@ -3218,60 +3683,6 @@ function removeAllPlanets() {
 
 
 /* =========================================================
-   SPEED CHECK
-========================================================= */
-
-function evaluateSpeed() {
-
-    const percentage =
-        score /
-        TARGET_SCORE;
-
-    let newLevel = 0;
-
-    for (
-        let i = 0;
-        i <
-        speedLevels.length;
-        i++
-    ) {
-
-        if (
-            percentage >=
-            speedLevels[i]
-                .percentage
-        ) {
-
-            newLevel = i;
-        }
-    }
-
-    if (
-        newLevel >
-        currentSpeedLevel
-    ) {
-
-        currentSpeedLevel =
-            newLevel;
-
-        speedValue.textContent =
-            currentSpeedLevel + 1;
-
-        showMessage(
-
-            "⚡ SPEED " +
-            (
-                currentSpeedLevel +
-                1
-            ),
-
-            "#ffcf55"
-        );
-    }
-}
-
-
-/* =========================================================
    END GAME
 ========================================================= */
 
@@ -3283,15 +3694,6 @@ function finishGame() {
         "none";
 
     clearObjects();
-
-
-    /*
-        Pass / fail is checked
-        ONLY HERE.
-
-        Reaching 550 early
-        does NOT end the game.
-    */
 
     if (
         score >=
