@@ -22,10 +22,8 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-
     -webkit-user-select: none;
     user-select: none;
-
     -webkit-touch-callout: none;
 }
 
@@ -33,17 +31,13 @@ html,
 body {
     width: 100%;
     height: 100%;
-
     overflow: hidden;
-
     background: #02040d;
-
     font-family:
         Arial,
         "PingFang SC",
         "Microsoft YaHei",
         sans-serif;
-
     touch-action: none;
 }
 
@@ -51,7 +45,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-
     color: white;
 }
 
@@ -62,12 +55,9 @@ body {
 
 #game {
     position: relative;
-
     width: min(100vw, 1180px);
     height: 100dvh;
-
     max-height: 820px;
-
     overflow: hidden;
 
     background:
@@ -95,35 +85,21 @@ body {
 #stars {
     position: absolute;
     inset: 0;
-
     overflow: hidden;
-
     pointer-events: none;
 }
 
 .star {
     position: absolute;
-
     border-radius: 50%;
-
     background: white;
-
     opacity: .7;
-
-    animation:
-        twinkle 2s infinite alternate;
+    animation: twinkle 2s infinite alternate;
 }
 
 @keyframes twinkle {
-
-    from {
-        opacity: .2;
-    }
-
-    to {
-        opacity: 1;
-    }
-
+    from { opacity: .2; }
+    to { opacity: 1; }
 }
 
 
@@ -139,34 +115,19 @@ body {
     right: 0;
 
     height: 75px;
-
     z-index: 100;
 
     display: grid;
-
-    grid-template-columns:
-        1fr
-        1fr
-        1fr
-        1fr;
-
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     align-items: center;
 
     padding:
-
         8px
-        max(
-            15px,
-            env(safe-area-inset-right)
-        )
+        max(15px, env(safe-area-inset-right))
         10px
-        max(
-            15px,
-            env(safe-area-inset-left)
-        );
+        max(15px, env(safe-area-inset-left));
 
     background:
-
         linear-gradient(
             rgba(2,5,18,.98),
             rgba(2,5,18,.7),
@@ -182,42 +143,21 @@ body {
 
 .hudLabel {
     font-size: 10px;
-
     letter-spacing: 1.4px;
-
     text-transform: uppercase;
-
     color: #8fa9df;
 }
 
 .hudValue {
     margin-top: 2px;
-
-    font-size:
-        clamp(
-            18px,
-            2.3vw,
-            24px
-        );
-
+    font-size: clamp(18px, 2.3vw, 24px);
     font-weight: 900;
 }
 
-#scoreValue {
-    color: white;
-}
-
-#targetValue {
-    color: #ffe25d;
-}
-
-#speedValue {
-    color: #ffad60;
-}
-
-#timeValue {
-    color: #70e8ff;
-}
+#scoreValue { color: white; }
+#targetValue { color: #ffe25d; }
+#speedValue { color: #ffad60; }
+#timeValue { color: #70e8ff; }
 
 
 /* =========================================================
@@ -230,10 +170,7 @@ body {
     top:
         calc(
             68px +
-            env(
-                safe-area-inset-top,
-                0px
-            )
+            env(safe-area-inset-top, 0px)
         );
 
     left: 4%;
@@ -244,7 +181,6 @@ body {
     z-index: 101;
 
     overflow: hidden;
-
     border-radius: 10px;
 
     background:
@@ -258,7 +194,6 @@ body {
     height: 100%;
 
     background:
-
         linear-gradient(
             90deg,
             #45d9ff,
@@ -280,10 +215,7 @@ body {
     top:
         calc(
             88px +
-            env(
-                safe-area-inset-top,
-                0px
-            )
+            env(safe-area-inset-top, 0px)
         );
 
     left: 50%;
@@ -323,35 +255,23 @@ body {
 
 #bonusLabel {
     font-size: 11px;
-
     font-weight: 900;
-
     letter-spacing: 1.5px;
-
     color: #ffd941;
 }
 
 #bonusClue {
     margin-top: 3px;
-
-    font-size:
-        clamp(
-            20px,
-            3vw,
-            28px
-        );
-
+    font-size: clamp(20px, 3vw, 28px);
     font-weight: 900;
 }
 
 #bonusTimer {
     margin-top: 8px;
-
     width: 100%;
     height: 5px;
 
     overflow: hidden;
-
     border-radius: 6px;
 
     background:
@@ -361,9 +281,7 @@ body {
 #bonusTimerFill {
     width: 100%;
     height: 100%;
-
-    background:
-        #ffd941;
+    background: #ffd941;
 }
 
 
@@ -373,9 +291,7 @@ body {
 
 #gameArea {
     position: absolute;
-
     inset: 0;
-
     overflow: hidden;
 }
 
@@ -390,12 +306,10 @@ body {
     z-index: 20;
 
     display: flex;
-
     justify-content: center;
     align-items: center;
 
     text-align: center;
-
     font-weight: 900;
 
     border:
@@ -403,7 +317,6 @@ body {
         rgba(255,255,255,.23);
 
     box-shadow:
-
         inset
         -10px
         -12px
@@ -428,7 +341,6 @@ body {
 
 .wordPlanet {
     min-width: 78px;
-
     height: 58px;
 
     padding:
@@ -446,7 +358,6 @@ body {
         );
 
     background:
-
         radial-gradient(
             circle at 30% 25%,
             #77e8ff,
@@ -454,14 +365,6 @@ body {
             #27145c
         );
 }
-
-
-/*
-    Bonus choices use a gold outline,
-    BUT all three choices look identical.
-
-    Correct answer is NOT highlighted.
-*/
 
 .bonusChoice {
     border-color:
@@ -473,7 +376,6 @@ body {
         );
 
     box-shadow:
-
         0
         0
         14px
@@ -514,7 +416,6 @@ body {
     border-radius: 50%;
 
     font-weight: 900;
-
     text-align: center;
 
     border:
@@ -560,14 +461,10 @@ body {
     left: 50%;
 
     bottom:
-
         max(
             18px,
             calc(
-                env(
-                    safe-area-inset-bottom,
-                    0px
-                )
+                env(safe-area-inset-bottom, 0px)
                 +
                 14px
             )
@@ -603,7 +500,6 @@ body {
         28%;
 
     background:
-
         linear-gradient(
             #e8f9ff,
             #6fd5ff 48%,
@@ -673,7 +569,6 @@ body {
     position: absolute;
 
     left: 50%;
-
     bottom: 0;
 
     width: 15px;
@@ -686,7 +581,6 @@ body {
         0 0 50% 50%;
 
     background:
-
         linear-gradient(
             white,
             #ffe04e,
@@ -701,7 +595,6 @@ body {
 }
 
 @keyframes flame {
-
     from {
         height: 15px;
         opacity: .7;
@@ -711,7 +604,6 @@ body {
         height: 26px;
         opacity: 1;
     }
-
 }
 
 
@@ -732,9 +624,7 @@ body {
     background: white;
 
     box-shadow:
-
         0 0 6px #78f1ff,
-
         0 0 13px #39c2ff;
 }
 
@@ -757,7 +647,6 @@ body {
 }
 
 @keyframes explode {
-
     0% {
         transform: scale(.3);
         opacity: 1;
@@ -772,7 +661,6 @@ body {
         transform: scale(1.9);
         opacity: 0;
     }
-
 }
 
 .floatText {
@@ -781,7 +669,6 @@ body {
     z-index: 160;
 
     font-weight: 900;
-
     white-space: nowrap;
 
     pointer-events: none;
@@ -794,26 +681,22 @@ body {
 }
 
 @keyframes floatUp {
-
     from {
         opacity: 1;
-
         transform:
             translateY(0);
     }
 
     to {
         opacity: 0;
-
         transform:
             translateY(-50px);
     }
-
 }
 
 
 /* =========================================================
-   SPEED MESSAGE
+   MESSAGE
 ========================================================= */
 
 #message {
@@ -856,7 +739,6 @@ body {
 
     left: 0;
     right: 0;
-
     bottom: 0;
 
     height: 28%;
@@ -868,26 +750,15 @@ body {
     touch-action: none;
 }
 
-
-/*
-    Small control hint.
-
-    It does not block gameplay.
-*/
-
 #touchHint {
     position: absolute;
 
     left: 50%;
 
     bottom:
-
         max(
             5px,
-            env(
-                safe-area-inset-bottom,
-                0px
-            )
+            env(safe-area-inset-bottom, 0px)
         );
 
     transform:
@@ -912,7 +783,6 @@ body {
     position: absolute;
 
     left: 50%;
-
     bottom: 7px;
 
     transform:
@@ -940,7 +810,6 @@ body {
 
 .screen {
     position: absolute;
-
     inset: 0;
 
     z-index: 500;
@@ -951,44 +820,21 @@ body {
     justify-content: center;
 
     padding:
-
-        max(
-            24px,
-            env(
-                safe-area-inset-top
-            )
-        )
-
-        max(
-            24px,
-            env(
-                safe-area-inset-right
-            )
-        )
-
-        max(
-            24px,
-            env(
-                safe-area-inset-bottom
-            )
-        )
-
-        max(
-            24px,
-            env(
-                safe-area-inset-left
-            )
-        );
+        max(24px, env(safe-area-inset-top))
+        max(24px, env(safe-area-inset-right))
+        max(24px, env(safe-area-inset-bottom))
+        max(24px, env(safe-area-inset-left));
 
     text-align: center;
 
     background:
-
         radial-gradient(
             circle at center,
             rgba(28,66,150,.78),
             rgba(2,4,15,.97)
         );
+
+    overflow-y: auto;
 }
 
 #startScreen {
@@ -1059,11 +905,8 @@ body {
 }
 
 .panel p {
-    margin:
-        8px 0;
-
+    margin: 8px 0;
     line-height: 1.6;
-
     color: #cbd7ef;
 
     font-size:
@@ -1075,8 +918,7 @@ body {
 }
 
 .bigScore {
-    margin:
-        14px 0;
+    margin: 14px 0;
 
     font-size:
         clamp(
@@ -1086,13 +928,11 @@ body {
         );
 
     font-weight: 900;
-
     color: #ffe357;
 }
 
 .resultBox {
     margin-top: 15px;
-
     padding: 14px;
 
     border-radius: 15px;
@@ -1115,11 +955,9 @@ button {
         14px 30px;
 
     border: 0;
-
     border-radius: 16px;
 
     background:
-
         linear-gradient(
             #fff67c,
             #ffc52e
@@ -1128,10 +966,114 @@ button {
     color: #071126;
 
     font-size: 19px;
-
     font-weight: 900;
 
     cursor: pointer;
+}
+
+
+/* =========================================================
+   LEADERBOARD
+========================================================= */
+
+.leaderboardArea {
+    margin-top: 18px;
+}
+
+.leaderboardArea h3 {
+    color: #ffe357;
+    margin-bottom: 10px;
+}
+
+#leaderboardSubmitBox {
+    display: none;
+
+    margin-top: 16px;
+    padding: 14px;
+
+    border-radius: 15px;
+
+    background:
+        rgba(255,213,65,.09);
+
+    border:
+        1px solid
+        rgba(255,220,70,.3);
+}
+
+#leaderboardName {
+    width: min(100%, 280px);
+
+    margin-top: 10px;
+    padding: 11px 13px;
+
+    border-radius: 10px;
+
+    border:
+        1px solid rgba(255,255,255,.25);
+
+    background:
+        rgba(255,255,255,.1);
+
+    color: white;
+
+    font-size: 17px;
+
+    outline: none;
+
+    -webkit-user-select: text;
+    user-select: text;
+}
+
+#submitScoreButton {
+    margin-top: 10px;
+    font-size: 15px;
+    padding: 10px 18px;
+}
+
+#submitStatus {
+    min-height: 20px;
+    margin-top: 8px;
+
+    font-size: 13px;
+    color: #8fe9ff;
+}
+
+#leaderboardList {
+    margin-top: 8px;
+    text-align: left;
+}
+
+.leaderRow {
+    display: grid;
+
+    grid-template-columns:
+        38px 1fr auto;
+
+    gap: 8px;
+
+    padding:
+        7px 9px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.08);
+}
+
+.leaderRank {
+    color: #ffd952;
+    font-weight: 900;
+}
+
+.leaderName {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.leaderScore {
+    font-weight: 900;
+    color: #80e8ff;
 }
 
 
@@ -1141,7 +1083,6 @@ button {
 
 #rotateScreen {
     position: fixed;
-
     inset: 0;
 
     z-index: 2000;
@@ -1158,7 +1099,6 @@ button {
     color: white;
 
     background:
-
         linear-gradient(
             #07152f,
             #02040d
@@ -1167,19 +1107,16 @@ button {
 
 #rotateIcon {
     font-size: 64px;
-
     margin-bottom: 15px;
 }
 
 #rotateScreen p {
     margin-top: 8px;
-
     color: #cbd7ef;
 }
 
 
-@media
-(pointer: coarse) {
+@media (pointer: coarse) {
 
     #touchZone {
         display: block;
@@ -1192,17 +1129,14 @@ button {
     #desktopHint {
         display: none;
     }
-
 }
 
 
-@media
-(pointer: fine) {
+@media (pointer: fine) {
 
     #touchHint {
         display: none;
     }
-
 }
 
 
@@ -1214,16 +1148,10 @@ and
     #rotateScreen {
         display: flex;
     }
-
 }
 
 
-/*
-    Smaller iPad / landscape screens
-*/
-
-@media
-(max-height: 600px) {
+@media (max-height: 600px) {
 
     #hud {
         height: 63px;
@@ -1233,10 +1161,7 @@ and
         top:
             calc(
                 57px +
-                env(
-                    safe-area-inset-top,
-                    0px
-                )
+                env(safe-area-inset-top, 0px)
             );
     }
 
@@ -1244,10 +1169,7 @@ and
         top:
             calc(
                 70px +
-                env(
-                    safe-area-inset-top,
-                    0px
-                )
+                env(safe-area-inset-top, 0px)
             );
     }
 
@@ -1263,7 +1185,6 @@ and
         transform-origin:
             center bottom;
     }
-
 }
 
 </style>
@@ -1437,8 +1358,6 @@ and
     </div>
 
 
-    <!-- TOUCH ZONE -->
-
     <div id="touchZone"></div>
 
 
@@ -1455,7 +1374,7 @@ and
     <div id="message"></div>
 
 
-    <!-- START SCREEN -->
+    <!-- START -->
 
     <div
         id="startScreen"
@@ -1540,6 +1459,48 @@ and
                 id="successResults"
             ></div>
 
+
+            <div class="leaderboardArea">
+
+                <div id="leaderboardSubmitBox">
+
+                    <h3>
+                        🏆 LEADERBOARD SCORE!
+                    </h3>
+
+                    <p>
+                        Use your first name or nickname.
+                    </p>
+
+                    <input
+                        id="leaderboardName"
+                        maxlength="20"
+                        autocomplete="off"
+                        placeholder="Name / nickname"
+                    >
+
+                    <br>
+
+                    <button id="submitScoreButton">
+                        SUBMIT SCORE
+                    </button>
+
+                    <div id="submitStatus"></div>
+
+                </div>
+
+
+                <h3 style="margin-top:18px;">
+                    🏆 TOP 10
+                </h3>
+
+                <div id="leaderboardList">
+                    Loading...
+                </div>
+
+            </div>
+
+
             <button id="playAgainButton">
                 PLAY AGAIN
             </button>
@@ -1578,6 +1539,20 @@ and
                 id="failResults"
             ></div>
 
+
+            <div class="leaderboardArea">
+
+                <h3>
+                    🏆 TOP 10
+                </h3>
+
+                <div id="failLeaderboardList">
+                    Loading...
+                </div>
+
+            </div>
+
+
             <button id="retryButton">
                 TRY AGAIN
             </button>
@@ -1587,10 +1562,69 @@ and
     </div>
 
 
+    <!-- Hidden target for Google Form submission -->
+
+    <iframe
+        name="scoreSubmitFrame"
+        id="scoreSubmitFrame"
+        style="display:none;"
+    ></iframe>
+
+
 </div>
 
 
 <script>
+
+/* =========================================================
+   LEADERBOARD CONFIGURATION
+
+   REPLACE ONLY THESE VALUES
+========================================================= */
+
+
+/*
+    Example:
+    https://docs.google.com/forms/d/e/XXXXXXXXXXXX/formResponse
+*/
+
+const GOOGLE_FORM_ACTION =
+    "PASTE_GOOGLE_FORM_FORMRESPONSE_URL_HERE";
+
+
+/*
+    Google Form entry IDs.
+
+    Example:
+    entry.123456789
+*/
+
+const FORM_ENTRY_NAME =
+    "entry.REPLACE_NAME";
+
+const FORM_ENTRY_SCORE =
+    "entry.REPLACE_SCORE";
+
+const FORM_ENTRY_CHINESE_BONUS =
+    "entry.REPLACE_CHINESE_BONUS";
+
+const FORM_ENTRY_CORRECT_MATCHES =
+    "entry.REPLACE_CORRECT_MATCHES";
+
+
+/*
+    Apps Script deployment URL.
+
+    Example:
+    https://script.google.com/macros/s/XXXXXXXXXXXX/exec
+*/
+
+const LEADERBOARD_SCRIPT_URL =
+    "PASTE_APPS_SCRIPT_WEB_APP_URL_HERE";
+
+
+const LEADERBOARD_MIN_SCORE = 1000;
+
 
 /* =========================================================
    VOCABULARY
@@ -1670,16 +1704,6 @@ const GAME_DURATION = 60000;
 const TARGET_SCORE = 550;
 
 
-/*
-    Speed does ONE thing only:
-
-    it changes how frequently
-    normal planets appear.
-
-    Average spawning speed has been
-    increased by about 18%.
-*/
-
 const speedLevels = [
 
     {
@@ -1705,19 +1729,6 @@ const speedLevels = [
 ];
 
 
-/*
-    Bonus mode:
-
-    roughly every 9 seconds,
-    lasting 6 seconds.
-
-    During Bonus Mode,
-    normal spawning pauses.
-
-    Only the three bonus choices
-    are shown.
-*/
-
 const BONUS_DURATION = 6000;
 
 const BONUS_GAP_MIN = 8500;
@@ -1725,26 +1736,22 @@ const BONUS_GAP_MAX = 10000;
 
 
 /*
-    Fixed falling speed.
+    NEW:
+    1 second English clue.
+    1 second frozen Chinese choices.
 
-    Speed levels do not change it.
+    These 2 seconds DO NOT reduce
+    the main game timer.
 */
+
+const BONUS_CLUE_PREVIEW = 1000;
+const BONUS_CHOICE_PREVIEW = 1000;
+
 
 const PLANET_FALL_SPEED = 0.041;
 
-
-/*
-    Auto fire speed.
-*/
-
 const AUTO_FIRE_INTERVAL = 290;
 
-
-/*
-    Normal planet sizes.
-
-    Smaller = more points.
-*/
 
 const planetSizes = [
 
@@ -1803,8 +1810,14 @@ const progressFill =
 const bonusPanel =
     document.getElementById("bonusPanel");
 
+const bonusLabel =
+    document.getElementById("bonusLabel");
+
 const bonusClue =
     document.getElementById("bonusClue");
+
+const bonusTimer =
+    document.getElementById("bonusTimer");
 
 const bonusTimerFill =
     document.getElementById("bonusTimerFill");
@@ -1864,28 +1877,33 @@ let lastFrame =
 
 
 /* =========================================================
-   SPECIAL ITEM STATE
+   BONUS INTRO STATE
 ========================================================= */
 
 /*
-    Each speed level receives:
-
-    Speed 1:
-        1 bomb
-        1 hourglass
-
-    Speed 2:
-        2 bombs
-        2 hourglasses
-
-    Speed 3:
-        3 bombs
-        3 hourglasses
-
-    Speed 4:
-        4 bombs
-        4 hourglasses
+    null
+    "clue"
+    "choices"
 */
+
+let bonusIntroPhase = null;
+
+let bonusIntroRemaining = 0;
+
+
+/*
+    Bombs/hourglasses already on screen
+    are temporarily stored here.
+
+    They are restored after Bonus.
+*/
+
+let stashedSpecialItems = [];
+
+
+/* =========================================================
+   SPECIAL ITEM STATE
+========================================================= */
 
 let specialQueue = [];
 
@@ -2039,12 +2057,18 @@ function startGame() {
 
     bonusActive = false;
 
+    bonusIntroPhase = null;
+
+    bonusIntroRemaining = 0;
+
     currentBonus = null;
 
     bonusRemaining = 0;
 
     nextBonusCountdown =
         randomBonusGap();
+
+    stashedSpecialItems = [];
 
     specialQueue = [];
 
@@ -2070,6 +2094,14 @@ function startGame() {
 
     failScreen.style.display =
         "none";
+
+    document.getElementById(
+        "leaderboardSubmitBox"
+    ).style.display = "none";
+
+    document.getElementById(
+        "submitStatus"
+    ).textContent = "";
 
     updateHUD();
 
@@ -2109,6 +2141,36 @@ function gameLoop(timestamp) {
     lastFrame =
         timestamp;
 
+
+    /*
+        BONUS INTRO:
+
+        Completely paused.
+
+        Main game timer does NOT move.
+        Bullets do NOT move.
+        Ship does NOT move.
+        Nothing spawns.
+    */
+
+    if (
+        bonusIntroPhase !== null
+    ) {
+
+        updateBonusIntro(
+            delta
+        );
+
+        updateHUD();
+
+        requestAnimationFrame(
+            gameLoop
+        );
+
+        return;
+    }
+
+
     gameRemaining -=
         delta;
 
@@ -2124,6 +2186,7 @@ function gameLoop(timestamp) {
 
         return;
     }
+
 
     updateKeyboardMovement(
         delta
@@ -2368,7 +2431,11 @@ touchZone.addEventListener(
     "pointerdown",
     event => {
 
-        if (!running) {
+        if (
+            !running ||
+            bonusIntroPhase !== null
+        ) {
+
             return;
         }
 
@@ -2396,7 +2463,8 @@ touchZone.addEventListener(
 
         if (
             !running ||
-            !dragging
+            !dragging ||
+            bonusIntroPhase !== null
         ) {
 
             return;
@@ -2486,7 +2554,11 @@ function updateAutoFire(
 
 function shoot() {
 
-    if (!running) {
+    if (
+        !running ||
+        bonusIntroPhase !== null
+    ) {
+
         return;
     }
 
@@ -2758,7 +2830,6 @@ function createNormalPlanet() {
         ];
 
     el.style.background =
-
         `radial-gradient(
             circle at 30% 25%,
             ${colours[0]},
@@ -2926,7 +2997,11 @@ function spawnSpecialItem(
     type
 ) {
 
-    if (bonusActive) {
+    if (
+        bonusActive ||
+        bonusIntroPhase !== null
+    ) {
+
         return;
     }
 
@@ -2937,6 +3012,31 @@ function spawnSpecialItem(
                 planetSizes.length
             )
         ];
+
+    createSpecialItemObject(
+        type,
+        sizeInfo.name,
+        null
+    );
+}
+
+
+/* =========================================================
+   CREATE / RESTORE SPECIAL ITEM
+========================================================= */
+
+function createSpecialItemObject(
+    type,
+    sizeName,
+    snapshot
+) {
+
+    const sizeInfo =
+        planetSizes.find(
+            item =>
+                item.name ===
+                sizeName
+        );
 
     const el =
         document.createElement(
@@ -2983,21 +3083,39 @@ function spawnSpecialItem(
         ) +
         "px";
 
+
     const x =
-        getSpawnX(
+        snapshot
+        ? snapshot.x
+        : getSpawnX(
             sizeInfo.size
         );
+
+
+    const y =
+        snapshot
+        ? snapshot.y
+        : 105;
+
+
+    const drift =
+        snapshot
+        ? snapshot.drift
+        : randomDrift();
+
 
     el.style.left =
         x +
         "px";
 
     el.style.top =
-        "105px";
+        y +
+        "px";
 
     gameArea.appendChild(
         el
     );
+
 
     planets.push({
 
@@ -3005,7 +3123,7 @@ function spawnSpecialItem(
 
         x: x,
 
-        y: 105,
+        y: y,
 
         width:
             sizeInfo.size,
@@ -3014,7 +3132,7 @@ function spawnSpecialItem(
             sizeInfo.size,
 
         drift:
-            randomDrift(),
+            drift,
 
         isWord: false,
 
@@ -3121,6 +3239,7 @@ function updatePlanets(
             PLANET_FALL_SPEED *
             delta;
 
+
         if (
             !planet.isBonusChoice
         ) {
@@ -3128,6 +3247,7 @@ function updatePlanets(
             planet.x +=
                 planet.drift *
                 delta;
+
 
             if (
                 planet.x < 10
@@ -3140,6 +3260,7 @@ function updatePlanets(
                         planet.drift
                     );
             }
+
 
             if (
                 planet.x +
@@ -3160,6 +3281,7 @@ function updatePlanets(
             }
         }
 
+
         planet.el.style.left =
             planet.x +
             "px";
@@ -3167,6 +3289,7 @@ function updatePlanets(
         planet.el.style.top =
             planet.y +
             "px";
+
 
         if (
             planet.y >
@@ -3236,6 +3359,7 @@ function hitPlanet(
         );
     }
 
+
     createExplosion(
 
         planet.x +
@@ -3246,9 +3370,7 @@ function hitPlanet(
     );
 
 
-    /* =====================================================
-       BOMB
-    ===================================================== */
+    /* BOMB */
 
     if (
         planet.objectType ===
@@ -3274,9 +3396,7 @@ function hitPlanet(
     }
 
 
-    /* =====================================================
-       HOURGLASS
-    ===================================================== */
+    /* HOURGLASS */
 
     if (
         planet.objectType ===
@@ -3318,21 +3438,12 @@ function hitPlanet(
     }
 
 
-    /* =====================================================
-       BONUS CHOICES
-    ===================================================== */
+    /* BONUS CHOICE */
 
     if (
         bonusActive &&
         planet.isBonusChoice
     ) {
-
-        /*
-            CORRECT:
-            Chinese base 15
-            + extra Bonus 50
-            = 65
-        */
 
         if (
             currentBonus &&
@@ -3382,10 +3493,9 @@ function hitPlanet(
 
 
         /*
-            WRONG BONUS CHOICE:
-
+            WRONG BONUS:
             0 points
-            + Speed Level drops by 1.
+            speed down
         */
 
         floatingText(
@@ -3407,9 +3517,7 @@ function hitPlanet(
     }
 
 
-    /* =====================================================
-       NORMAL WORD PLANET
-    ===================================================== */
+    /* NORMAL WORD */
 
     if (
         planet.objectType ===
@@ -3439,9 +3547,7 @@ function hitPlanet(
     }
 
 
-    /* =====================================================
-       NORMAL PLANET
-    ===================================================== */
+    /* NORMAL PLANET */
 
     score +=
         planet.points;
@@ -3467,25 +3573,43 @@ function hitPlanet(
 
 
 /* =========================================================
-   BONUS MODE
+   BONUS MODE START
+
+   NEW FLOW:
+   1. Preserve active bomb/hourglass.
+   2. Clear everything else + bullets.
+   3. Pause game clock.
+   4. English clue for 1 second.
 ========================================================= */
 
 function startBonus() {
 
     if (
         bonusActive ||
+        bonusIntroPhase !== null ||
         !running
     ) {
 
         return;
     }
 
-    bonusActive = true;
 
-    bonusRemaining =
-        BONUS_DURATION;
+    /*
+        Preserve special items
+        that have already spawned
+        but have not been hit.
+    */
 
-    removeAllPlanets();
+    stashSpecialItemsForBonus();
+
+
+    /*
+        Remove normal planets,
+        Chinese planets and bullets.
+    */
+
+    clearFieldForBonus();
+
 
     currentBonus =
         vocab[
@@ -3495,14 +3619,152 @@ function startBonus() {
             )
         ];
 
+
+    bonusIntroPhase =
+        "clue";
+
+    bonusIntroRemaining =
+        BONUS_CLUE_PREVIEW;
+
+
+    /*
+        English only.
+        No timer yet.
+    */
+
+    bonusLabel.style.display =
+        "none";
+
+    bonusTimer.style.display =
+        "none";
+
+    bonusClue.style.display =
+        "block";
+
     bonusClue.textContent =
         currentBonus.meaning;
 
-    bonusTimerFill.style.width =
-        "100%";
-
     bonusPanel.style.display =
         "block";
+}
+
+
+/* =========================================================
+   BONUS INTRO
+
+   clue:
+       English word = 1 second.
+
+   choices:
+       English disappears.
+       3 Chinese choices appear at top.
+       They stay frozen = 1 second.
+
+   After that:
+       main timer resumes
+       auto fire resumes
+       Chinese balls begin falling
+       original 6-second Bonus begins.
+========================================================= */
+
+function updateBonusIntro(
+    delta
+) {
+
+    bonusIntroRemaining -=
+        delta;
+
+
+    if (
+        bonusIntroRemaining > 0
+    ) {
+
+        return;
+    }
+
+
+    /* -----------------------------------------
+       ENGLISH -> FROZEN CHOICES
+    ----------------------------------------- */
+
+    if (
+        bonusIntroPhase ===
+        "clue"
+    ) {
+
+        bonusPanel.style.display =
+            "none";
+
+        createBonusChoices();
+
+        bonusIntroPhase =
+            "choices";
+
+        bonusIntroRemaining =
+            BONUS_CHOICE_PREVIEW;
+
+        return;
+    }
+
+
+    /* -----------------------------------------
+       FROZEN CHOICES -> ACTIVE BONUS
+    ----------------------------------------- */
+
+    if (
+        bonusIntroPhase ===
+        "choices"
+    ) {
+
+        bonusIntroPhase =
+            null;
+
+        bonusActive =
+            true;
+
+        bonusRemaining =
+            BONUS_DURATION;
+
+
+        /*
+            English clue stays gone.
+
+            Only Bonus label + timer
+            return during active play.
+        */
+
+        bonusLabel.style.display =
+            "block";
+
+        bonusClue.style.display =
+            "none";
+
+        bonusTimer.style.display =
+            "block";
+
+        bonusTimerFill.style.width =
+            "100%";
+
+        bonusPanel.style.display =
+            "block";
+
+
+        /*
+            Start with a clean shot timing.
+        */
+
+        fireTimer = 0;
+
+        return;
+    }
+}
+
+
+/* =========================================================
+   CREATE THREE BONUS CHOICES
+========================================================= */
+
+function createBonusChoices() {
 
     const wrongChoices =
         vocab
@@ -3516,6 +3778,7 @@ function startBonus() {
         wrongChoices
     );
 
+
     const choices = [
 
         currentBonus,
@@ -3526,9 +3789,11 @@ function startBonus() {
 
     ];
 
+
     shuffle(
         choices
     );
+
 
     const positions = [
 
@@ -3542,6 +3807,7 @@ function startBonus() {
         .77
 
     ];
+
 
     choices.forEach(
         (item, index) => {
@@ -3560,7 +3826,119 @@ function startBonus() {
 
 
 /* =========================================================
+   STORE ACTIVE BOMB / HOURGLASS
+========================================================= */
+
+function stashSpecialItemsForBonus() {
+
+    stashedSpecialItems = [];
+
+
+    for (
+        let i =
+            planets.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        const planet =
+            planets[i];
+
+
+        if (
+            planet.objectType ===
+            "bomb" ||
+            planet.objectType ===
+            "hourglass"
+        ) {
+
+            stashedSpecialItems.push({
+
+                objectType:
+                    planet.objectType,
+
+                x:
+                    planet.x,
+
+                y:
+                    planet.y,
+
+                drift:
+                    planet.drift,
+
+                sizeName:
+                    planet.sizeName
+
+            });
+
+
+            planet.el.remove();
+
+            planets.splice(
+                i,
+                1
+            );
+        }
+    }
+}
+
+
+/* =========================================================
+   CLEAR EVERYTHING ELSE FOR BONUS
+========================================================= */
+
+function clearFieldForBonus() {
+
+    planets.forEach(
+        planet =>
+            planet.el.remove()
+    );
+
+    planets = [];
+
+
+    bullets.forEach(
+        bullet =>
+            bullet.el.remove()
+    );
+
+    bullets = [];
+
+
+    fireTimer = 0;
+}
+
+
+/* =========================================================
+   RESTORE UNTRIGGERED BOMB / HOURGLASS
+========================================================= */
+
+function restoreSpecialItemsAfterBonus() {
+
+    stashedSpecialItems.forEach(
+        snapshot => {
+
+            createSpecialItemObject(
+
+                snapshot.objectType,
+
+                snapshot.sizeName,
+
+                snapshot
+            );
+        }
+    );
+
+
+    stashedSpecialItems = [];
+}
+
+
+/* =========================================================
    BONUS TIMER
+
+   The original 6 seconds begins only
+   after both paused preview stages.
 ========================================================= */
 
 function updateBonus(
@@ -3574,8 +3952,10 @@ function updateBonus(
         return;
     }
 
+
     bonusRemaining -=
         delta;
+
 
     const percent =
         Math.max(
@@ -3587,9 +3967,11 @@ function updateBonus(
             100
         );
 
+
     bonusTimerFill.style.width =
         percent +
         "%";
+
 
     if (
         bonusRemaining <= 0
@@ -3613,10 +3995,18 @@ function finishBonus() {
         return;
     }
 
+
     bonusActive = false;
+
 
     bonusPanel.style.display =
         "none";
+
+
+    /*
+        Remove remaining
+        Bonus words.
+    */
 
     for (
         let i =
@@ -3641,9 +4031,20 @@ function finishBonus() {
         }
     }
 
+
     currentBonus = null;
 
+
+    /*
+        Return bomb/hourglass
+        that existed before Bonus.
+    */
+
+    restoreSpecialItemsAfterBonus();
+
+
     spawnTimer = 0;
+
 
     nextBonusCountdown =
         randomBonusGap();
@@ -3668,21 +4069,6 @@ function randomBonusGap() {
 
 
 /* =========================================================
-   REMOVE PLANETS
-========================================================= */
-
-function removeAllPlanets() {
-
-    planets.forEach(
-        planet =>
-            planet.el.remove()
-    );
-
-    planets = [];
-}
-
-
-/* =========================================================
    END GAME
 ========================================================= */
 
@@ -3695,6 +4081,7 @@ function finishGame() {
 
     clearObjects();
 
+
     if (
         score >=
         TARGET_SCORE
@@ -3704,6 +4091,7 @@ function finishGame() {
             "successScore"
         ).textContent =
             score;
+
 
         document.getElementById(
             "successResults"
@@ -3724,15 +4112,41 @@ function finishGame() {
 
         `;
 
+
+        /*
+            Only >1000 gets
+            score submission.
+        */
+
+        if (
+            score >
+            LEADERBOARD_MIN_SCORE
+        ) {
+
+            document.getElementById(
+                "leaderboardSubmitBox"
+            ).style.display =
+                "block";
+        }
+
+
         successScreen.style.display =
             "flex";
 
+
+        loadLeaderboard(
+            "leaderboardList"
+        );
+
+
     } else {
+
 
         document.getElementById(
             "failScore"
         ).textContent =
             score;
+
 
         document.getElementById(
             "failResults"
@@ -3753,9 +4167,439 @@ function finishGame() {
 
         `;
 
+
         failScreen.style.display =
             "flex";
+
+
+        loadLeaderboard(
+            "failLeaderboardList"
+        );
     }
+}
+
+
+/* =========================================================
+   GOOGLE FORM SCORE SUBMISSION
+========================================================= */
+
+function submitLeaderboardScore() {
+
+    const nameInput =
+        document.getElementById(
+            "leaderboardName"
+        );
+
+
+    const status =
+        document.getElementById(
+            "submitStatus"
+        );
+
+
+    const playerName =
+        nameInput.value
+        .trim()
+        .replace(
+            /\s+/g,
+            " "
+        );
+
+
+    if (
+        score <=
+        LEADERBOARD_MIN_SCORE
+    ) {
+
+        status.textContent =
+            "Score is not eligible.";
+
+        return;
+    }
+
+
+    if (
+        playerName.length < 1
+    ) {
+
+        status.textContent =
+            "Please enter a name.";
+
+        return;
+    }
+
+
+    if (
+        playerName.length > 20
+    ) {
+
+        status.textContent =
+            "Name is too long.";
+
+        return;
+    }
+
+
+    if (
+        GOOGLE_FORM_ACTION.includes(
+            "PASTE_"
+        ) ||
+        FORM_ENTRY_NAME.includes(
+            "REPLACE_"
+        )
+    ) {
+
+        status.textContent =
+            "Leaderboard submission is not configured yet.";
+
+        return;
+    }
+
+
+    const form =
+        document.createElement(
+            "form"
+        );
+
+
+    form.method =
+        "POST";
+
+    form.action =
+        GOOGLE_FORM_ACTION;
+
+    form.target =
+        "scoreSubmitFrame";
+
+    form.style.display =
+        "none";
+
+
+    addHiddenFormField(
+        form,
+        FORM_ENTRY_NAME,
+        playerName
+    );
+
+
+    addHiddenFormField(
+        form,
+        FORM_ENTRY_SCORE,
+        score
+    );
+
+
+    addHiddenFormField(
+        form,
+        FORM_ENTRY_CHINESE_BONUS,
+        chineseBonusPoints
+    );
+
+
+    addHiddenFormField(
+        form,
+        FORM_ENTRY_CORRECT_MATCHES,
+        correctChinese
+    );
+
+
+    document.body.appendChild(
+        form
+    );
+
+
+    form.submit();
+
+
+    form.remove();
+
+
+    status.textContent =
+        "Score submitted ✓";
+
+
+    document.getElementById(
+        "submitScoreButton"
+    ).disabled =
+        true;
+
+
+    /*
+        Form -> Sheet can take a moment.
+        Refresh Top 10 shortly afterwards.
+    */
+
+    setTimeout(
+        () => {
+
+            loadLeaderboard(
+                "leaderboardList"
+            );
+
+        },
+        1800
+    );
+}
+
+
+function addHiddenFormField(
+    form,
+    fieldName,
+    value
+) {
+
+    const input =
+        document.createElement(
+            "input"
+        );
+
+    input.type =
+        "hidden";
+
+    input.name =
+        fieldName;
+
+    input.value =
+        value;
+
+    form.appendChild(
+        input
+    );
+}
+
+
+/* =========================================================
+   LEADERBOARD READ
+
+   Uses JSONP because Apps Script
+   officially supports this browser
+   read-only pattern.
+
+   The Sheet itself remains private.
+========================================================= */
+
+let leaderboardCallbackCounter = 0;
+
+
+function loadLeaderboard(
+    targetId
+) {
+
+    const target =
+        document.getElementById(
+            targetId
+        );
+
+
+    if (
+        !target
+    ) {
+
+        return;
+    }
+
+
+    if (
+        LEADERBOARD_SCRIPT_URL.includes(
+            "PASTE_"
+        )
+    ) {
+
+        target.innerHTML =
+            "Leaderboard not configured yet.";
+
+        return;
+    }
+
+
+    target.innerHTML =
+        "Loading...";
+
+
+    leaderboardCallbackCounter++;
+
+
+    const callbackName =
+        "__cgLeaderboard" +
+        leaderboardCallbackCounter;
+
+
+    window[
+        callbackName
+    ] =
+        function(data) {
+
+            renderLeaderboard(
+                target,
+                data
+            );
+
+
+            delete window[
+                callbackName
+            ];
+        };
+
+
+    const script =
+        document.createElement(
+            "script"
+        );
+
+
+    const separator =
+        LEADERBOARD_SCRIPT_URL.includes(
+            "?"
+        )
+        ? "&"
+        : "?";
+
+
+    script.src =
+        LEADERBOARD_SCRIPT_URL +
+        separator +
+        "prefix=" +
+        encodeURIComponent(
+            callbackName
+        ) +
+        "&t=" +
+        Date.now();
+
+
+    script.onerror =
+        function() {
+
+            target.innerHTML =
+                "Leaderboard unavailable.";
+
+            delete window[
+                callbackName
+            ];
+
+            script.remove();
+        };
+
+
+    script.onload =
+        function() {
+
+            setTimeout(
+                () =>
+                    script.remove(),
+                0
+            );
+        };
+
+
+    document.body.appendChild(
+        script
+    );
+}
+
+
+/* =========================================================
+   LEADERBOARD DISPLAY
+========================================================= */
+
+function renderLeaderboard(
+    target,
+    data
+) {
+
+    if (
+        !Array.isArray(
+            data
+        ) ||
+        data.length === 0
+    ) {
+
+        target.innerHTML =
+            "No leaderboard scores yet.";
+
+        return;
+    }
+
+
+    target.innerHTML =
+        "";
+
+
+    data
+    .slice(
+        0,
+        10
+    )
+    .forEach(
+        (player, index) => {
+
+            const row =
+                document.createElement(
+                    "div"
+                );
+
+            row.className =
+                "leaderRow";
+
+
+            const rank =
+                document.createElement(
+                    "div"
+                );
+
+            rank.className =
+                "leaderRank";
+
+            rank.textContent =
+                index + 1;
+
+
+            const name =
+                document.createElement(
+                    "div"
+                );
+
+            name.className =
+                "leaderName";
+
+            name.textContent =
+                String(
+                    player.name ||
+                    "Player"
+                );
+
+
+            const playerScore =
+                document.createElement(
+                    "div"
+                );
+
+            playerScore.className =
+                "leaderScore";
+
+            playerScore.textContent =
+                Number(
+                    player.score ||
+                    0
+                );
+
+
+            row.appendChild(
+                rank
+            );
+
+            row.appendChild(
+                name
+            );
+
+            row.appendChild(
+                playerScore
+            );
+
+            target.appendChild(
+                row
+            );
+        }
+    );
 }
 
 
@@ -3952,6 +4796,14 @@ document.addEventListener(
     event => {
 
         if (
+            bonusIntroPhase !== null
+        ) {
+
+            return;
+        }
+
+
+        if (
             event.code ===
             "ArrowLeft" ||
             event.code ===
@@ -3963,6 +4815,7 @@ document.addEventListener(
             leftPressed =
                 true;
         }
+
 
         if (
             event.code ===
@@ -4037,6 +4890,15 @@ document.getElementById(
 .addEventListener(
     "click",
     startGame
+);
+
+
+document.getElementById(
+    "submitScoreButton"
+)
+.addEventListener(
+    "click",
+    submitLeaderboardScore
 );
 
 
