@@ -22,8 +22,10 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+
     -webkit-user-select: none;
     user-select: none;
+
     -webkit-touch-callout: none;
 }
 
@@ -31,13 +33,17 @@ html,
 body {
     width: 100%;
     height: 100%;
+
     overflow: hidden;
+
     background: #02040d;
+
     font-family:
         Arial,
         "PingFang SC",
         "Microsoft YaHei",
         sans-serif;
+
     touch-action: none;
 }
 
@@ -45,6 +51,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+
     color: white;
 }
 
@@ -55,9 +62,12 @@ body {
 
 #game {
     position: relative;
+
     width: min(100vw, 1180px);
     height: 100dvh;
+
     max-height: 820px;
+
     overflow: hidden;
 
     background:
@@ -85,21 +95,35 @@ body {
 #stars {
     position: absolute;
     inset: 0;
+
     overflow: hidden;
+
     pointer-events: none;
 }
 
 .star {
     position: absolute;
+
     border-radius: 50%;
+
     background: white;
+
     opacity: .7;
-    animation: twinkle 2s infinite alternate;
+
+    animation:
+        twinkle 2s infinite alternate;
 }
 
 @keyframes twinkle {
-    from { opacity: .2; }
-    to { opacity: 1; }
+
+    from {
+        opacity: .2;
+    }
+
+    to {
+        opacity: 1;
+    }
+
 }
 
 
@@ -115,19 +139,34 @@ body {
     right: 0;
 
     height: 75px;
+
     z-index: 100;
 
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+
+    grid-template-columns:
+        1fr
+        1fr
+        1fr
+        1fr;
+
     align-items: center;
 
     padding:
+
         8px
-        max(15px, env(safe-area-inset-right))
+        max(
+            15px,
+            env(safe-area-inset-right)
+        )
         10px
-        max(15px, env(safe-area-inset-left));
+        max(
+            15px,
+            env(safe-area-inset-left)
+        );
 
     background:
+
         linear-gradient(
             rgba(2,5,18,.98),
             rgba(2,5,18,.7),
@@ -143,21 +182,42 @@ body {
 
 .hudLabel {
     font-size: 10px;
+
     letter-spacing: 1.4px;
+
     text-transform: uppercase;
+
     color: #8fa9df;
 }
 
 .hudValue {
     margin-top: 2px;
-    font-size: clamp(18px, 2.3vw, 24px);
+
+    font-size:
+        clamp(
+            18px,
+            2.3vw,
+            24px
+        );
+
     font-weight: 900;
 }
 
-#scoreValue { color: white; }
-#targetValue { color: #ffe25d; }
-#speedValue { color: #ffad60; }
-#timeValue { color: #70e8ff; }
+#scoreValue {
+    color: white;
+}
+
+#targetValue {
+    color: #ffe25d;
+}
+
+#speedValue {
+    color: #ffad60;
+}
+
+#timeValue {
+    color: #70e8ff;
+}
 
 
 /* =========================================================
@@ -170,7 +230,10 @@ body {
     top:
         calc(
             68px +
-            env(safe-area-inset-top, 0px)
+            env(
+                safe-area-inset-top,
+                0px
+            )
         );
 
     left: 4%;
@@ -181,6 +244,7 @@ body {
     z-index: 101;
 
     overflow: hidden;
+
     border-radius: 10px;
 
     background:
@@ -194,6 +258,7 @@ body {
     height: 100%;
 
     background:
+
         linear-gradient(
             90deg,
             #45d9ff,
@@ -215,7 +280,10 @@ body {
     top:
         calc(
             88px +
-            env(safe-area-inset-top, 0px)
+            env(
+                safe-area-inset-top,
+                0px
+            )
         );
 
     left: 50%;
@@ -255,23 +323,35 @@ body {
 
 #bonusLabel {
     font-size: 11px;
+
     font-weight: 900;
+
     letter-spacing: 1.5px;
+
     color: #ffd941;
 }
 
 #bonusClue {
     margin-top: 3px;
-    font-size: clamp(20px, 3vw, 28px);
+
+    font-size:
+        clamp(
+            20px,
+            3vw,
+            28px
+        );
+
     font-weight: 900;
 }
 
 #bonusTimer {
     margin-top: 8px;
+
     width: 100%;
     height: 5px;
 
     overflow: hidden;
+
     border-radius: 6px;
 
     background:
@@ -281,7 +361,9 @@ body {
 #bonusTimerFill {
     width: 100%;
     height: 100%;
-    background: #ffd941;
+
+    background:
+        #ffd941;
 }
 
 
@@ -291,7 +373,9 @@ body {
 
 #gameArea {
     position: absolute;
+
     inset: 0;
+
     overflow: hidden;
 }
 
@@ -306,10 +390,12 @@ body {
     z-index: 20;
 
     display: flex;
+
     justify-content: center;
     align-items: center;
 
     text-align: center;
+
     font-weight: 900;
 
     border:
@@ -317,6 +403,7 @@ body {
         rgba(255,255,255,.23);
 
     box-shadow:
+
         inset
         -10px
         -12px
@@ -341,6 +428,7 @@ body {
 
 .wordPlanet {
     min-width: 78px;
+
     height: 58px;
 
     padding:
@@ -358,6 +446,7 @@ body {
         );
 
     background:
+
         radial-gradient(
             circle at 30% 25%,
             #77e8ff,
@@ -376,6 +465,7 @@ body {
         );
 
     box-shadow:
+
         0
         0
         14px
@@ -416,6 +506,7 @@ body {
     border-radius: 50%;
 
     font-weight: 900;
+
     text-align: center;
 
     border:
@@ -461,10 +552,14 @@ body {
     left: 50%;
 
     bottom:
+
         max(
             18px,
             calc(
-                env(safe-area-inset-bottom, 0px)
+                env(
+                    safe-area-inset-bottom,
+                    0px
+                )
                 +
                 14px
             )
@@ -500,6 +595,7 @@ body {
         28%;
 
     background:
+
         linear-gradient(
             #e8f9ff,
             #6fd5ff 48%,
@@ -569,6 +665,7 @@ body {
     position: absolute;
 
     left: 50%;
+
     bottom: 0;
 
     width: 15px;
@@ -581,6 +678,7 @@ body {
         0 0 50% 50%;
 
     background:
+
         linear-gradient(
             white,
             #ffe04e,
@@ -595,6 +693,7 @@ body {
 }
 
 @keyframes flame {
+
     from {
         height: 15px;
         opacity: .7;
@@ -604,6 +703,7 @@ body {
         height: 26px;
         opacity: 1;
     }
+
 }
 
 
@@ -624,7 +724,9 @@ body {
     background: white;
 
     box-shadow:
+
         0 0 6px #78f1ff,
+
         0 0 13px #39c2ff;
 }
 
@@ -647,6 +749,7 @@ body {
 }
 
 @keyframes explode {
+
     0% {
         transform: scale(.3);
         opacity: 1;
@@ -661,6 +764,7 @@ body {
         transform: scale(1.9);
         opacity: 0;
     }
+
 }
 
 .floatText {
@@ -669,6 +773,7 @@ body {
     z-index: 160;
 
     font-weight: 900;
+
     white-space: nowrap;
 
     pointer-events: none;
@@ -681,17 +786,21 @@ body {
 }
 
 @keyframes floatUp {
+
     from {
         opacity: 1;
+
         transform:
             translateY(0);
     }
 
     to {
         opacity: 0;
+
         transform:
             translateY(-50px);
     }
+
 }
 
 
@@ -739,6 +848,7 @@ body {
 
     left: 0;
     right: 0;
+
     bottom: 0;
 
     height: 28%;
@@ -756,9 +866,13 @@ body {
     left: 50%;
 
     bottom:
+
         max(
             5px,
-            env(safe-area-inset-bottom, 0px)
+            env(
+                safe-area-inset-bottom,
+                0px
+            )
         );
 
     transform:
@@ -783,6 +897,7 @@ body {
     position: absolute;
 
     left: 50%;
+
     bottom: 7px;
 
     transform:
@@ -810,6 +925,7 @@ body {
 
 .screen {
     position: absolute;
+
     inset: 0;
 
     z-index: 500;
@@ -820,14 +936,39 @@ body {
     justify-content: center;
 
     padding:
-        max(24px, env(safe-area-inset-top))
-        max(24px, env(safe-area-inset-right))
-        max(24px, env(safe-area-inset-bottom))
-        max(24px, env(safe-area-inset-left));
+
+        max(
+            24px,
+            env(
+                safe-area-inset-top
+            )
+        )
+
+        max(
+            24px,
+            env(
+                safe-area-inset-right
+            )
+        )
+
+        max(
+            24px,
+            env(
+                safe-area-inset-bottom
+            )
+        )
+
+        max(
+            24px,
+            env(
+                safe-area-inset-left
+            )
+        );
 
     text-align: center;
 
     background:
+
         radial-gradient(
             circle at center,
             rgba(28,66,150,.78),
@@ -905,8 +1046,11 @@ body {
 }
 
 .panel p {
-    margin: 8px 0;
+    margin:
+        8px 0;
+
     line-height: 1.6;
+
     color: #cbd7ef;
 
     font-size:
@@ -918,7 +1062,8 @@ body {
 }
 
 .bigScore {
-    margin: 14px 0;
+    margin:
+        14px 0;
 
     font-size:
         clamp(
@@ -928,11 +1073,13 @@ body {
         );
 
     font-weight: 900;
+
     color: #ffe357;
 }
 
 .resultBox {
     margin-top: 15px;
+
     padding: 14px;
 
     border-radius: 15px;
@@ -955,9 +1102,11 @@ button {
         14px 30px;
 
     border: 0;
+
     border-radius: 16px;
 
     background:
+
         linear-gradient(
             #fff67c,
             #ffc52e
@@ -966,9 +1115,404 @@ button {
     color: #071126;
 
     font-size: 19px;
+
     font-weight: 900;
 
     cursor: pointer;
+}
+
+
+/* =========================================================
+   NEW START SCREEN LAYOUT
+========================================================= */
+
+.startDashboard {
+    width:
+        min(
+            96%,
+            1050px
+        );
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.05fr)
+        minmax(0, .95fr);
+
+    gap: 22px;
+
+    align-items: stretch;
+}
+
+.startInstructions,
+.startLeaderboard {
+    min-height: 520px;
+
+    border-radius: 26px;
+
+    padding: 26px;
+
+    background:
+        rgba(
+            5,
+            11,
+            34,
+            .92
+        );
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            .16
+        );
+
+    box-shadow:
+        0 20px 60px
+        rgba(
+            0,
+            0,
+            0,
+            .45
+        );
+}
+
+
+/* =========================================================
+   START INSTRUCTIONS
+========================================================= */
+
+.startInstructions {
+    text-align: left;
+}
+
+.gameTitle {
+    text-align: center;
+
+    font-size:
+        clamp(
+            29px,
+            4vw,
+            44px
+        );
+
+    font-weight: 900;
+
+    text-shadow:
+        0 0 18px
+        rgba(
+            80,
+            216,
+            255,
+            .4
+        );
+}
+
+.gameSubtitle {
+    margin-top: 3px;
+
+    text-align: center;
+
+    color: #85e9ff;
+
+    font-size:
+        clamp(
+            16px,
+            2.2vw,
+            23px
+        );
+
+    font-weight: 900;
+
+    letter-spacing: 1px;
+}
+
+.howToPlayTitle {
+    margin-top: 20px;
+    margin-bottom: 12px;
+
+    color: #ffe564;
+
+    font-size: 18px;
+
+    font-weight: 900;
+
+    letter-spacing: 1px;
+}
+
+.instructionList {
+    list-style: none;
+
+    display: grid;
+
+    gap: 8px;
+}
+
+.instructionList li {
+    position: relative;
+
+    padding:
+        8px
+        10px
+        8px
+        38px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .055
+        );
+
+    color: #dce7ff;
+
+    font-size:
+        clamp(
+            13px,
+            1.6vw,
+            16px
+        );
+
+    line-height: 1.35;
+}
+
+.instructionIcon {
+    position: absolute;
+
+    left: 10px;
+    top: 50%;
+
+    transform:
+        translateY(-50%);
+
+    width: 20px;
+
+    text-align: center;
+
+    font-size: 17px;
+}
+
+.instructionPoints {
+    color: #ffe666;
+    font-weight: 900;
+}
+
+.instructionDanger {
+    color: #ff9f9f;
+    font-weight: 900;
+}
+
+.instructionTime {
+    color: #83eeff;
+    font-weight: 900;
+}
+
+.instructionHighlight {
+    color: #98f7bb;
+    font-weight: 900;
+}
+
+.startButtonWrap {
+    text-align: center;
+}
+
+#startButton {
+    min-width: 220px;
+
+    box-shadow:
+        0 0 22px
+        rgba(
+            255,
+            216,
+            64,
+            .28
+        );
+}
+
+
+/* =========================================================
+   NEW START LEADERBOARD
+========================================================= */
+
+.startLeaderboard {
+    position: relative;
+
+    overflow: hidden;
+
+    text-align: left;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(
+                105,
+                51,
+                206,
+                .34
+            ),
+            transparent 43%
+        ),
+        radial-gradient(
+            circle at 100% 35%,
+            rgba(
+                21,
+                199,
+                255,
+                .17
+            ),
+            transparent 35%
+        ),
+        rgba(
+            5,
+            9,
+            30,
+            .95
+        );
+
+    border:
+        2px solid
+        rgba(
+            255,
+            218,
+            67,
+            .65
+        );
+
+    box-shadow:
+        0 0 24px
+        rgba(
+            255,
+            214,
+            57,
+            .16
+        ),
+        0 0 48px
+        rgba(
+            101,
+            58,
+            255,
+            .14
+        ),
+        inset
+        0 0 34px
+        rgba(
+            255,
+            255,
+            255,
+            .035
+        );
+}
+
+.startLeaderboard::before,
+.startLeaderboard::after {
+    content: "✦";
+
+    position: absolute;
+
+    color:
+        rgba(
+            255,
+            238,
+            124,
+            .75
+        );
+
+    font-size: 24px;
+
+    animation:
+        sparkleGlow
+        1.5s
+        ease-in-out
+        infinite alternate;
+
+    pointer-events: none;
+}
+
+.startLeaderboard::before {
+    top: 20px;
+    left: 24px;
+}
+
+.startLeaderboard::after {
+    top: 56px;
+    right: 25px;
+
+    animation-delay:
+        .7s;
+}
+
+@keyframes sparkleGlow {
+
+    from {
+        opacity: .28;
+        transform:
+            scale(.75)
+            rotate(0deg);
+    }
+
+    to {
+        opacity: 1;
+        transform:
+            scale(1.22)
+            rotate(20deg);
+    }
+
+}
+
+.startLeaderboardTitle {
+    position: relative;
+
+    z-index: 2;
+
+    margin-bottom: 6px;
+
+    text-align: center;
+
+    font-size:
+        clamp(
+            22px,
+            3vw,
+            32px
+        );
+
+    font-weight: 900;
+
+    color: #ffe56a;
+
+    letter-spacing: 1px;
+
+    text-shadow:
+        0 0 8px
+        rgba(
+            255,
+            226,
+            85,
+            .6
+        ),
+        0 0 22px
+        rgba(
+            255,
+            200,
+            49,
+            .25
+        );
+}
+
+.startLeaderboardSubtitle {
+    margin-bottom: 15px;
+
+    text-align: center;
+
+    color: #93e8ff;
+
+    font-size: 12px;
+
+    letter-spacing: 1.1px;
 }
 
 
@@ -1039,7 +1583,8 @@ button {
     color: #8fe9ff;
 }
 
-#leaderboardList {
+#leaderboardList,
+#startLeaderboardList {
     margin-top: 8px;
     text-align: left;
 }
@@ -1048,32 +1593,218 @@ button {
     display: grid;
 
     grid-template-columns:
-        38px 1fr auto;
+        42px 1fr auto;
 
     gap: 8px;
 
-    padding:
-        7px 9px;
+    align-items: center;
 
-    border-bottom:
+    padding:
+        9px 11px;
+
+    margin-bottom: 6px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .045
+        );
+
+    border:
         1px solid
-        rgba(255,255,255,.08);
+        rgba(
+            255,
+            255,
+            255,
+            .055
+        );
 }
 
 .leaderRank {
     color: #ffd952;
+
     font-weight: 900;
+
+    text-align: center;
 }
 
 .leaderName {
     overflow: hidden;
+
     text-overflow: ellipsis;
+
     white-space: nowrap;
+
+    font-weight: 700;
+
+    color: #edf4ff;
 }
 
 .leaderScore {
     font-weight: 900;
+
     color: #80e8ff;
+}
+
+
+/* =========================================================
+   TOP 3
+========================================================= */
+
+.leaderRow.rank1 {
+    padding:
+        13px 12px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(
+                255,
+                207,
+                50,
+                .19
+            ),
+            rgba(
+                255,
+                238,
+                121,
+                .07
+            )
+        );
+
+    border:
+        1px solid
+        rgba(
+            255,
+            222,
+            84,
+            .56
+        );
+
+    box-shadow:
+        0 0 18px
+        rgba(
+            255,
+            213,
+            66,
+            .16
+        );
+
+    animation:
+        championPulse
+        1.6s
+        ease-in-out
+        infinite alternate;
+}
+
+@keyframes championPulse {
+
+    from {
+        box-shadow:
+            0 0 10px
+            rgba(
+                255,
+                213,
+                66,
+                .12
+            );
+    }
+
+    to {
+        box-shadow:
+            0 0 25px
+            rgba(
+                255,
+                220,
+                79,
+                .34
+            );
+    }
+
+}
+
+.leaderRow.rank1 .leaderRank {
+    font-size: 22px;
+}
+
+.leaderRow.rank1 .leaderName {
+    color: #fff1a1;
+
+    font-size: 18px;
+}
+
+.leaderRow.rank1 .leaderScore {
+    color: #ffe158;
+
+    font-size: 19px;
+}
+
+.leaderRow.rank2 {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(
+                201,
+                222,
+                255,
+                .13
+            ),
+            rgba(
+                255,
+                255,
+                255,
+                .035
+            )
+        );
+
+    border:
+        1px solid
+        rgba(
+            207,
+            227,
+            255,
+            .26
+        );
+}
+
+.leaderRow.rank2 .leaderName {
+    color: #dceaff;
+}
+
+.leaderRow.rank3 {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(
+                219,
+                137,
+                72,
+                .14
+            ),
+            rgba(
+                255,
+                255,
+                255,
+                .035
+            )
+        );
+
+    border:
+        1px solid
+        rgba(
+            232,
+            161,
+            90,
+            .25
+        );
+}
+
+.leaderRow.rank3 .leaderName {
+    color: #ffd0a2;
 }
 
 
@@ -1083,6 +1814,7 @@ button {
 
 #rotateScreen {
     position: fixed;
+
     inset: 0;
 
     z-index: 2000;
@@ -1099,6 +1831,7 @@ button {
     color: white;
 
     background:
+
         linear-gradient(
             #07152f,
             #02040d
@@ -1107,16 +1840,19 @@ button {
 
 #rotateIcon {
     font-size: 64px;
+
     margin-bottom: 15px;
 }
 
 #rotateScreen p {
     margin-top: 8px;
+
     color: #cbd7ef;
 }
 
 
-@media (pointer: coarse) {
+@media
+(pointer: coarse) {
 
     #touchZone {
         display: block;
@@ -1129,14 +1865,17 @@ button {
     #desktopHint {
         display: none;
     }
+
 }
 
 
-@media (pointer: fine) {
+@media
+(pointer: fine) {
 
     #touchHint {
         display: none;
     }
+
 }
 
 
@@ -1148,10 +1887,86 @@ and
     #rotateScreen {
         display: flex;
     }
+
 }
 
 
-@media (max-height: 600px) {
+@media
+(max-width: 760px) {
+
+    .startDashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .startInstructions,
+    .startLeaderboard {
+        min-height: auto;
+    }
+
+}
+
+
+@media
+(max-height: 650px)
+and
+(min-width: 761px) {
+
+    .startDashboard {
+        gap: 15px;
+    }
+
+    .startInstructions,
+    .startLeaderboard {
+        min-height: 0;
+
+        padding: 18px;
+    }
+
+    .instructionList {
+        gap: 4px;
+    }
+
+    .instructionList li {
+        padding:
+            5px
+            8px
+            5px
+            34px;
+
+        font-size: 12px;
+    }
+
+    .howToPlayTitle {
+        margin-top: 12px;
+        margin-bottom: 7px;
+    }
+
+    .leaderRow {
+        padding:
+            6px
+            8px;
+
+        margin-bottom: 4px;
+    }
+
+    .leaderRow.rank1 {
+        padding:
+            8px
+            9px;
+    }
+
+    #startButton {
+        margin-top: 12px;
+        padding:
+            10px
+            24px;
+    }
+
+}
+
+
+@media
+(max-height: 600px) {
 
     #hud {
         height: 63px;
@@ -1161,7 +1976,10 @@ and
         top:
             calc(
                 57px +
-                env(safe-area-inset-top, 0px)
+                env(
+                    safe-area-inset-top,
+                    0px
+                )
             );
     }
 
@@ -1169,7 +1987,10 @@ and
         top:
             calc(
                 70px +
-                env(safe-area-inset-top, 0px)
+                env(
+                    safe-area-inset-top,
+                    0px
+                )
             );
     }
 
@@ -1185,6 +2006,7 @@ and
         transform-origin:
             center bottom;
     }
+
 }
 
 </style>
@@ -1374,60 +2196,221 @@ and
     <div id="message"></div>
 
 
-    <!-- START -->
+    <!-- =====================================================
+         START SCREEN
+    ====================================================== -->
 
     <div
         id="startScreen"
         class="screen"
     >
 
-        <div class="panel">
+        <div class="startDashboard">
 
-            <h1>
-                🚀 Chinese Galaxy
-            </h1>
 
-            <h2>
-                Planet Blaster
-            </h2>
+            <!-- LEFT: INSTRUCTIONS -->
 
-            <p>
-                Shoot as many planets as you can
-                in <b>60 seconds</b>.
-            </p>
+            <div class="startInstructions">
 
-            <p>
-                Bigger planets are easier.
-                Smaller planets give more points.
-            </p>
+                <div class="gameTitle">
+                    🚀 Chinese Galaxy
+                </div>
 
-            <p>
-                Chinese planet:
-                <b>+15</b>
-            </p>
+                <div class="gameSubtitle">
+                    PLANET BLASTER
+                </div>
 
-            <p>
-                When a
-                <b>Chinese Bonus</b>
-                appears,
-                shoot the matching Chinese word
-                for an extra
-                <b>+50</b>.
-            </p>
 
-            <p>
-                Reach
-                <b>550 points</b>
-                before time runs out.
-            </p>
+                <div class="howToPlayTitle">
+                    HOW TO PLAY
+                </div>
 
-            <p>
-                The spaceship fires automatically.
-            </p>
 
-            <button id="startButton">
-                START MISSION
-            </button>
+                <ul class="instructionList">
+
+                    <li>
+                        <span class="instructionIcon">
+                            🚀
+                        </span>
+
+                        Ship fires automatically.
+                    </li>
+
+
+                    <li>
+                        <span class="instructionIcon">
+                            ↔️
+                        </span>
+
+                        Move left / right to aim.
+                    </li>
+
+
+                    <li>
+                        <span class="instructionIcon">
+                            🔵
+                        </span>
+
+                        Large planet:
+                        <span class="instructionPoints">
+                            +10
+                        </span>
+                    </li>
+
+
+                    <li>
+                        <span class="instructionIcon">
+                            🔵
+                        </span>
+
+                        Medium planet:
+                        <span class="instructionPoints">
+                            +15
+                        </span>
+                    </li>
+
+
+                    <li>
+                        <span class="instructionIcon">
+                            🔹
+                        </span>
+
+                        Small planet:
+                        <span class="instructionPoints">
+                            +20
+                        </span>
+                    </li>
+
+
+                    <li>
+                        <span class="instructionIcon">
+                            🀄
+                        </span>
+
+                        Chinese word:
+                        <span class="instructionPoints">
+                            +15
+                        </span>
+                    </li>
+
+
+                    <li>
+                        <span class="instructionIcon">
+                            💣
+                        </span>
+
+                        Bomb:
+                        <span class="instructionDanger">
+                            Speed down
+                        </span>
+                    </li>
+
+
+                    <li>
+                        <span class="instructionIcon">
+                            ⏳
+                        </span>
+
+                        Hourglass:
+                        <span class="instructionTime">
+                            +1 / +2 / +3 sec
+                        </span>
+                        depending on size.
+                    </li>
+
+
+                    <li>
+                        <span class="instructionIcon">
+                            ⭐
+                        </span>
+
+                        Chinese Bonus:
+                        remember the English clue,
+                        then shoot the matching Chinese word.
+                    </li>
+
+
+                    <li>
+                        <span class="instructionIcon">
+                            ✅
+                        </span>
+
+                        Correct Bonus:
+                        <span class="instructionHighlight">
+                            +65
+                        </span>
+                    </li>
+
+
+                    <li>
+                        <span class="instructionIcon">
+                            ❌
+                        </span>
+
+                        Wrong Bonus:
+                        <span class="instructionDanger">
+                            0 points + Speed down
+                        </span>
+                    </li>
+
+
+                    <li>
+                        <span class="instructionIcon">
+                            🎯
+                        </span>
+
+                        Target:
+                        <span class="instructionPoints">
+                            550 points
+                        </span>
+                    </li>
+
+
+                    <li>
+                        <span class="instructionIcon">
+                            🏆
+                        </span>
+
+                        Score above
+                        <span class="instructionPoints">
+                            1000
+                        </span>
+                        to enter the leaderboard.
+                    </li>
+
+                </ul>
+
+
+                <div class="startButtonWrap">
+
+                    <button id="startButton">
+                        START MISSION
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT: LEADERBOARD -->
+
+            <div class="startLeaderboard">
+
+                <div class="startLeaderboardTitle">
+                    ✦ 🏆 GALAXY LEADERBOARD ✦
+                </div>
+
+                <div class="startLeaderboardSubtitle">
+                    TOP 10 SPACE PILOTS
+                </div>
+
+
+                <div id="startLeaderboardList">
+                    Loading...
+                </div>
+
+            </div>
+
 
         </div>
 
@@ -1561,8 +2544,6 @@ and
 
     </div>
 
-
-    <!-- Hidden target for Google Form submission -->
 
     <iframe
         name="scoreSubmitFrame"
@@ -1712,19 +2693,8 @@ const BONUS_DURATION = 6000;
 const BONUS_GAP_MIN = 8500;
 const BONUS_GAP_MAX = 10000;
 
-
-/*
-    NEW:
-    1 second English clue.
-    1 second frozen Chinese choices.
-
-    These 2 seconds DO NOT reduce
-    the main game timer.
-*/
-
 const BONUS_CLUE_PREVIEW = 1000;
 const BONUS_CHOICE_PREVIEW = 1000;
-
 
 const PLANET_FALL_SPEED = 0.041;
 
@@ -1858,23 +2828,9 @@ let lastFrame =
    BONUS INTRO STATE
 ========================================================= */
 
-/*
-    null
-    "clue"
-    "choices"
-*/
-
 let bonusIntroPhase = null;
 
 let bonusIntroRemaining = 0;
-
-
-/*
-    Bombs/hourglasses already on screen
-    are temporarily stored here.
-
-    They are restored after Bonus.
-*/
 
 let stashedSpecialItems = [];
 
@@ -2119,17 +3075,6 @@ function gameLoop(timestamp) {
     lastFrame =
         timestamp;
 
-
-    /*
-        BONUS INTRO:
-
-        Completely paused.
-
-        Main game timer does NOT move.
-        Bullets do NOT move.
-        Ship does NOT move.
-        Nothing spawns.
-    */
 
     if (
         bonusIntroPhase !== null
@@ -2808,6 +3753,7 @@ function createNormalPlanet() {
         ];
 
     el.style.background =
+
         `radial-gradient(
             circle at 30% 25%,
             ${colours[0]},
@@ -3348,8 +4294,6 @@ function hitPlanet(
     );
 
 
-    /* BOMB */
-
     if (
         planet.objectType ===
         "bomb"
@@ -3373,8 +4317,6 @@ function hitPlanet(
         return;
     }
 
-
-    /* HOURGLASS */
 
     if (
         planet.objectType ===
@@ -3415,8 +4357,6 @@ function hitPlanet(
         return;
     }
 
-
-    /* BONUS CHOICE */
 
     if (
         bonusActive &&
@@ -3470,12 +4410,6 @@ function hitPlanet(
         }
 
 
-        /*
-            WRONG BONUS:
-            0 points
-            speed down
-        */
-
         floatingText(
 
             "0  SPEED DOWN",
@@ -3494,8 +4428,6 @@ function hitPlanet(
         return;
     }
 
-
-    /* NORMAL WORD */
 
     if (
         planet.objectType ===
@@ -3525,8 +4457,6 @@ function hitPlanet(
     }
 
 
-    /* NORMAL PLANET */
-
     score +=
         planet.points;
 
@@ -3551,13 +4481,7 @@ function hitPlanet(
 
 
 /* =========================================================
-   BONUS MODE START
-
-   NEW FLOW:
-   1. Preserve active bomb/hourglass.
-   2. Clear everything else + bullets.
-   3. Pause game clock.
-   4. English clue for 1 second.
+   BONUS START
 ========================================================= */
 
 function startBonus() {
@@ -3572,19 +4496,7 @@ function startBonus() {
     }
 
 
-    /*
-        Preserve special items
-        that have already spawned
-        but have not been hit.
-    */
-
     stashSpecialItemsForBonus();
-
-
-    /*
-        Remove normal planets,
-        Chinese planets and bullets.
-    */
 
     clearFieldForBonus();
 
@@ -3605,11 +4517,6 @@ function startBonus() {
         BONUS_CLUE_PREVIEW;
 
 
-    /*
-        English only.
-        No timer yet.
-    */
-
     bonusLabel.style.display =
         "none";
 
@@ -3629,20 +4536,6 @@ function startBonus() {
 
 /* =========================================================
    BONUS INTRO
-
-   clue:
-       English word = 1 second.
-
-   choices:
-       English disappears.
-       3 Chinese choices appear at top.
-       They stay frozen = 1 second.
-
-   After that:
-       main timer resumes
-       auto fire resumes
-       Chinese balls begin falling
-       original 6-second Bonus begins.
 ========================================================= */
 
 function updateBonusIntro(
@@ -3660,10 +4553,6 @@ function updateBonusIntro(
         return;
     }
 
-
-    /* -----------------------------------------
-       ENGLISH -> FROZEN CHOICES
-    ----------------------------------------- */
 
     if (
         bonusIntroPhase ===
@@ -3685,10 +4574,6 @@ function updateBonusIntro(
     }
 
 
-    /* -----------------------------------------
-       FROZEN CHOICES -> ACTIVE BONUS
-    ----------------------------------------- */
-
     if (
         bonusIntroPhase ===
         "choices"
@@ -3703,13 +4588,6 @@ function updateBonusIntro(
         bonusRemaining =
             BONUS_DURATION;
 
-
-        /*
-            English clue stays gone.
-
-            Only Bonus label + timer
-            return during active play.
-        */
 
         bonusLabel.style.display =
             "block";
@@ -3727,10 +4605,6 @@ function updateBonusIntro(
             "block";
 
 
-        /*
-            Start with a clean shot timing.
-        */
-
         fireTimer = 0;
 
         return;
@@ -3739,7 +4613,7 @@ function updateBonusIntro(
 
 
 /* =========================================================
-   CREATE THREE BONUS CHOICES
+   CREATE BONUS CHOICES
 ========================================================= */
 
 function createBonusChoices() {
@@ -3804,7 +4678,7 @@ function createBonusChoices() {
 
 
 /* =========================================================
-   STORE ACTIVE BOMB / HOURGLASS
+   STASH SPECIAL ITEMS
 ========================================================= */
 
 function stashSpecialItemsForBonus() {
@@ -3862,7 +4736,7 @@ function stashSpecialItemsForBonus() {
 
 
 /* =========================================================
-   CLEAR EVERYTHING ELSE FOR BONUS
+   CLEAR FIELD FOR BONUS
 ========================================================= */
 
 function clearFieldForBonus() {
@@ -3888,7 +4762,7 @@ function clearFieldForBonus() {
 
 
 /* =========================================================
-   RESTORE UNTRIGGERED BOMB / HOURGLASS
+   RESTORE SPECIAL ITEMS
 ========================================================= */
 
 function restoreSpecialItemsAfterBonus() {
@@ -3914,9 +4788,6 @@ function restoreSpecialItemsAfterBonus() {
 
 /* =========================================================
    BONUS TIMER
-
-   The original 6 seconds begins only
-   after both paused preview stages.
 ========================================================= */
 
 function updateBonus(
@@ -3981,11 +4852,6 @@ function finishBonus() {
         "none";
 
 
-    /*
-        Remove remaining
-        Bonus words.
-    */
-
     for (
         let i =
             planets.length - 1;
@@ -4012,11 +4878,6 @@ function finishBonus() {
 
     currentBonus = null;
 
-
-    /*
-        Return bomb/hourglass
-        that existed before Bonus.
-    */
 
     restoreSpecialItemsAfterBonus();
 
@@ -4090,11 +4951,6 @@ function finishGame() {
 
         `;
 
-
-        /*
-            Only >1000 gets
-            score submission.
-        */
 
         if (
             score >
@@ -4218,22 +5074,6 @@ function submitLeaderboardScore() {
     }
 
 
-    if (
-        GOOGLE_FORM_ACTION.includes(
-            "PASTE_"
-        ) ||
-        FORM_ENTRY_NAME.includes(
-            "REPLACE_"
-        )
-    ) {
-
-        status.textContent =
-            "Leaderboard submission is not configured yet.";
-
-        return;
-    }
-
-
     const form =
         document.createElement(
             "form"
@@ -4302,11 +5142,6 @@ function submitLeaderboardScore() {
         true;
 
 
-    /*
-        Form -> Sheet can take a moment.
-        Refresh Top 10 shortly afterwards.
-    */
-
     setTimeout(
         () => {
 
@@ -4348,12 +5183,6 @@ function addHiddenFormField(
 
 /* =========================================================
    LEADERBOARD READ
-
-   Uses JSONP because Apps Script
-   officially supports this browser
-   read-only pattern.
-
-   The Sheet itself remains private.
 ========================================================= */
 
 let leaderboardCallbackCounter = 0;
@@ -4372,19 +5201,6 @@ function loadLeaderboard(
     if (
         !target
     ) {
-
-        return;
-    }
-
-
-    if (
-        LEADERBOARD_SCRIPT_URL.includes(
-            "PASTE_"
-        )
-    ) {
-
-        target.innerHTML =
-            "Leaderboard not configured yet.";
 
         return;
     }
@@ -4519,6 +5335,32 @@ function renderLeaderboard(
                 "leaderRow";
 
 
+            if (
+                index === 0
+            ) {
+
+                row.classList.add(
+                    "rank1"
+                );
+
+            } else if (
+                index === 1
+            ) {
+
+                row.classList.add(
+                    "rank2"
+                );
+
+            } else if (
+                index === 2
+            ) {
+
+                row.classList.add(
+                    "rank3"
+                );
+            }
+
+
             const rank =
                 document.createElement(
                     "div"
@@ -4527,8 +5369,33 @@ function renderLeaderboard(
             rank.className =
                 "leaderRank";
 
-            rank.textContent =
-                index + 1;
+
+            if (
+                index === 0
+            ) {
+
+                rank.textContent =
+                    "🥇";
+
+            } else if (
+                index === 1
+            ) {
+
+                rank.textContent =
+                    "🥈";
+
+            } else if (
+                index === 2
+            ) {
+
+                rank.textContent =
+                    "🥉";
+
+            } else {
+
+                rank.textContent =
+                    index + 1;
+            }
 
 
             const name =
@@ -4582,7 +5449,7 @@ function renderLeaderboard(
 
 
 /* =========================================================
-   CLEAR ALL OBJECTS
+   CLEAR OBJECTS
 ========================================================= */
 
 function clearObjects() {
@@ -4907,6 +5774,17 @@ targetValue.textContent =
     TARGET_SCORE;
 
 updateHUD();
+
+
+/*
+    NEW:
+    Load leaderboard immediately
+    when the page opens / refreshes.
+*/
+
+loadLeaderboard(
+    "startLeaderboardList"
+);
 
 </script>
 
