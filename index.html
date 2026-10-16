@@ -2871,22 +2871,35 @@ function gameLoop(timestamp) {
         timestamp;
 
 
-    if (
-        bonusIntroPhase !== null
-    ) {
+if (
+    bonusIntroPhase !== null
+) {
 
-        updateBonusIntro(
-            delta
-        );
+    /*
+        During Bonus preview:
 
-        updateHUD();
+        - game timer is paused
+        - planets are frozen
+        - no auto fire
+        - player CAN move freely
+    */
 
-        requestAnimationFrame(
-            gameLoop
-        );
+    updateKeyboardMovement(
+        delta
+    );
 
-        return;
-    }
+    updateBonusIntro(
+        delta
+    );
+
+    updateHUD();
+
+    requestAnimationFrame(
+        gameLoop
+    );
+
+    return;
+}
 
 
     gameRemaining -=
@@ -3150,8 +3163,7 @@ touchZone.addEventListener(
     event => {
 
         if (
-            !running ||
-            bonusIntroPhase !== null
+            !running
         ) {
 
             return;
@@ -3182,7 +3194,6 @@ touchZone.addEventListener(
         if (
             !running ||
             !dragging ||
-            bonusIntroPhase !== null
         ) {
 
             return;
