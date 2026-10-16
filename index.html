@@ -2277,66 +2277,154 @@ const LEADERBOARD_MIN_SCORE = 1000;
    VOCABULARY
 ========================================================= */
 
+/* =========================================================
+   VOCABULARY
+========================================================= */
+
 const vocab = [
 
     {
-        word: "德士",
-        meaning: "taxi"
+        word: "篮球",
+        pinyin: "lán qiú",
+        chinese: "一种球类运动。",
+        english: "Basketball; a ball game."
     },
 
     {
-        word: "宁静",
-        meaning: "peaceful; quiet"
+        word: "担忧",
+        pinyin: "dān yōu",
+        chinese: "心里担心。",
+        english: "To feel worried."
     },
 
     {
-        word: "脉搏",
-        meaning: "pulse"
+        word: "报名",
+        pinyin: "bào míng",
+        chinese: "登记名字，参加活动。",
+        english: "To sign up for an activity."
     },
 
     {
-        word: "稀疏",
-        meaning: "sparse"
+        word: "八卦",
+        pinyin: "bā guà",
+        chinese: "谈论别人的事情。",
+        english: "Gossip; talking about others."
     },
 
     {
-        word: "挑衅",
-        meaning: "provoke"
+        word: "丢脸",
+        pinyin: "diū liǎn",
+        chinese: "做了不好的事，觉得难为情。",
+        english: "To feel embarrassed."
     },
 
     {
-        word: "引擎",
-        meaning: "engine"
+        word: "投篮",
+        pinyin: "tóu lán",
+        chinese: "把篮球投进篮筐。",
+        english: "To shoot a basketball into the hoop."
     },
 
     {
-        word: "熟练",
-        meaning: "proficient"
+        word: "决定",
+        pinyin: "jué dìng",
+        chinese: "想好后，作出选择。",
+        english: "To make a choice."
     },
 
     {
-        word: "启动",
-        meaning: "to start"
+        word: "练球",
+        pinyin: "liàn qiú",
+        chinese: "练习打球。",
+        english: "To practise playing ball."
     },
 
     {
-        word: "颠簸",
-        meaning: "bumpy"
+        word: "教练",
+        pinyin: "jiào liàn",
+        chinese: "教别人运动技巧的人。",
+        english: "A person who trains players."
     },
 
     {
-        word: "韵律",
-        meaning: "rhythm"
+        word: "组队",
+        pinyin: "zǔ duì",
+        chinese: "找人组成一个队伍。",
+        english: "To form a team."
     },
 
     {
-        word: "旋律",
-        meaning: "melody"
+        word: "参赛",
+        pinyin: "cān sài",
+        chinese: "参加比赛。",
+        english: "To take part in a competition."
     },
 
     {
-        word: "缠绕",
-        meaning: "entangle"
+        word: "中锋",
+        pinyin: "zhōng fēng",
+        chinese: "篮球队中通常在篮下打球的队员。",
+        english: "A player who usually plays near the basket."
+    },
+
+    {
+        word: "速度",
+        pinyin: "sù dù",
+        chinese: "动作或移动的快慢。",
+        english: "How fast or slow something moves."
+    },
+
+    {
+        word: "犹豫",
+        pinyin: "yóu yù",
+        chinese: "拿不定主意。",
+        english: "To be unsure what to do."
+    },
+
+    {
+        word: "训练",
+        pinyin: "xùn liàn",
+        chinese: "反复练习，提高能力。",
+        english: "To practise to improve skills."
+    }
+
+];
+
+
+/* =========================================================
+   BONUS QUESTION TYPES
+========================================================= */
+
+const bonusModes = [
+
+    {
+        promptField: "english",
+        answerField: "word"
+    },
+
+    {
+        promptField: "chinese",
+        answerField: "word"
+    },
+
+    {
+        promptField: "pinyin",
+        answerField: "word"
+    },
+
+    {
+        promptField: "word",
+        answerField: "pinyin"
+    },
+
+    {
+        promptField: "word",
+        answerField: "english"
+    },
+
+    {
+        promptField: "word",
+        answerField: "chinese"
     }
 
 ];
@@ -2378,11 +2466,28 @@ const speedLevels = [
 
 const BONUS_DURATION = 6000;
 
-const BONUS_GAP_MIN = 8500;
-const BONUS_GAP_MAX = 10000;
 
-const BONUS_CLUE_PREVIEW = 1000;
-const BONUS_CHOICE_PREVIEW = 1700;
+/*
+    Bonus now appears about twice
+    as frequently as before.
+*/
+
+const BONUS_GAP_MIN = 4250;
+const BONUS_GAP_MAX = 5000;
+
+
+/*
+    2 seconds to read the question.
+
+    Then 2 seconds to study
+    the three answer choices.
+
+    Main game time is paused
+    during both stages.
+*/
+
+const BONUS_CLUE_PREVIEW = 2000;
+const BONUS_CHOICE_PREVIEW = 2300;
 
 const PLANET_FALL_SPEED = 0.041;
 
@@ -2503,6 +2608,8 @@ let fireTimer = 0;
 let bonusActive = false;
 
 let currentBonus = null;
+
+let currentBonusMode = null;
 
 let bonusRemaining = 0;
 
@@ -4051,11 +4158,9 @@ function hitPlanet(
         planet.isBonusChoice
     ) {
 
-        if (
-            currentBonus &&
-            planet.item.word ===
-                currentBonus.word
-        ) {
+if (
+    planet.isCorrectBonus
+){
 
             const points =
                 65;
@@ -4172,6 +4277,10 @@ function hitPlanet(
    BONUS START
 ========================================================= */
 
+/* =========================================================
+   BONUS START
+========================================================= */
+
 function startBonus() {
 
     if (
@@ -4184,10 +4293,26 @@ function startBonus() {
     }
 
 
+    /*
+        Bombs and hourglasses already
+        on screen are stored and will
+        return after Bonus.
+    */
+
     stashSpecialItemsForBonus();
+
+
+    /*
+        Everything else, including
+        existing bullets, is cleared.
+    */
 
     clearFieldForBonus();
 
+
+    /*
+        Select vocabulary.
+    */
 
     currentBonus =
         vocab[
@@ -4198,24 +4323,53 @@ function startBonus() {
         ];
 
 
+    /*
+        Randomly select one of
+        the six question formats.
+    */
+
+    currentBonusMode =
+        bonusModes[
+            Math.floor(
+                Math.random() *
+                bonusModes.length
+            )
+        ];
+
+
     bonusIntroPhase =
         "clue";
+
 
     bonusIntroRemaining =
         BONUS_CLUE_PREVIEW;
 
 
+    /*
+        During these 2 seconds,
+        show ONLY the question.
+
+        Main game timer is paused.
+    */
+
     bonusLabel.style.display =
         "none";
+
 
     bonusTimer.style.display =
         "none";
 
+
     bonusClue.style.display =
         "block";
 
+
     bonusClue.textContent =
-        currentBonus.meaning;
+        getBonusField(
+            currentBonus,
+            currentBonusMode.promptField
+        );
+
 
     bonusPanel.style.display =
         "block";
@@ -4304,6 +4458,10 @@ function updateBonusIntro(
    CREATE BONUS CHOICES
 ========================================================= */
 
+/* =========================================================
+   CREATE BONUS CHOICES
+========================================================= */
+
 function createBonusChoices() {
 
     const wrongChoices =
@@ -4314,6 +4472,7 @@ function createBonusChoices() {
                 currentBonus.word
         );
 
+
     shuffle(
         wrongChoices
     );
@@ -4321,11 +4480,20 @@ function createBonusChoices() {
 
     const choices = [
 
-        currentBonus,
+        {
+            item: currentBonus,
+            correct: true
+        },
 
-        wrongChoices[0],
+        {
+            item: wrongChoices[0],
+            correct: false
+        },
 
-        wrongChoices[1]
+        {
+            item: wrongChoices[1],
+            correct: false
+        }
 
     ];
 
@@ -4338,30 +4506,207 @@ function createBonusChoices() {
     const positions = [
 
         game.clientWidth *
-        .23,
+        .20,
 
         game.clientWidth *
         .50,
 
         game.clientWidth *
-        .77
+        .80
 
     ];
 
 
     choices.forEach(
-        (item, index) => {
+        (choice, index) => {
 
-            createWordPlanet(
+            createBonusChoicePlanet(
 
-                item,
+                choice.item,
 
-                true,
+                choice.correct,
 
                 positions[index]
             );
         }
     );
+}
+
+
+/* =========================================================
+   READ BONUS FIELD
+========================================================= */
+
+function getBonusField(
+    item,
+    field
+) {
+
+    return item[field] || "";
+}
+
+
+/* =========================================================
+   CREATE BONUS ANSWER BALL
+========================================================= */
+
+function createBonusChoicePlanet(
+    item,
+    isCorrect,
+    forcedX
+) {
+
+    const el =
+        document.createElement(
+            "div"
+        );
+
+
+    el.className =
+        "planet wordPlanet bonusChoice bonusAnswerChoice";
+
+
+    const answerText =
+        getBonusField(
+            item,
+            currentBonusMode.answerField
+        );
+
+
+    el.textContent =
+        answerText;
+
+
+    /*
+        Long English or Chinese
+        definitions need a wider ball.
+
+        Ordinary Chinese planets
+        are NOT affected.
+    */
+
+    if (
+        currentBonusMode.answerField ===
+            "english" ||
+        currentBonusMode.answerField ===
+            "chinese"
+    ) {
+
+        el.style.width =
+            "min(28vw, 270px)";
+
+        el.style.minWidth =
+            "150px";
+
+        el.style.height =
+            "auto";
+
+        el.style.minHeight =
+            "64px";
+
+        el.style.padding =
+            "10px 14px";
+
+        el.style.whiteSpace =
+            "normal";
+
+        el.style.lineHeight =
+            "1.2";
+
+        el.style.fontSize =
+            "clamp(12px, 1.55vw, 17px)";
+
+    } else if (
+        currentBonusMode.answerField ===
+        "pinyin"
+    ) {
+
+        el.style.minWidth =
+            "115px";
+
+        el.style.padding =
+            "0 16px";
+
+        el.style.fontSize =
+            "clamp(15px, 2vw, 20px)";
+    }
+
+
+    gameArea.appendChild(
+        el
+    );
+
+
+    const width =
+        el.offsetWidth;
+
+
+    const height =
+        el.offsetHeight;
+
+
+    const x =
+        Math.max(
+
+            8,
+
+            Math.min(
+
+                game.clientWidth -
+                width -
+                8,
+
+                forcedX -
+                width / 2
+            )
+        );
+
+
+    /*
+        All three answer balls start
+        at exactly the same top level.
+    */
+
+    const y = 105;
+
+
+    el.style.left =
+        x + "px";
+
+
+    el.style.top =
+        y + "px";
+
+
+    planets.push({
+
+        el: el,
+
+        x: x,
+
+        y: y,
+
+        width: width,
+
+        height: height,
+
+        drift: 0,
+
+        isWord: true,
+
+        isBonusChoice: true,
+
+        isCorrectBonus:
+            isCorrect,
+
+        item: item,
+
+        objectType:
+            "word",
+
+        points: 15
+
+    });
 }
 
 
